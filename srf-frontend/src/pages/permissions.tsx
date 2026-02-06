@@ -24,11 +24,13 @@ const UsersPermissionsContent: ContentProps<User> = {
     columns: [
         {
             key: 'name',
-            label: 'Nome'
+            label: 'Nome',
+            width: 'w-1/5'
         },
         {
             key: 'email',
-            label: 'E-mail'
+            label: 'E-mail',
+            width: 'w-3/5'
         }
     ],
     data: [ //API REST
@@ -52,18 +54,15 @@ const UsersPermissionsContent: ContentProps<User> = {
         </div>
     ),
     toolBar: (
-        <form className="grid grid-cols-4 gap-4 bg-form-bg p-4 rounded-md">
-            <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" />
-            <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" />
-            <select className="bg-white text-text-light-gray border border-border p-2 rounded">
-                <option value="">Grupo (opcional)</option>
-                {/* FAZER UMA API REST PARA PEGAR OS GRUPOS
-                    <option value="admin">Admin</option>
-                    <option value="owner">Dono</option>
-                    <option value="user">Usuário</option> */}
-            </select>
-            <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded">Adicionar</button>
-        </form>
+        <div className="gap-4 bg-form-bg p-4 rounded-md mx-6 mb-6">
+            <h3 className="font-bold text-text-main uppercase text-xs mb-2">Adicionar usuário</h3>
+            <form className="grid grid-cols-4 gap-4">
+                <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" />
+                <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" />
+                <input type='text' placeholder='Senha' className="bg-white border border-border p-2 rounded" />
+                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded">Adicionar</button>
+            </form>
+        </div>
     )
 }
 const ApplicantPermissionsContent: ContentProps<Applicant> = {
@@ -73,14 +72,17 @@ const ApplicantPermissionsContent: ContentProps<Applicant> = {
         {
             key: 'name',
             label: 'Nome',
+            width: 'w-1/5'
         },
         {
             key: 'email',
             label: 'E-mail',
+            width: 'w-2/5'
         },
         {
             key: 'date',
             label: 'Data',
+            width: 'w-1/5'
         }
     ],
     data: [ // API REST

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React, { type ReactNode } from "react";
+import { FilterBar } from "./filterbar";
 
 export interface ColumnProps<T> {
     key: keyof T | string,
     label: string,
+    width?: string,
 }
 
 export interface ContentProps<T> {
@@ -30,10 +32,25 @@ export function Content({
     onTabChange,
     contents,
 }: PageProps) {
+    const activeContent = contents.find(content => content.id === activeTabId);
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [filteredData, setFilteredData] = useState(activeContent?.data);
+
+    useEffect(() => {
+        setFilteredData(activeContent?.data);
+        setExpandedId(null);
+    }, [activeContent])
 
     function toggleRow(id: string) {
         setExpandedId(prev => (prev === id ? null : id));
+    }
+
+    function handleFilter(column: string, term: string) {
+        const searchTerm = term.toLocaleLowerCase();
+        const newData = activeContent?.data.filter(item =>
+            String(item[column]).toLowerCase().includes(searchTerm)
+        );
+        setFilteredData(newData);
     }
 
     return (
@@ -45,7 +62,7 @@ export function Content({
             <div className="max-2-6xl mx-auto bg-white rounded shadow-sm border border-border">
 
                 {/* Tabs */}
-                <div className="px-6 pt-4 border-b border-border">
+                <div className="px-6 pt-4 border-b border-border mb-6">
                     <div className="flex gap-2">
                         {contents.map((content) => (
                             <button
@@ -60,28 +77,30 @@ export function Content({
                 </div>
 
                 {/* ToolBar */}
-                {contents.find(content => content.id === activeTabId)?.toolBar && (
-                    <div className="p-6 bg-white">
-                        {contents.find(content => content.id === activeTabId)?.toolBar}
-                    </div>
-                )}
+                {activeContent?.toolBar && activeContent?.toolBar}
+
+                <FilterBar
+                    key={activeContent?.id}
+                    columns={activeContent?.columns || []}
+                    onFilter={handleFilter}
+                />
 
                 {/* Table */}
                 <div className="px-6 pb-6">
                     <table className="w-full border-collapse">
                         <thead>
                             <tr className="bg-form-bg border-b border-border">
-                                {contents.find(content => content.id === activeTabId)?.columns.map(col => (
-                                    <th key={String(col.key)} className="px-4 py-3 text-left text-sm font-bold text-text-main">
+                                {activeContent?.columns.map(col => (
+                                    <th key={String(col.key)} className={`px-4 py-3 text-left text-sm font-bold text-text-main ${col.width ?? ''}`}>
                                         {col.label}
                                     </th>
                                 ))}
-                                <th className="px-4 py-3 text-right text-sm font-bold text-text-main">Ações</th>
+                                <th className="px-4 py-3 text-sm font-bold text-text-main text-right pr-6">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {contents.find(content => content.id === activeTabId)?.data.map((item) => {
-                                const id = item[contents.find(content => content.id === activeTabId)!.rowIdField] as unknown as string;
+                            {filteredData && filteredData.length > 0 && filteredData?.map((item) => {
+                                const id = item[activeContent?.rowIdField!] as unknown as string;
                                 const isExpanded = expandedId === id;
 
                                 if (!isExpanded) {
@@ -89,13 +108,13 @@ export function Content({
                                         <React.Fragment key={id}>
 
                                             <tr className="border-b border-border">
-                                                {contents.find(content => content.id === activeTabId)?.columns.map(col => (
+                                                {activeContent?.columns.map(col => (
                                                     <td key={String(col.key)} className="px-4 py-4 text-sm text-text-main">
                                                         {String(item[col.key])}
                                                     </td>
                                                 ))}
                                                 <td className="px-4 py-4 text-right">
-                                                    {contents.find(content => content.id === activeTabId)?.renderActions!(item, isExpanded, () => toggleRow(id))}
+                                                    {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id))}
                                                 </td>
                                             </tr>
                                         </React.Fragment>
@@ -105,11 +124,11 @@ export function Content({
                                     return (
                                         <React.Fragment key={id}>
 
-                                            {contents.find(content => content.id === activeTabId)?.renderExpansion && (
+                                            {activeContent?.renderExpansion && (
                                                 <tr>
-                                                    <td colSpan={contents.find(content => content.id === activeTabId)!.columns.length + 1}>
+                                                    <td colSpan={activeContent.columns.length + 1}>
                                                         <div className="bg-form-bg border border-border rounded my-2 p-4">
-                                                            {contents.find(content => content.id === activeTabId)?.renderExpansion!(item, () => setExpandedId(null))}
+                                                            {activeContent?.renderExpansion!(item, () => setExpandedId(null))}
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -121,6 +140,11 @@ export function Content({
                             })}
                         </tbody>
                     </table>
+                    {filteredData?.length === 0 && (
+                        <div className="px-4 py-4 text-center text-sm text-text-main">
+                            Nenhum dado encontrado.
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
