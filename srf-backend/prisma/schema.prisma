@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model applicant {
+  id       String  @id @default(uuid())
+  name     String  @map("nome")
+  email    String  @unique
+  password String  @map("senha")
+  message  String? @map("mensagem")
+}
+
+model user {
+  id         String       @id @default(uuid())
+  name       String       @map("nome")
+  email      String       @unique
+  password   String       @map("senha")
+  roleId     String       @default("2") @map("id_funcao")
+  userPic    String?
+  userAccess userAccess[]
+  role       role         @relation(fields: [roleId], references: [id])
+
+  @@map("usuario")
+}
+
+model role {
+  id         String       @id @default(uuid())
+  name       String       @map("nome")
+  roleAccess roleAccess[]
+  user       user[]
+
+  @@map("funcao")
+}
+
+model form {
+  id         String       @id @default(uuid())
+  name       String       @unique @map("nome")
+  categoryId String
+  userAccess userAccess[]
+  roleAccess roleAccess[]
+  category   category     @relation(fields: [categoryId], references: [id])
+
+  @@map("formulario")
+}
+
+model category {
+  id           String  @id @default(uuid())
+  name         String  @unique @map("nome")
+  categoryIcon String?
+  form         form[]
+
+  @@map("categoria")
+}
+
+model userAccess {
+  id          String      @id @default(uuid())
+  userId      String
+  formId      String
+  accessLevel accessLevel @map("nivel_acesso")
+  user        user        @relation(fields: [userId], references: [id])
+  form        form        @relation(fields: [formId], references: [id])
+
+  @@map("autorizacao_usuario")
+}
+
+model roleAccess {
+  id          String      @id @default(uuid())
+  roleId      String
+  formId      String
+  accessLevel accessLevel @map("nivel_acesso")
+  role        role        @relation(fields: [roleId], references: [id])
+  form        form        @relation(fields: [formId], references: [id])
+
+  @@map("autorizacao_funcao")
+}
+
+enum accessLevel {
+  read
+  edit
+}

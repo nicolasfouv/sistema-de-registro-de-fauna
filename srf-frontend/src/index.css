@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+    --color-white: #ffffff;
+    --color-text-main: #333333;
+    --color-text-light-gray: #999999;
+    --color-hover-bg: rgba(224, 224, 244, 0.5);
+    --color-selected-bg: #e0e0e0;
+    --color-border: #ddd;
+    --color-form-bg: #eeeeee;
+    --color-standard-blue: #4e95d9;
+    --color-standard-red: #d32f2f;
+    --color-cover-bg: rgba(224, 224, 244, 0.9);
+    --spacing-sidebar-size: 280px;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
