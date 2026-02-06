@@ -4,8 +4,7 @@
 </p>
 <h2>Objetivo do SRF</h2>
 <p>
-  O sistema visa estruturar e consolidar meios para que pesquisadores armazenem e visualizem dados do monitoramento de animais domésticos e selvagens. 
-  O foco principal é observar a relação entre essas populações e como doenças impactam os animais e a população humana em contato com eles.
+  O sistema visa estruturar e consolidar meios para que pesquisadores armazenem e visualizem dados do monitoramento de animais domésticos e selvagens. Um dos focos é análisar a movimentação de animais cadastrados via gps e observar sua relação com doenças contraídas e organizar dados veterinários feitos em visitas com proficionais da área.
 </p>
 <p>
   Além disso, o sistema gerencia dados de animais envolvidos em atropelamentos e registra informações detalhadas da necrópsia realizada, bem como as amostras coletadas e análises feitas sobro estas amostras.
