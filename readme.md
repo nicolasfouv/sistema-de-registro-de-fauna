@@ -33,13 +33,44 @@
 </p>
 <h3>.env</h3>
 <p>
-  Você vai precisar de um .env para o repositório funcionar localmente. Crie <strong>.env's</strong> tanto na pasta de <strong>frontend</strong> quanto na de <strong>backend</strong> e siga os exemplos:
+  Você vai precisar de um .env para o repositório funcionar localmente. Crie <strong>.env's</strong> tanto na pasta de <strong>front-end</strong> quanto na de <strong>back-end</strong> e siga os exemplos:
 </p>
+<h5>Front-end</h5>
 <pre>
-  <code>
-    asdadasdasda
-  </code>
+VITE_API_URL=http://localhost:3333
 </pre>
+<h5>Back-end</h5>
+<pre>
+DATABASE_URL="mysql://[user]:[senha]@localhost:3306/[banco_de_dados]?schema=public"
+DATABASE_USER="[user]"
+DATABASE_PASSWORD="[senha]"
+DATABASE_NAME="[banco_de_dados]"
+DATABASE_HOST="localhost"
+DATABASE_PORT=3306
+
+PORT=3333
+JWT_SECRET="[string_aleatória]"
+
+MAILTRAP_API_KEY="xxxxx"
+MAILTRAP_USE_SANDBOX='true'
+MAILTRAP_INBOX_ID=xxxxx
+</pre>
+
+<h3>Instalação</h3>
+<h5>Front-end</h5>
+<pre>
+npm i
+npm run dev
+</pre>
+<h5>Back-end</h5>
+<pre>
+npm i
+npm start
+</pre>
+<h5>Banco de Dados</h5>
+<p></p>
+
+
 <footer>
   <hr>
   <p align="center">
