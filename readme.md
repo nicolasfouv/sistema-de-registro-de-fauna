@@ -4,8 +4,7 @@
 </p>
 <h2>Objetivo do SRF</h2>
 <p>
-  O sistema visa estruturar e consolidar meios para que pesquisadores armazenem e visualizem dados do monitoramento de animais domésticos e selvagens. 
-  O foco principal é observar a relação entre essas populações e como doenças impactam os animais e a população humana em contato com eles.
+  O sistema visa estruturar e consolidar meios para que pesquisadores armazenem e visualizem dados do monitoramento de animais domésticos e selvagens. Um dos focos é análisar a movimentação de animais cadastrados via gps e observar sua relação com doenças contraídas e organizar dados veterinários feitos em visitas com proficionais da área.
 </p>
 <p>
   Além disso, o sistema gerencia dados de animais envolvidos em atropelamentos e registra informações detalhadas da necrópsia realizada, bem como as amostras coletadas e análises feitas sobro estas amostras.
@@ -13,6 +12,86 @@
 <p>
   Por fim, outro objetivo é implementar ferramentas de dashboard e análise integrada.
 </p>
+<h2>Desenvolvimento do SRF</h2>
+<p>
+  O SRF é um projeto web fullstack e utiliza as seguintes tecnologias:
+  <ul>
+    <li><a href='https://www.typescriptlang.org/'>Typescript</a></li>
+    <li><a href='https://react.dev/'>React</a></li>
+    <li><a href='https://tailwindcss.com/'>Tailwindcss</a></li>
+    <li><a href='https://axios-http.com/ptbr/'>Axios</a></li>
+    <li><a href='https://zod.dev/'>Zod</a></li>
+    <li><a href='https://www.prisma.io/'>Prisma</a></li>
+    <li><a href='https://expressjs.com/'>Express</a></li>
+    <li><a href='https://www.mysql.com/'>MySQL</a></li>
+  </ul>
+</p>
+
+<h2>Copiando o SRF</h2>
+<p>
+  A estrutura do sistema pode ser utilizada, mas é necessário configurar o ambiente de desenvolimento para que o site funcione corretamente.
+</p>
+<h3>.env</h3>
+<p>
+  Você vai precisar de um .env para o repositório funcionar localmente. Crie <strong>.env's</strong> tanto na pasta de <strong>front-end</strong> quanto na de <strong>back-end</strong> e siga os exemplos:
+</p>
+<h5>Front-end</h5>
+<pre>
+VITE_API_URL=http://localhost:3333
+</pre>
+<h5>Back-end</h5>
+<pre>
+DATABASE_URL="mysql://[user]:[senha]@localhost:3306/[banco_de_dados]?schema=public"
+DATABASE_USER="[user]"
+DATABASE_PASSWORD="[senha]"
+DATABASE_NAME="[banco_de_dados]"
+DATABASE_HOST="localhost"
+DATABASE_PORT=3306
+
+PORT=3333
+JWT_SECRET="[string_aleatória]"
+
+MAILTRAP_API_KEY="xxxxx"
+MAILTRAP_USE_SANDBOX='true'
+MAILTRAP_INBOX_ID=xxxxx
+</pre>
+
+<h3>Instalação</h3>
+<h5>Front-end</h5>
+<pre>
+npm i
+npm run dev
+</pre>
+<h5>Back-end</h5>
+<pre>
+npm i
+npm start
+</pre>
+<h5>Banco de Dados</h5>
+<p>Importe os dados básicos para seu banco de dados local utilizando o arquivo ???.sql. Em seguida, rode na pasta de <strong>back-end</strong>:</p>
+<pre>
+npx prisma db push
+</pre>
+<p>
+  Desta forma, o sistema estará pronto para ser utilizado localmente.
+</p>
+<h3>Utilizando o Sistema</h3>
+<p>
+  Há usuários pre-cadastrados para que você possa experimentar diferentes visões do sistema rapidamente:
+  <ul>
+    <li>
+      Visão como um administrador do sistema:<br/>
+        E-mail: admin@exemple.com<br/>
+        Senha: 123123
+    </li>
+    <li>
+      Visão como um usuário comum do sistema:<br/>
+        E-mail: roleless@exemple.com<br/>
+        Senha: 123123
+    </li>
+  </ul>
+</p>
+
 
 <footer>
   <hr>
