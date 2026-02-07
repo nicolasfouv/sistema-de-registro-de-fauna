@@ -68,7 +68,29 @@ npm i
 npm start
 </pre>
 <h5>Banco de Dados</h5>
-<p></p>
+<p>Importe os dados básicos para seu banco de dados local utilizando o arquivo ???.sql. Em seguida, rode na pasta de <strong>back-end</strong>:</p>
+<pre>
+npx prisma db push
+</pre>
+<p>
+  Desta forma, o sistema estará pronto para ser utilizado localmente.
+</p>
+<h3>Utilizando o Sistema</h3>
+<p>
+  Há usuários pre-cadastrados para que você possa experimentar diferentes visões do sistema rapidamente:
+  <ul>
+    <li>
+      Visão como um administrador do sistema:<br/>
+        E-mail: admin@exemple.com<br/>
+        Senha: 123123
+    </li>
+    <li>
+      Visão como um usuário comum do sistema:<br/>
+        E-mail: roleless@exemple.com<br/>
+        Senha: 123123
+    </li>
+  </ul>
+</p>
 
 
 <footer>
