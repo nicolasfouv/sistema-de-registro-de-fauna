@@ -85,7 +85,6 @@ export function Content({
             <h1 className="text-standard-red font-bold text-xl mb-3 uppercase">{title}</h1>
 
             <div className="max-2-6xl mx-auto bg-white rounded shadow-sm border border-border">
-
                 {/* Tabs */}
                 <div className="px-6 pt-4 border-b border-border mb-6">
                     <div className="flex gap-2">

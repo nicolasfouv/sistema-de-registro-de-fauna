@@ -1,3 +1,4 @@
+import type { User } from "../pages/permissions";
 import { api } from "./api";
 
 export async function login(email: string, password: string) {
@@ -12,5 +13,10 @@ export async function register(name: string, email: string, password: string, me
 
 export async function forgotPassword(email: string) {
     const response = await api.post('/forgot-password', { email });
+    return response.data;
+}
+
+export async function getUsers(): Promise<User[]> {
+    const response = await api.get('/user/get-all');
     return response.data;
 }
