@@ -3,7 +3,6 @@ import { getForms } from "../services/formService";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import userImg from "../assets/loginUser.svg"
-import configsImg from "../assets/configs.svg"
 import permissionsImg from "../assets/permissions.svg"
 
 interface FormProps {
@@ -20,7 +19,6 @@ export function Sidebar() {
     const { user } = useAuth();
 
     const [forms, setForms] = useState<CategoryProps[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [selected, setSelected] = useState('');
     const [width, setWidth] = useState(() => {
         const savedWidth = localStorage.getItem('sidebarWidth');
@@ -67,7 +65,7 @@ export function Sidebar() {
     return (
         <aside className="w-sidebar-size h-screen absolute z-99 bg-white border-r border-border flex flex-col">
             {/* User info */}
-            <Link to="/minha-conta">
+            <Link to="/minha-conta" onClick={() => setSelected('minha-conta')}>
                 <div className="py-5 px-3.5 flex items-center gap-3.75 border-b border-border">
                     {user?.userPic ? (
                         <img src={user?.userPic} alt="User picture" className="w-8 h-8 rounded-sm flex justify-center items-center" />
