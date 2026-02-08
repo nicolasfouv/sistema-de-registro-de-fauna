@@ -63,7 +63,7 @@ export function Sidebar() {
     }, [isResizing]);
 
     return (
-        <aside className="w-sidebar-size h-screen absolute z-99 bg-white border-r border-border flex flex-col">
+        <aside className="w-sidebar-size h-screen fixed top-0 left-0 z-99 bg-white border-r border-border flex flex-col">
             {/* User info */}
             <Link to="/minha-conta" onClick={() => setSelected('minha-conta')}>
                 <div className="py-5 px-3.5 flex items-center gap-3.75 border-b border-border">
