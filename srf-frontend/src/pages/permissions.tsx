@@ -46,7 +46,7 @@ export function Permissions() {
         ],
         data: users,
         rowIdField: 'id',
-        renderActions: (item, isExpanded, toggle) => (
+        renderActions: (_, isExpanded, toggle) => (
             <div className="flex justify-end gap-2">
                 <button title='Permissões' className="bg-standard-blue">📄</button>
                 <button title='Editar' className="bg-standard-blue">✏️</button>
@@ -112,15 +112,26 @@ export function Permissions() {
             </button>
         ),
         renderExpansion: (item: Applicant, close) => (
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-text-main uppercase">Informações da Solicitação</h3>
-                <div className="flex gap-2 text-xs font-bold uppercasse">
-                    <button className="text-green-600 uppercase cursor-pointer">Aceitar</button>
-                    <button className="text-red-600 uppercase cursor-pointer">Recusar</button>
-                    <button onClick={close} className="text-standard-blue uppercase cursor-pointer">Recolher</button>
+            <>
+                <div className="sticky top-0 z-10 bg-form-bg py-2">
+                    <div className="flex justify-between items-center mb-4 border-b border-border">
+                        <h3 className="font-bold text-text-main uppercase">Informações da Solicitação</h3>
+                        <div className="flex gap-2 text-xs font-bold uppercasse">
+                            <button className="text-green-600 uppercase cursor-pointer">Aceitar</button>
+                            <button className="text-red-600 uppercase cursor-pointer">Recusar</button>
+                            <button onClick={close} className="text-standard-blue uppercase cursor-pointer">Recolher</button>
+                        </div>
+                    </div>
+                    <p className="mb-2"><strong>ID:</strong> {item.id}</p>
+                    <p className="mb-2"><strong>Data:</strong> {item.date}</p>
+                    <p className="mb-2"><strong>Nome:</strong> {item.name}</p>
+                    <p className="mb-2"><strong>E-mail:</strong> {item.email}</p>
+                    <hr className="border-border" />
                 </div>
-                {/* Detalhes ao expandir a linha */}
-            </div>
+                <div className="text-sm text-text-main">
+                    <p className="mb-2"><strong>Mensagem:</strong> {item.message}</p>
+                </div>
+            </>
         )
     };
 
