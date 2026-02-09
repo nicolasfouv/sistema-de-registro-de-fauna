@@ -53,12 +53,13 @@ model group {
 }
 
 model form {
-  id         String        @id @default(uuid())
-  name       String        @unique @map("nome")
-  categoryId String
-  group      groupAccess[]
-  userAccess userAccess[]
-  category   category      @relation(fields: [categoryId], references: [id])
+  id              String           @id @default(uuid())
+  name            String           @unique @map("nome")
+  categoryId      String           @map("id_categoria")
+  group           groupAccess[]
+  userAccess      userAccess[]
+  category        category         @relation(fields: [categoryId], references: [id])
+  auditLogDatails auditLogDetail[]
 
   @@map("formulario")
 }
@@ -66,7 +67,7 @@ model form {
 model category {
   id           String  @id @default(uuid())
   name         String  @unique @map("nome")
-  categoryIcon String?
+  categoryIcon String? @map("icone_categoria")
   form         form[]
 
   @@map("categoria")
@@ -74,8 +75,8 @@ model category {
 
 model userAccess {
   id          String      @id @default(uuid())
-  userId      String
-  formId      String
+  userId      String      @map("id_usuario")
+  formId      String      @map("id_formulario")
   accessLevel accessLevel @map("nivel_acesso")
   user        user        @relation(fields: [userId], references: [id])
   form        form        @relation(fields: [formId], references: [id])
@@ -85,8 +86,8 @@ model userAccess {
 
 model groupAccess {
   id          String      @id @default(uuid())
-  groupId     String
-  formId      String
+  groupId     String      @map("id_grupo")
+  formId      String      @map("id_formulario")
   accessLevel accessLevel @map("nivel_acesso")
   group       group       @relation(fields: [groupId], references: [id])
   form        form        @relation(fields: [formId], references: [id])
@@ -98,4 +99,21 @@ enum accessLevel {
   read
   edit
   edit_unrestricted
+}
+
+model auditLog {
+  id      String           @id @default(uuid())
+  userId  String           @map("id_usuario")
+  date    DateTime         @default(now())
+  details auditLogDetail[]
+}
+
+model auditLogDetail {
+  id         String @id @default(uuid())
+  action     String @map("acao")
+  auditLogId String @map("id_log")
+  formId     String @map("id_formulario")
+
+  auditLog auditLog @relation(fields: [auditLogId], references: [id])
+  form     form     @relation(fields: [formId], references: [id])
 }
