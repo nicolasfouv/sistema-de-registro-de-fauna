@@ -19,6 +19,8 @@ model applicant {
   email    String  @unique
   password String  @map("senha")
   message  String? @map("mensagem")
+
+  @@map("solicitante")
 }
 
 model user {
@@ -35,21 +37,28 @@ model user {
 }
 
 model role {
-  id         String       @id @default(uuid())
-  name       String       @map("nome")
-  roleAccess roleAccess[]
-  user       user[]
+  id   String @id @default(uuid())
+  name String @map("nome")
+  user user[]
 
   @@map("funcao")
 }
 
+model group {
+  id          String        @id @default(uuid())
+  name        String        @unique @map("nome")
+  groupAccess groupAccess[]
+
+  @@map("grupo")
+}
+
 model form {
-  id         String       @id @default(uuid())
-  name       String       @unique @map("nome")
+  id         String        @id @default(uuid())
+  name       String        @unique @map("nome")
   categoryId String
+  group      groupAccess[]
   userAccess userAccess[]
-  roleAccess roleAccess[]
-  category   category     @relation(fields: [categoryId], references: [id])
+  category   category      @relation(fields: [categoryId], references: [id])
 
   @@map("formulario")
 }
@@ -74,15 +83,15 @@ model userAccess {
   @@map("autorizacao_usuario")
 }
 
-model roleAccess {
+model groupAccess {
   id          String      @id @default(uuid())
-  roleId      String
+  groupId     String
   formId      String
   accessLevel accessLevel @map("nivel_acesso")
-  role        role        @relation(fields: [roleId], references: [id])
+  group       group       @relation(fields: [groupId], references: [id])
   form        form        @relation(fields: [formId], references: [id])
 
-  @@map("autorizacao_funcao")
+  @@map("autorizacao_grupo")
 }
 
 enum accessLevel {
