@@ -35,6 +35,7 @@ export function authFormMiddleware(formName: string, requiredLevel?: accessLevel
                 const levelOrder: Record<accessLevel, number> = {
                     [accessLevel.read]: 0,
                     [accessLevel.edit]: 1,
+                    [accessLevel.edit_unrestricted]: 2,
                 }
                 const userAccess = await prisma.userAccess.findFirst({
                     where: { userId: user_id, formId: form.id }

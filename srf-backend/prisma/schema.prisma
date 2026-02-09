@@ -97,4 +97,5 @@ model groupAccess {
 enum accessLevel {
   read
   edit
+  edit_unrestricted
 }
