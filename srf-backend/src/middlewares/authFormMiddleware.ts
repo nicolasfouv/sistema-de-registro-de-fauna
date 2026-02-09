@@ -8,7 +8,7 @@ interface Payload {
     sub: string,
 }
 
-export function authFormMiddleware(formName: string, requiredLevel?: accessLevel) {
+export function authFormMiddleware(auditLogId: string, requiredLevel?: accessLevel) {
 
     return async (req: Request, res: Response, next: NextFunction) => {
         const authHeader = req.headers.authorization;
@@ -24,10 +24,10 @@ export function authFormMiddleware(formName: string, requiredLevel?: accessLevel
                 where: { id: user_id }, select: { role: { select: { name: true } } }
             })
 
-            const form = await prisma.form.findUnique({
-                where: { name: formName }
+            const auditLog = await prisma.auditLog.findUnique({
+                where: { id: auditLogId }
             })
-            if (!form) return res.status(404).json({ message: 'Formulário não encontrado' });
+            if (!auditLog) return res.status(404).json({ message: 'Formulário não encontrado' });
 
             if (user?.role?.name === 'admin' || user?.role?.name === 'owner') return next();
 
@@ -38,11 +38,12 @@ export function authFormMiddleware(formName: string, requiredLevel?: accessLevel
                     [accessLevel.edit_unrestricted]: 2,
                 }
                 const userAccess = await prisma.userAccess.findFirst({
-                    where: { userId: user_id, formId: form.id }
+                    where: { userId: user_id, formId: auditLog.formId }
                 })
                 if (!userAccess) return res.status(403).json({ message: 'Acesso negado' });
                 const userLevel = levelOrder[userAccess.accessLevel];
-                const needsLevel = levelOrder[requiredLevel];
+                let needsLevel = levelOrder[requiredLevel]
+                if (requiredLevel === 'edit' && auditLog.userId !== user_id) needsLevel = levelOrder[accessLevel.edit_unrestricted];
                 if (userLevel < needsLevel) return res.status(403).json({ message: 'Acesso negado' });
             }
             return next();

@@ -53,13 +53,13 @@ model group {
 }
 
 model form {
-  id              String           @id @default(uuid())
-  name            String           @unique @map("nome")
-  categoryId      String           @map("id_categoria")
-  group           groupAccess[]
-  userAccess      userAccess[]
-  category        category         @relation(fields: [categoryId], references: [id])
-  auditLogDatails auditLogDetail[]
+  id         String        @id @default(uuid())
+  name       String        @unique @map("nome")
+  categoryId String        @map("id_categoria")
+  group      groupAccess[]
+  userAccess userAccess[]
+  category   category      @relation(fields: [categoryId], references: [id])
+  auditLog   auditLog[]
 
   @@map("formulario")
 }
@@ -102,18 +102,10 @@ enum accessLevel {
 }
 
 model auditLog {
-  id      String           @id @default(uuid())
-  userId  String           @map("id_usuario")
-  date    DateTime         @default(now())
-  details auditLogDetail[]
-}
-
-model auditLogDetail {
-  id         String @id @default(uuid())
-  action     String @map("acao")
-  auditLogId String @map("id_log")
-  formId     String @map("id_formulario")
-
-  auditLog auditLog @relation(fields: [auditLogId], references: [id])
-  form     form     @relation(fields: [formId], references: [id])
+  id     String   @id @default(uuid())
+  userId String   @map("id_usuario")
+  date   DateTime @default(now())
+  action String   @map("acao")
+  formId String
+  form   form     @relation(fields: [formId], references: [id])
 }
