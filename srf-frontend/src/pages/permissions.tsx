@@ -22,7 +22,7 @@ export interface Applicant {
 }
 
 export function Permissions() {
-    const [activeTab, setActiveTab] = useState('usuarios');
+    const [activeFormId, setActiveFormId] = useState('usuarios');
     const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
@@ -140,8 +140,8 @@ export function Permissions() {
         return (
             <Content
                 title="Permissões"
-                activeTabId={activeTab}
-                onTabChange={setActiveTab}
+                activeFormId={activeFormId}
+                formChange={setActiveFormId}
                 contents={[
                     UsersPermissionsContent,
                     ApplicantPermissionsContent,

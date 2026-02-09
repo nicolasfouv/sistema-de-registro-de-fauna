@@ -21,18 +21,18 @@ export interface ContentProps<T> {
 
 export interface PageProps {
     title: string,
-    activeTabId: string,
-    onTabChange: (tabId: string) => void,
+    activeFormId: string,
+    formChange: (formId: string) => void,
     contents: ContentProps<any>[],
 }
 
 export function Content({
     title,
-    activeTabId,
-    onTabChange,
+    activeFormId,
+    formChange,
     contents,
 }: PageProps) {
-    const activeContent = contents.find(content => content.id === activeTabId);
+    const activeContent = contents.find(content => content.id === activeFormId);
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [filteredData, setFilteredData] = useState(activeContent?.data);
     const [sortConfig, setSortConfig] = useState<{ key: string | null, direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
@@ -91,8 +91,8 @@ export function Content({
                         {contents.map((content) => (
                             <button
                                 key={content.id}
-                                onClick={() => onTabChange(content.id)}
-                                className={`pb-3 px-6 text-sm font-bold transition-all relative ${activeTabId === content.id ? 'text-standard-red border-b-2 border-standard-red' : 'text-text-main hover:text-standard-red'}`}
+                                onClick={() => formChange(content.id)}
+                                className={`pb-3 px-6 text-sm font-bold transition-all relative ${activeFormId === content.id ? 'text-standard-red border-b-2 border-standard-red' : 'text-text-main hover:text-standard-red'}`}
                             >
                                 {content.label}
                             </button>
