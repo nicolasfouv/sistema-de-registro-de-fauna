@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-export async function getForms() {
-    const request = await api.get('/form/get-all');
+export async function getOptions() {
+    const request = await api.get('/options');
     return request.data;
 }

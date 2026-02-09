@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react"
-import { getForms } from "../services/formService";
+import { getOptions } from "../services/formService";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import userImg from "../assets/loginUser.svg"
 import permissionsImg from "../assets/permissions.svg"
 
-interface FormProps {
+interface SubCategoryProps {
     name: string,
 }
 
 interface CategoryProps {
     name: string,
     categoryIcon?: string,
-    form: FormProps[] | null,
+    subCategory: SubCategoryProps[] | null,
 }
 
 export function Sidebar() {
     const { user } = useAuth();
 
-    const [forms, setForms] = useState<CategoryProps[]>([]);
+    const [options, setOptions] = useState<CategoryProps[]>([]);
     const [selected, setSelected] = useState('');
     const [width, setWidth] = useState(() => {
         const savedWidth = localStorage.getItem('sidebarWidth');
@@ -27,7 +27,7 @@ export function Sidebar() {
     const [isResizing, setIsResizing] = useState(false);
 
     useEffect(() => {
-        getForms().then(categories => setForms(categories));
+        getOptions().then(options => setOptions(options));
     }, []);
 
     useEffect(() => {
@@ -79,18 +79,18 @@ export function Sidebar() {
             <nav className="grow overflow-y-auto pt-2.5 pr-3.5">
                 <p className="py-2.5 px-3.5 text-3 font-bold text-text-light-gray tracking-[1px]">MENU</p>
                 <ul>
-                    {forms.map((category) => (
-                        <li key={category.name}>
+                    {options.map((option) => (
+                        <li key={option.name}>
                             <div className="flex items-center py-3 px-3.5 gap-3 font-medium text-text-main">
-                                <img src={category.categoryIcon} alt="Image for Category" className="w-6 h-6" />
-                                <span className="overflow-hidden whitespace-nowrap text-ellipsis">{category.name}</span>
+                                <img src={option.categoryIcon} alt="Image for Category" className="w-6 h-6" />
+                                <span className="overflow-hidden whitespace-nowrap text-ellipsis">{option.name}</span>
                             </div>
-                            {category.form && category.form.length > 0 && (
+                            {option.subCategory && option.subCategory.length > 0 && (
                                 <ul className="flex flex-col text-text-main text-[16px]">
-                                    {category.form.map((form) => (
-                                        <li key={form.name}>
-                                            <Link to={`/form/${form.name}`} onClick={() => setSelected(form.name)} className={`block py-1 pl-16 w-full cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis ${selected === form.name ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
-                                                {form.name}
+                                    {option.subCategory.map((subCategory) => (
+                                        <li key={subCategory.name}>
+                                            <Link to={`/form/${subCategory.name}`} onClick={() => setSelected(subCategory.name)} className={`block py-1 pl-16 w-full cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis ${selected === subCategory.name ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
+                                                {subCategory.name}
                                             </Link>
                                         </li>
                                     ))}

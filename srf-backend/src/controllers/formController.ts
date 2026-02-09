@@ -3,10 +3,10 @@ import { FormService } from "../services/formService";
 
 class FormController {
 
-    async getForms(req: Request, res: Response) {
+    async getOptions(req: Request, res: Response) {
         const formService = new FormService();
-        const forms = await formService.getForms();
-        return res.status(201).json(forms);
+        const options = await formService.getOptions();
+        return res.status(201).json(options);
     }
 
 }

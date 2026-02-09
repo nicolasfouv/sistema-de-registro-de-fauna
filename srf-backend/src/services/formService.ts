@@ -2,20 +2,20 @@ import { prisma } from "..";
 
 
 class FormService {
-    
-    async getForms() {
-        const forms = await prisma.category.findMany({
+
+    async getOptions() {
+        const options = await prisma.category.findMany({
             select: {
                 name: true,
                 categoryIcon: true,
-                form: {
+                subCategory: {
                     select: {
                         name: true,
                     }
                 }
             }
         });
-        return forms;
+        return options;
     }
 }
 

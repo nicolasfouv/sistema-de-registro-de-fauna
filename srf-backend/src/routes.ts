@@ -21,6 +21,6 @@ router.delete('/user/delete', authMiddleware('admin'), new UserController().dele
 router.put('/user/update', authMiddleware('admin'), new UserController().updateUser);
 
 // Forms routes
-router.get('/form/get-all', authMiddleware(), new FormController().getForms);
+router.get('/options', authMiddleware(), new FormController().getOptions);
 
 export { router };

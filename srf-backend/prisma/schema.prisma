@@ -52,25 +52,35 @@ model group {
   @@map("grupo")
 }
 
-model form {
-  id         String        @id @default(uuid())
-  name       String        @unique @map("nome")
-  categoryId String        @map("id_categoria")
-  group      groupAccess[]
-  userAccess userAccess[]
-  category   category      @relation(fields: [categoryId], references: [id])
-  auditLog   auditLog[]
-
-  @@map("formulario")
-}
-
 model category {
-  id           String  @id @default(uuid())
-  name         String  @unique @map("nome")
-  categoryIcon String? @map("icone_categoria")
-  form         form[]
+  id           String        @id @default(uuid())
+  name         String        @unique @map("nome")
+  categoryIcon String?       @map("icone_categoria")
+  subCategory  subCategory[]
 
   @@map("categoria")
+}
+
+model subCategory {
+  id         String   @id @default(uuid())
+  name       String   @unique @map("nome")
+  categoryId String   @map("id_categoria")
+  category   category @relation(fields: [categoryId], references: [id])
+  form       form[]
+
+  @@map("sub_categoria")
+}
+
+model form {
+  id            String        @id @default(uuid())
+  name          String        @unique @map("nome")
+  subCategoryId String        @map("id_sub_categoria")
+  group         groupAccess[]
+  userAccess    userAccess[]
+  subCategory   subCategory   @relation(fields: [subCategoryId], references: [id])
+  auditLog      auditLog[]
+
+  @@map("formulario")
 }
 
 model userAccess {
