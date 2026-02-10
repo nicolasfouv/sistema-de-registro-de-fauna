@@ -32,6 +32,7 @@ model user {
   userPic    String?
   userAccess userAccess[]
   role       role         @relation(fields: [roleId], references: [id])
+  auditLogs  auditLog[]
 
   @@map("usuario")
 }
@@ -73,7 +74,7 @@ model subCategory {
 
 model form {
   id            String        @id @default(uuid())
-  name          String        @unique @map("nome")
+  name          String        @map("nome")
   subCategoryId String        @map("id_sub_categoria")
   group         groupAccess[]
   userAccess    userAccess[]
@@ -115,7 +116,27 @@ model auditLog {
   id     String   @id @default(uuid())
   userId String   @map("id_usuario")
   date   DateTime @default(now())
-  action String   @map("acao")
-  formId String
-  form   form     @relation(fields: [formId], references: [id])
+  action String   @map("acao") // "SUBMIT", "REVERT"
+  formId String   @map("id_formulario")
+
+  user user @relation(fields: [userId], references: [id])
+  form form @relation(fields: [formId], references: [id])
+
+  changes changeLog[]
+
+  @@map("auditlog")
+}
+
+model changeLog {
+  id         String @id @default(uuid())
+  auditLogId String @map("id_auditlog")
+  table      String @map("tabela")
+  recordId   String @map("id_registro")
+  action     String @map("tipo_acao") // "CREATE", "UPDATE", "DELETE"
+  oldData    Json?  @map("dados_antigos")
+  newData    Json?  @map("dados_novos")
+
+  auditLog auditLog @relation(fields: [auditLogId], references: [id], onDelete: Cascade)
+
+  @@map("changelog")
 }

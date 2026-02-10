@@ -3,6 +3,7 @@ import { UserController } from "./controllers/userController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { ApplicantController } from "./controllers/applicantController";
 import { FormController } from "./controllers/formController";
+import { AuditController } from "./controllers/auditController";
 
 const router = Router();
 
@@ -22,5 +23,9 @@ router.put('/user/update', authMiddleware('admin'), new UserController().updateU
 
 // Forms routes
 router.get('/options', authMiddleware(), new FormController().getOptions);
+
+// Audit routes (Verification)
+router.post('/audit/log', authMiddleware('admin'), new AuditController().createLog);
+router.post('/audit/revert', authMiddleware('admin'), new AuditController().revertLog);
 
 export { router };
