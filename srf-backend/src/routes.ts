@@ -10,7 +10,7 @@ const router = Router();
 router.get('/applicant/get-all', authMiddleware('admin'), new ApplicantController().getApplicants);
 router.post('/applicant/create', new ApplicantController().createApplicant);
 router.post('/applicant/accept', authMiddleware('admin'), new ApplicantController().acceptApplicant);
-router.delete('/applicant/refuse', authMiddleware('admin'), new ApplicantController().refuseApplicant);
+router.delete('/applicant/reject', authMiddleware('admin'), new ApplicantController().rejectApplicant);
 
 // User routes
 router.get('/user/get-all', authMiddleware('admin'), new UserController().getUsers);
