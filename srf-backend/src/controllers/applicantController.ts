@@ -16,7 +16,7 @@ class ApplicantController {
                     message: error.flatten().fieldErrors,
                 });
             }
-            if (error.message === 'Email já cadastrado') return res.status(409).json({ message: error.message });
+            if (error.message === 'Email já utilizado') return res.status(409).json({ message: error.message });
             return res.status(500).json({ message: 'Erro interno' });
         }
     }

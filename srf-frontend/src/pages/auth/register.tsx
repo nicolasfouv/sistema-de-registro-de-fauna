@@ -70,7 +70,7 @@ export function Register() {
                                 <img src={registerEmailImg} alt="Email register image" className="absolute left-2 w-8 h-8" />
                                 <input type="email" id="email" placeholder="Email" className="w-full h-14 pl-11 border border-border rounded-xl text-2xl pb-1" value={registerData.email} onChange={handleInputChange} />
                             </div>
-                            {errorStatus === 400 && <p className="-mt-0.5 -mb-3 ml-2 text-red-500">{errorEmail}</p>}
+                            {(errorStatus === 400 && <p className="-mt-0.5 -mb-3 ml-2 text-red-500">{errorEmail}</p>) || (errorStatus === 409 && <p className="-mt-0.5 -mb-3 ml-2 text-red-500">E-mail já utilizado</p>)}
 
                             <div className="flex items-center mt-5 relative w-full">
                                 <img src={registerPasswordImg} alt="Password register image" className="absolute left-2 w-8 h-8" />
