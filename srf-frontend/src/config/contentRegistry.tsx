@@ -1,0 +1,62 @@
+import { type ContentProps } from "../components/content";
+
+export interface PageConfig {
+    title: string;
+    contents: ContentConfig[];
+}
+
+export interface ContentConfig {
+    id: string; // formId
+    label: string;
+    loader?: () => Promise<any>;
+    component: ContentProps<any>;
+}
+
+// Registry storage
+const registry: Record<string, Record<string, PageConfig>> = {};
+
+export function registerContent(
+    categoryId: string,
+    subCategoryId: string,
+    pageTitle: string,
+    content: ContentConfig
+) {
+    if (!registry[categoryId]) {
+        registry[categoryId] = {};
+    }
+    if (!registry[categoryId][subCategoryId]) {
+        registry[categoryId][subCategoryId] = {
+            title: pageTitle,
+            contents: []
+        };
+    }
+
+    const existingIndex = registry[categoryId][subCategoryId].contents.findIndex(c => c.id === content.id);
+    if (existingIndex >= 0) {
+        registry[categoryId][subCategoryId].contents[existingIndex] = content;
+    } else {
+        registry[categoryId][subCategoryId].contents.push(content);
+    }
+}
+
+export function getPageConfig(categoryId: string, subCategoryId: string): PageConfig | null {
+    return registry[categoryId]?.[subCategoryId] || null;
+}
+
+import { fetchUsersData, UsersPermissionsContent } from "../contents/admin/users";
+import { ApplicantPermissionsContent } from "../contents/admin/applicants";
+
+export function initRegistry() {
+    registerContent('admin', 'permissoes', 'Permissões', {
+        id: 'usuarios',
+        label: 'Usuários',
+        loader: fetchUsersData,
+        component: UsersPermissionsContent
+    });
+
+    registerContent('admin', 'permissoes', 'Permissões', {
+        id: 'solicitacoes',
+        label: 'Solicitações',
+        component: ApplicantPermissionsContent
+    });
+}

@@ -103,8 +103,8 @@ export function Sidebar() {
 
             {/* Permissions (only for admin and owner) */}
             <div className="border-t border-border mt-auto">
-                {user?.role === 'admin' || user?.role === 'owner' && (
-                    <Link to="/permissions"
+                {(user?.role === 'admin' || user?.role === 'owner') && (
+                    <Link to="/admin/permissoes/usuarios"
                         onClick={() => setSelected('permissions')}
                         className={`flex items-center py-3.75 px-3.5 gap-3 text-text-main text-[16px] font-bold cursor-pointer ${selected === 'permissions' ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
                         <img src={permissionsImg} alt="Image for Permissions Settings" />

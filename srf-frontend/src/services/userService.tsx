@@ -1,4 +1,4 @@
-import type { User } from "../pages/permissions";
+import type { User } from "../contents/admin/users";
 import { api } from "./api";
 
 export async function login(email: string, password: string) {

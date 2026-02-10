@@ -4,7 +4,7 @@ import { Login } from "./pages/auth/login";
 import { Register } from "./pages/auth/register";
 import { Layout } from "./components/layout";
 import { User } from "./pages/user";
-import { Permissions } from "./pages/permissions";
+import { DynamicContent } from "./pages/dynamic-content";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
         element: <User />,
       },
       {
-        path: '/permissions',
-        element: <Permissions />,
+        path: '/:categoryId/:subCategoryId/:formId?',
+        element: <DynamicContent />,
       }
     ]
   },
