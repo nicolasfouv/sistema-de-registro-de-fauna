@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `srf` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `srf` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `srf`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f3ce19b-f3da-11f0-8ce9-0250f71b524a:1-1207';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f3ce19b-f3da-11f0-8ce9-0250f71b524a:1-2158';
 
 --
 -- Table structure for table `_prisma_migrations`
@@ -51,7 +51,7 @@ CREATE TABLE `_prisma_migrations` (
 
 LOCK TABLES `_prisma_migrations` WRITE;
 /*!40000 ALTER TABLE `_prisma_migrations` DISABLE KEYS */;
-INSERT INTO `_prisma_migrations` VALUES ('1f1741b5-1f3a-470c-aebb-7ec9ce2f9d5b','ede21ebf5ad6de9a86b4965a630fa46d6e358c308b0201ffaf3c78b39174e61a','2026-02-09 19:50:46.646','20260209195031_sub_category',NULL,NULL,'2026-02-09 19:50:32.038',1),('29512ed6-e142-45d5-b780-728ad50a0d52','a4f4c15ca74d926473c69706a973add35e2247aa2b05595d76f05587d538b137','2026-02-09 18:15:48.485','20260209181545_audit_log',NULL,NULL,'2026-02-09 18:15:45.711',1),('3acd47e7-2d6b-4895-ad22-6b084a1e1013','6eb2e0604ad4883e5da68dae7411fe707f38223534e0d15b58483fd1a7cffbdc','2026-02-02 20:51:49.695','20260202205149_email_verified',NULL,NULL,'2026-02-02 20:51:49.183',1),('66d0ed44-82bc-450d-b61c-7e14469b4bdf','73570be22366e92c5a03f2acb669f9b6b0379b228bd6933f55450adbad64e82d','2026-01-22 18:01:01.384','20260122180055_auth_system',NULL,NULL,'2026-01-22 18:00:55.891',1),('6e45c15f-9370-4b30-96ad-a3a8e61e8337','4cc88de0ab8e6c35b618511d2c603ec22a491bfc602b0ce1e94c6f3211472406','2026-01-29 15:21:00.344','20260129152057_category',NULL,NULL,'2026-01-29 15:20:57.458',1),('9476e11c-d222-4abb-ac01-b1856a46930a','70c64f40248cfcca0c92a2a6dcbc9de8018b2fa2e27ac4467fcbca4bb65181b0','2026-01-22 19:26:15.223','20260122192613_role_user_link',NULL,NULL,'2026-01-22 19:26:13.819',1),('98d8a64a-c9bc-497a-b3de-cedb1611e4d9','e4156c3ce35c051698233f8cb9947ffd314564e6b2d92b6b30d6914d0c95896d','2026-02-02 22:10:03.231','20260202221002_undo_email_verified',NULL,NULL,'2026-02-02 22:10:02.677',1),('a3330be1-5885-42ff-b6f2-15c7d6d664ab','a97985d3f36dcb553fbc24ee78e051ebb7e7f129d92da5ce18e7ebae1cd4a4aa','2026-01-25 12:34:21.062','20260125123420_applicant',NULL,NULL,'2026-01-25 12:34:20.305',1),('c0957f06-aba4-43b8-b9e3-793665462696','d96c39bb99e06675d2bffcc02c4f7be89b5f7119e6238ad952ec98e0330e94b9','2026-01-29 15:48:51.459','20260129154850_icons_and_picturies',NULL,NULL,'2026-01-29 15:48:50.185',1),('cd10f2f6-df21-48ea-9af1-3ceac5898215','8531ca082498f0f6a23f5af74af1a02615b175cc58251444c01920e6ed527438','2026-01-24 16:56:43.920','20260124165641_roleless',NULL,NULL,'2026-01-24 16:56:41.510',1),('dec2c263-8958-4e28-8574-771eaed3cd00','8a2df992e8a2762c76ecf500832f3d4876f4e4a9c7e5b47d3bbc75aa98bc2b22','2026-02-09 17:11:45.417','20260209171141_fix_mapping_names',NULL,NULL,'2026-02-09 17:11:41.611',1),('f0feccb7-761d-4a97-aa78-d5bcc30d3e4f','d962626550d9bbb9238ad3219b486771ca2e8a3caa60cc7abf3c0d87c5c10d72','2026-02-09 17:42:55.634','20260209174255_new_acess_level',NULL,NULL,'2026-02-09 17:42:55.354',1),('fe3b1e06-04c6-4b17-a5e1-198ec4680570','e1d403024b0f6d53b33aad29a960d17d5ec6e9c65a28ac2f97d34bf60b59ed37','2026-02-09 17:09:31.334','20260209170928_role_and_group_separation',NULL,NULL,'2026-02-09 17:09:28.372',1);
+INSERT INTO `_prisma_migrations` VALUES ('10b67c60-7c52-4f81-b75f-b7de44d2091a','e1d403024b0f6d53b33aad29a960d17d5ec6e9c65a28ac2f97d34bf60b59ed37','2026-02-10 15:57:54.097','20260209170928_role_and_group_separation',NULL,NULL,'2026-02-10 15:57:49.929',1),('135d6d07-8a9d-47e4-a78e-9e7f115957ab','e4156c3ce35c051698233f8cb9947ffd314564e6b2d92b6b30d6914d0c95896d','2026-02-10 15:57:49.846','20260202221002_undo_email_verified',NULL,NULL,'2026-02-10 15:57:48.807',1),('24360c53-5212-4de9-a27c-1bc385f6f179','a4f4c15ca74d926473c69706a973add35e2247aa2b05595d76f05587d538b137','2026-02-10 15:58:01.413','20260209181545_audit_log',NULL,NULL,'2026-02-10 15:57:58.214',1),('26fd93d5-9aad-400c-ac4a-2df1bb619a74','a97985d3f36dcb553fbc24ee78e051ebb7e7f129d92da5ce18e7ebae1cd4a4aa','2026-02-10 15:57:41.992','20260125123420_applicant',NULL,NULL,'2026-02-10 15:57:41.298',1),('31c7965b-fe4b-455c-8be6-4cbb7816a9a2','4cc88de0ab8e6c35b618511d2c603ec22a491bfc602b0ce1e94c6f3211472406','2026-02-10 15:57:45.110','20260129152057_category',NULL,NULL,'2026-02-10 15:57:42.063',1),('41363ef9-3388-4b7d-ae88-1a93d44e2e97','d96c39bb99e06675d2bffcc02c4f7be89b5f7119e6238ad952ec98e0330e94b9','2026-02-10 15:57:47.305','20260129154850_icons_and_picturies',NULL,NULL,'2026-02-10 15:57:45.221',1),('4479be5d-7faa-4a2f-99b4-12464c7a5e93','70c64f40248cfcca0c92a2a6dcbc9de8018b2fa2e27ac4467fcbca4bb65181b0','2026-02-10 15:57:37.963','20260122192613_role_user_link',NULL,NULL,'2026-02-10 15:57:36.622',1),('55cd2e13-a05a-4891-b3f2-1e063f859b83','8531ca082498f0f6a23f5af74af1a02615b175cc58251444c01920e6ed527438','2026-02-10 15:57:41.223','20260124165641_roleless',NULL,NULL,'2026-02-10 15:57:38.046',1),('613cfd8d-426a-4f2c-8346-ec01ea52eb13','766a5ea179bb15c6413fbeeaf5f6e390795ce4018aee49067c88e614dcb06d65','2026-02-10 18:01:43.471','20260210180142_datetime_to_applicants',NULL,NULL,'2026-02-10 18:01:42.821',1),('6bccc282-f383-475b-b3a9-d200effa1b11','73570be22366e92c5a03f2acb669f9b6b0379b228bd6933f55450adbad64e82d','2026-02-10 15:57:36.552','20260122180055_auth_system',NULL,NULL,'2026-02-10 15:57:27.950',1),('7c952663-7e7b-4a59-9d9d-a2122522db61','56d4d9cd5fb56f914d0101e89f6865e2d92977525650daa1a16785af14bc8a2a','2026-02-10 15:58:24.688','20260210155650_change_changelog_id_to_int',NULL,NULL,'2026-02-10 15:58:23.496',1),('84f64939-1083-4288-9c04-b70fcd51eb7d','f67465f79aa3f6aeaba95eed000baddb71dcd01f850d232c892d5b3f241817a4','2026-02-10 15:58:23.397','20260209235446_form_name_non_unique',NULL,NULL,'2026-02-10 15:58:23.010',1),('999cb079-5496-413a-b731-e83cd870fc5b','8a2df992e8a2762c76ecf500832f3d4876f4e4a9c7e5b47d3bbc75aa98bc2b22','2026-02-10 15:57:57.517','20260209171141_fix_mapping_names',NULL,NULL,'2026-02-10 15:57:54.181',1),('bb649624-4d3f-4cdf-98c1-1436bd36ee96','4270cdd1111649dbd739cac783b677a6e36eceedfefb4acdc7f6e240f5a9c861','2026-02-10 15:58:22.938','20260209223115_audit_log_v2',NULL,NULL,'2026-02-10 15:58:17.129',1),('c54a5270-130c-4646-877b-86326aa62d2e','844e0e9b2d3a8ab95b612cc7e7fddf8a3026a7a49b51d375fc7b1adeb44f68f5','2026-02-10 18:06:31.076','20260210180630_map_to_date',NULL,NULL,'2026-02-10 18:06:30.723',1),('d34ef417-1354-42ec-93d4-b5ed11e1fd5c','ede21ebf5ad6de9a86b4965a630fa46d6e358c308b0201ffaf3c78b39174e61a','2026-02-10 15:58:17.062','20260209195031_sub_category',NULL,NULL,'2026-02-10 15:58:01.472',1),('d661b356-2c2e-487c-a40c-6539ca01b5d1','d962626550d9bbb9238ad3219b486771ca2e8a3caa60cc7abf3c0d87c5c10d72','2026-02-10 15:57:58.121','20260209174255_new_acess_level',NULL,NULL,'2026-02-10 15:57:57.686',1),('f8a35632-0c60-4ac1-b11f-4144bf2b1d12','6eb2e0604ad4883e5da68dae7411fe707f38223534e0d15b58483fd1a7cffbdc','2026-02-10 15:57:48.729','20260202205149_email_verified',NULL,NULL,'2026-02-10 15:57:47.389',1);
 /*!40000 ALTER TABLE `_prisma_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,11 +66,13 @@ CREATE TABLE `auditlog` (
   `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `acao` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `formId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_usuario` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_formulario` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `auditLog_formId_fkey` (`formId`),
-  CONSTRAINT `auditLog_formId_fkey` FOREIGN KEY (`formId`) REFERENCES `formulario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  KEY `auditlog_id_usuario_fkey` (`id_usuario`),
+  KEY `auditlog_id_formulario_fkey` (`id_formulario`),
+  CONSTRAINT `auditlog_id_formulario_fkey` FOREIGN KEY (`id_formulario`) REFERENCES `formulario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `auditlog_id_usuario_fkey` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -168,6 +170,36 @@ INSERT INTO `categoria` VALUES ('1','Animais Vivos','https://www.svgrepo.com/sho
 UNLOCK TABLES;
 
 --
+-- Table structure for table `changelog`
+--
+
+DROP TABLE IF EXISTS `changelog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `changelog` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_auditlog` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tabela` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_registro` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_acao` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dados_antigos` json DEFAULT NULL,
+  `dados_novos` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `changelog_id_auditlog_fkey` (`id_auditlog`),
+  CONSTRAINT `changelog_id_auditlog_fkey` FOREIGN KEY (`id_auditlog`) REFERENCES `auditlog` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `changelog`
+--
+
+LOCK TABLES `changelog` WRITE;
+/*!40000 ALTER TABLE `changelog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `changelog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `formulario`
 --
 
@@ -179,7 +211,6 @@ CREATE TABLE `formulario` (
   `nome` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_sub_categoria` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `formulario_nome_key` (`nome`),
   KEY `formulario_id_sub_categoria_fkey` (`id_sub_categoria`),
   CONSTRAINT `formulario_id_sub_categoria_fkey` FOREIGN KEY (`id_sub_categoria`) REFERENCES `sub_categoria` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -239,7 +270,6 @@ CREATE TABLE `grupo` (
 
 LOCK TABLES `grupo` WRITE;
 /*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
-INSERT INTO `grupo` VALUES ('1','Entrevistador'),('3','Legista'),('6','Pesquisador de Ectoparasitos'),('4','Pesquisador de Fezes'),('7','Pesquisador de Helmintos'),('5','Pesquisador Sorologico'),('2','Veterinario');
 /*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,6 +286,7 @@ CREATE TABLE `solicitante` (
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `senha` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mensagem` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   PRIMARY KEY (`id`),
   UNIQUE KEY `solicitante_email_key` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -267,6 +298,7 @@ CREATE TABLE `solicitante` (
 
 LOCK TABLES `solicitante` WRITE;
 /*!40000 ALTER TABLE `solicitante` DISABLE KEYS */;
+INSERT INTO `solicitante` VALUES ('5f496ccc-31a3-43f1-8491-9d9b39abeb18','Solicitante Example 2','sol2@example.com','123123','Lorem ipsum dolor sit amet consectetur adipisicing elit.','2026-02-10 15:06:30.784'),('63ffee38-2b35-4d3b-b9e8-824686246811','Solicitante Example 1','sol1@example.com','123123',NULL,'2026-02-10 15:10:12.784');
 /*!40000 ALTER TABLE `solicitante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,7 +357,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('93454386-2550-48fb-ad00-d7b608972f24','Admin Exemple','admin@exemple.com','$2b$10$NGVRI5l6ue3zT566woN1D.SZ4wy5OmCLln/rZuuCgBW.dhWHl96B6','0',NULL),('b24b1b15-4fe4-42a1-a2d8-2723bafe910c','Teste Teste','teste@gmail.com','$2b$10$ZpOQeZckkbL4ihAbOm1WbORqQDYLCCbqesrugeYH/8okTwqH88ccG','2',NULL),('d2d7f6d3-34c0-4feb-8125-332da18949d1','Nicolas Ouverney Fagundes','nicolas@gmail.com','$2b$10$DWwwM5ZoYFh8YrrJ.bFZIu7ZieES/u6q8f1S9hWG8wKdt4k5ApWn6','0','https://i.pinimg.com/736x/0c/bf/89/0cbf89438d9280747d31cc71e2b7f7c8.jpg'),('e292d23c-f395-400b-a63e-f7ae29ec7f73','Roleless Exemple','roleless@exemple.com','$2b$10$1b1kh2.XqmVtSux9m1pdfulV6qBykkt/xIvfy0VA1xzaYggJuJaue','2',NULL);
+INSERT INTO `usuario` VALUES ('84ca85ea-1347-4b64-9525-b59a12aaee56','Admin Example','admin@example.com','$2b$10$w1bn/sJozXeoX5JBOhc70ucRTk.Qb.6HTcw0ppTONOWqBRBHDG9sW','1',NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -339,4 +371,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-09 17:17:02
+-- Dump completed on 2026-02-10 16:14:31
