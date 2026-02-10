@@ -160,7 +160,7 @@ export function Content({
                                             {activeContent?.renderExpansion && (
                                                 <tr>
                                                     <td colSpan={activeContent.columns.length + 1}>
-                                                        <div className="bg-form-bg border border-border rounded my-2 p-4">
+                                                        <div className="bg-form-bg border border-border rounded my-2 px-4 py-2">
                                                             {activeContent?.renderExpansion!(item, () => setExpandedId(null))}
                                                         </div>
                                                     </td>
