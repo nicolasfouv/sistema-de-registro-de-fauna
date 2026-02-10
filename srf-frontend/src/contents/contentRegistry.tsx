@@ -43,8 +43,8 @@ export function getPageConfig(categoryId: string, subCategoryId: string): PageCo
     return registry[categoryId]?.[subCategoryId] || null;
 }
 
-import { fetchUsersData, UsersPermissionsContent } from "../contents/admin/users";
-import { ApplicantPermissionsContent, fetchApplicantsData } from "../contents/admin/applicants";
+import { fetchUsersData, UsersPermissionsContent } from "./admin/users";
+import { ApplicantPermissionsContent, fetchApplicantsData } from "./admin/applicants";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {

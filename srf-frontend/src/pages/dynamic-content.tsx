@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Content } from "../components/content";
-import { getPageConfig, initRegistry } from "../config/contentRegistry";
+import { getPageConfig, initRegistry } from "../contents/contentRegistry";
 
 initRegistry();
 
