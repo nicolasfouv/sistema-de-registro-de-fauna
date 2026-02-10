@@ -1,5 +1,5 @@
 import { type ContentProps } from "../../components/content";
-import { getApplicants } from "../../services/applicantService";
+import { acceptApplicant, getApplicants, rejectApplicant } from "../../services/applicantService";
 
 export interface Applicant {
     id: string,
@@ -44,8 +44,8 @@ export const ApplicantContentDefinition = {
                 <div className="flex justify-between items-center mb-4 border-b border-border">
                     <h3 className="font-bold text-text-main uppercase">Informações da Solicitação</h3>
                     <div className="flex gap-2 text-xs font-bold uppercasse">
-                        <button className="text-green-600 uppercase cursor-pointer">Aceitar</button>
-                        <button className="text-red-600 uppercase cursor-pointer">Recusar</button>
+                        <button onClick={() => acceptApplicant(item.id).then(() => window.location.reload())} className="text-green-600 uppercase cursor-pointer">Aceitar</button>
+                        <button onClick={() => rejectApplicant(item.id).then(() => window.location.reload())} className="text-red-600 uppercase cursor-pointer">Recusar</button>
                         <button onClick={close} className="text-standard-blue uppercase cursor-pointer">Recolher</button>
                     </div>
                 </div>
