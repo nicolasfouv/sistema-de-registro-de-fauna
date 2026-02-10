@@ -1,4 +1,5 @@
 import { type ContentProps } from "../../components/content";
+import { getApplicants } from "../../services/applicantService";
 
 export interface Applicant {
     id: string,
@@ -8,7 +9,7 @@ export interface Applicant {
     message: string,
 }
 
-export const ApplicantPermissionsContent: ContentProps<Applicant> = {
+export const ApplicantContentDefinition: ContentProps<Applicant> = {
     id: 'solicitacoes',
     label: 'Solicitações',
     columns: [
@@ -76,3 +77,12 @@ export const ApplicantPermissionsContent: ContentProps<Applicant> = {
         </>
     )
 };
+
+export const fetchApplicantsData = async () => {
+    return getApplicants();
+};
+
+export const ApplicantPermissionsContent: ContentProps<Applicant> = {
+    ...ApplicantContentDefinition,
+    data: [],
+} as unknown as ContentProps<Applicant>;

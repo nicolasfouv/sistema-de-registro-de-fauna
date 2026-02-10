@@ -44,7 +44,7 @@ export function getPageConfig(categoryId: string, subCategoryId: string): PageCo
 }
 
 import { fetchUsersData, UsersPermissionsContent } from "../contents/admin/users";
-import { ApplicantPermissionsContent } from "../contents/admin/applicants";
+import { ApplicantPermissionsContent, fetchApplicantsData } from "../contents/admin/applicants";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -57,6 +57,7 @@ export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
         id: 'solicitacoes',
         label: 'Solicitações',
+        loader: fetchApplicantsData,
         component: ApplicantPermissionsContent
     });
 }
