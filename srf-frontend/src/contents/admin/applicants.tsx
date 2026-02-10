@@ -9,7 +9,7 @@ export interface Applicant {
     message: string,
 }
 
-export const ApplicantContentDefinition: ContentProps<Applicant> = {
+export const ApplicantContentDefinition = {
     id: 'solicitacoes',
     label: 'Solicitações',
     columns: [
@@ -29,24 +29,8 @@ export const ApplicantContentDefinition: ContentProps<Applicant> = {
             width: 'w-1/5'
         }
     ],
-    data: [ // API REST
-        {
-            id: '1',
-            name: 'Solicitante 1',
-            email: 'solicitante1@exemplo.com',
-            date: '2022-01-01',
-            message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        },
-        {
-            id: '2',
-            name: 'Solicitante 2',
-            email: 'solicitante2@exemplo.com',
-            date: '2022-01-02',
-            message: 'Não há justificativa da solicitação.'
-        }
-    ],
     rowIdField: 'id',
-    renderActions: (item: Applicant, isExpanded, toggle) => (
+    renderActions: (item: Applicant, isExpanded: boolean, toggle: (id: string) => void) => (
         <button
             onClick={() => toggle(item.id)}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
@@ -54,7 +38,7 @@ export const ApplicantContentDefinition: ContentProps<Applicant> = {
             {isExpanded ? 'Recolher' : 'Expandir'}
         </button>
     ),
-    renderExpansion: (item: Applicant, close) => (
+    renderExpansion: (item: Applicant, close: () => void) => (
         <>
             <div className="sticky top-0 z-10 bg-form-bg py-2">
                 <div className="flex justify-between items-center mb-4 border-b border-border">
@@ -72,7 +56,7 @@ export const ApplicantContentDefinition: ContentProps<Applicant> = {
                 <hr className="border-border" />
             </div>
             <div className="text-sm text-text-main">
-                <p className="mb-2"><strong>Mensagem:</strong> {item.message}</p>
+                <p className="mb-2"><strong>Mensagem:</strong> {item.message || <span className="text-gray-500">Não há justificativa da requisição</span>}</p>
             </div>
         </>
     )

@@ -14,11 +14,12 @@ datasource db {
 }
 
 model applicant {
-  id       String  @id @default(uuid())
-  name     String  @map("nome")
-  email    String  @unique
-  password String  @map("senha")
-  message  String? @map("mensagem")
+  id       String   @id @default(uuid())
+  name     String   @map("nome")
+  email    String   @unique
+  password String   @map("senha")
+  date     DateTime @default(now()) @map("data")
+  message  String?  @map("mensagem")
 
   @@map("solicitante")
 }
