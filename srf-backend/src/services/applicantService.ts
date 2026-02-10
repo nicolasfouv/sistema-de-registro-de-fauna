@@ -70,7 +70,7 @@ class ApplicantService {
         return user;
     }
 
-    async refuseApplicant(id: string) {
+    async rejectApplicant(id: string) {
         // Verificações
         if (!id) throw new Error('Identificador (ID) é obrigatório');
 
