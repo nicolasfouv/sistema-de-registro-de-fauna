@@ -39,7 +39,11 @@ class AuditService {
             // 1. Fetch the AuditLog with all ChangeLogs
             const auditLog = await tx.auditLog.findUnique({
                 where: { id: auditLogId },
-                include: { changes: true }
+                include: {
+                    changes: {
+                        orderBy: { id: 'asc' }
+                    }
+                }
             });
 
             if (!auditLog) {

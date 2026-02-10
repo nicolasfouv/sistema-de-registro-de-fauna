@@ -128,7 +128,7 @@ model auditLog {
 }
 
 model changeLog {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   auditLogId String @map("id_auditlog")
   table      String @map("tabela")
   recordId   String @map("id_registro")
