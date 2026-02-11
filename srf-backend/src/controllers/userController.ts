@@ -38,13 +38,13 @@ class UserController {
         }
     }
 
-    async updateUser(req: Request, res: Response) {
+    async updateUserDetails(req: Request, res: Response) {
         try {
-            const { userId, name, email, role, userAccess } = req.body;
+            const { userId, name, email, role } = req.body;
             const requesterId = req.userId;
             const userService = new UserService();
-            const updatedUser = await userService.updateUser(
-                { userId, name, email, role, userAccess },
+            const updatedUser = await userService.updateUserDetails(
+                { userId, name, email, role },
                 requesterId as string
             );
 
@@ -55,11 +55,66 @@ class UserController {
                     message: error.flatten().fieldErrors,
                 });
             }
-            if (error.message === 'Nenhum dado válido foi fornecido') return res.status(400).json({ message: error.message });
             if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
             if (error.message === 'Outros usuários não podem alterar um usuário dono') return res.status(403).json({ message: error.message });
             if (error.message === 'Função não existe') return res.status(400).json({ message: error.message });
-            if (error.message === 'Função dono não pode ser atribuída ou removida') return res.status(403).json({ message: error.message });
+            if (error.message === 'Função dono não pode ser removida' || error.message === 'Função dono não pode ser atribuída') return res.status(403).json({ message: error.message });
+            if (error.message === 'Email já cadastrado') return res.status(409).json({ message: error.message });
+            return res.status(500).json({ error: "Erro interno" });
+        }
+    }
+
+    async updateUserPic(req: Request, res: Response) {
+        try {
+            const { userId, userPic } = req.body;
+            const requesterId = req.userId;
+            const userService = new UserService();
+            const updatedUser = await userService.updateUserPic(
+                { userId, userPic },
+                requesterId as string
+            );
+            return res.status(200).json(updatedUser);
+        } catch (error: any) {
+            if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
+            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
+            if (error.message === 'Outros usuários não podem alterar um usuário dono') return res.status(403).json({ message: error.message });
+            return res.status(500).json({ error: "Erro interno" });
+        }
+    }
+
+    async updateUserAccess(req: Request, res: Response) {
+        try {
+            const { userId, userAccess } = req.body;
+            const requesterId = req.userId;
+            const userService = new UserService();
+            const result = await userService.updateUserAccess(
+                { userId, userAccess },
+                requesterId as string
+            );
+            return res.status(200).json(result);
+        } catch (error: any) {
+            if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
+            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
+            if (error.message === 'Outros usuários não podem alterar um usuário dono') return res.status(403).json({ message: error.message });
+            // Add other specific error handling as needed
+            return res.status(500).json({ error: "Erro interno" });
+        }
+    }
+
+    async updateUserPassword(req: Request, res: Response) {
+        try {
+            const { userId, password } = req.body;
+            const requesterId = req.userId;
+            const userService = new UserService();
+            const result = await userService.updateUserPassword(
+                { userId, password },
+                requesterId as string
+            );
+            return res.status(200).json(result);
+        } catch (error: any) {
+            if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
+            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
+            if (error.message === 'Outros usuários não podem alterar um usuário dono') return res.status(403).json({ message: error.message });
             return res.status(500).json({ error: "Erro interno" });
         }
     }

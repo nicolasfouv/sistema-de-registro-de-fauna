@@ -18,7 +18,10 @@ router.post('/user/create', authMiddleware('admin'), new UserController().create
 router.post('/login', new UserController().login);
 router.post('/forgot-password', new UserController().forgotPassword);
 router.delete('/user/delete', authMiddleware('admin'), new UserController().deleteUser);
-router.put('/user/update', authMiddleware('admin'), new UserController().updateUser);
+router.put('/user/update/details', authMiddleware('admin'), new UserController().updateUserDetails);
+router.put('/user/update/pic', authMiddleware('admin'), new UserController().updateUserPic);
+router.put('/user/update/access', authMiddleware('admin'), new UserController().updateUserAccess);
+router.put('/user/update/password', authMiddleware('admin'), new UserController().updateUserPassword);
 
 // Forms routes
 router.get('/options', authMiddleware(), new FormController().getOptions);

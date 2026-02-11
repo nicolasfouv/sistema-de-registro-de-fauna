@@ -25,3 +25,23 @@ export async function deleteUser(id: string) {
     const response = await api.delete(`/user/delete?user_id=${id}`);
     return response.data;
 }
+
+export async function updateUserDetails(userId: string, name: string, email: string, role: string) {
+    const response = await api.put('/user/update/details', { userId, name, email, role });
+    return response.data;
+}
+
+export async function updateUserPic(userId: string, userPic: string) {
+    const response = await api.put('/user/update/pic', { userId, userPic });
+    return response.data;
+}
+
+export async function updateUserAccess(userId: string, userAccess: any[]) {
+    const response = await api.put('/user/update/access', { userId, userAccess });
+    return response.data;
+}
+
+export async function updateUserPassword(userId: string, password: string) {
+    const response = await api.put('/user/update/password', { userId, password });
+    return response.data;
+}
