@@ -52,7 +52,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             </button>
 
             {showDeleteModal && (
-                <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-50">
+                <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
                     <div className="relative flex flex-col bg-white w-[640px] h-[240px] justify-center items-center rounded-2xl shadow-xl p-10">
 
                         <button

@@ -58,7 +58,7 @@ export function Login() {
 
   return (
     <section className="flex flex-col w-full min-h-screen items-center justify-center">
-      <div className={`${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-cover-bg z-99 `}>
+      <div className={`${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>
         <div className="relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
 
           <button onClick={() => setForgot(false)} className="absolute cursor-pointer bg-standard-blue size-10 rounded-xl top-2 right-2 text-white text-xl font-bold">✕</button>
