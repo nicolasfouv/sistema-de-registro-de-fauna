@@ -20,3 +20,8 @@ export async function getUsers(): Promise<User[]> {
     const response = await api.get('/user/get-all');
     return response.data;
 }
+
+export async function deleteUser(id: string) {
+    const response = await api.delete(`/user/delete?user_id=${id}`);
+    return response.data;
+}
