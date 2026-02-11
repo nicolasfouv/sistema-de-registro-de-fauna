@@ -20,7 +20,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<{ name?: string, email?: string, role?: string } | null>(null);
 
     const [editName, setEditName] = useState(item.name);
     const [editEmail, setEditEmail] = useState(item.email);
@@ -38,7 +38,11 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             setShowEditModal(false);
         } catch (error: any) {
             console.error(error);
-            setError(error.response?.data?.message || 'Erro ao atualizar usuário');
+            if (error.status === 409) {
+                setError({ email: 'Email já cadastrado' });
+            } else {
+                setError({ email: error.response?.data?.message || 'Erro ao atualizar usuário' });
+            }
         } finally {
             setLoading(false);
         }
@@ -83,7 +87,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
 
             {showEditModal && (
                 <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-                    <div className="relative flex flex-col bg-white w-160 h-160 justify-center items-center rounded-2xl shadow-xl p-10">
+                    <div className="relative flex flex-col bg-white w-160 h-140 justify-center items-center rounded-2xl shadow-xl p-10">
                         <button
                             onClick={() => setShowEditModal(false)}
                             className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
@@ -98,40 +102,41 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
 
                             <div className="w-full flex flex-col gap-4">
                                 <div className="flex flex-col">
-                                    <label htmlFor="name" className="text-sm font-bold mb-1">Nome</label>
+                                    <label htmlFor="name" className="text-sm text-left font-bold mb-1">Nome</label>
                                     <input
                                         type="text"
                                         id="name"
                                         value={editName}
-                                        onChange={(e) => setEditName(e.target.value)}
+                                        onChange={(e) => { setEditName(e.target.value); setError(null); }}
                                         className="border border-border rounded p-2"
                                     />
+                                    {error?.name && <p className="text-red-500 text-left text-sm">{error.name}</p>}
                                 </div>
                                 <div className="flex flex-col">
-                                    <label htmlFor="email" className="text-sm font-bold mb-1">Email</label>
+                                    <label htmlFor="email" className="text-sm text-left font-bold mb-1">Email</label>
                                     <input
                                         type="email"
                                         id="email"
                                         value={editEmail}
-                                        onChange={(e) => setEditEmail(e.target.value)}
+                                        onChange={(e) => { setEditEmail(e.target.value); setError(null); }}
                                         className="border border-border rounded p-2"
                                     />
+                                    {error?.email && <p className="text-red-500 text-left text-sm">{error.email}</p>}
                                 </div>
                                 <div className="flex flex-col">
-                                    <label htmlFor="role" className="text-sm font-bold mb-1">Função</label>
+                                    <label htmlFor="role" className="text-sm text-left font-bold mb-1">Função</label>
                                     <select
                                         id="role"
                                         value={editRole}
-                                        onChange={(e) => setEditRole(e.target.value)}
+                                        onChange={(e) => { setEditRole(e.target.value); setError(null); }}
                                         className="border border-border rounded p-2 bg-white"
                                     >
                                         <option value="user">Usuário</option>
                                         <option value="admin">Administrador</option>
                                     </select>
+                                    {error?.role && <p className="text-red-500 text-left text-sm">{error.role}</p>}
                                 </div>
                             </div>
-
-                            {error && <p className="text-red-500 font-bold self-center">{typeof error === 'object' ? JSON.stringify(error) : error}</p>}
 
                             <button
                                 type="submit"

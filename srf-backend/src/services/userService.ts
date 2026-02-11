@@ -78,6 +78,13 @@ class UserService {
         if (!targetUser) throw new Error('Usuário não encontrado');
         if (targetUser.role?.name === 'owner' && userId !== requesterId) throw new Error('Outros usuários não podem alterar um usuário dono');
 
+        if (targetUser.email !== email.toLowerCase()) {
+            const userAlreadyExists = await prisma.user.findUnique({
+                where: { email: email.toLowerCase() }
+            });
+            if (userAlreadyExists) throw new Error('Email já cadastrado');
+        }
+
         const dataToChange: any = { name, email };
 
         if (targetUser.role?.name === 'owner' && role !== 'owner') throw new Error('Função dono não pode ser removida');
