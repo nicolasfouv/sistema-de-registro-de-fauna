@@ -12,6 +12,21 @@ export function DynamicContent() {
     const [config, setConfig] = useState(getPageConfig(categoryId!, subCategoryId!));
     const [contents, setContents] = useState<any[]>([]);
 
+    const loadData = async () => {
+        if (!config) return;
+        const loadedContents = await Promise.all(config.contents.map(async (contentConf) => {
+            const contentProps = { ...contentConf.component };
+
+            if (contentConf.loader) {
+                const data = await contentConf.loader();
+                contentProps.data = data;
+            }
+
+            return contentProps;
+        }));
+        setContents(loadedContents);
+    };
+
     useEffect(() => {
         const pageConfig = getPageConfig(categoryId!, subCategoryId!);
         if (!pageConfig) {
@@ -21,24 +36,13 @@ export function DynamicContent() {
         }
 
         setConfig(pageConfig);
-
-        const loadData = async () => {
-            const loadedContents = await Promise.all(pageConfig.contents.map(async (contentConf) => {
-                const contentProps = { ...contentConf.component };
-
-                if (contentConf.loader) {
-                    const data = await contentConf.loader();
-                    contentProps.data = data;
-                }
-
-                return contentProps;
-            }));
-            setContents(loadedContents);
-        };
-
-        loadData();
-
     }, [categoryId, subCategoryId]);
+
+    useEffect(() => {
+        if (config) {
+            loadData();
+        }
+    }, [config]);
 
     if (!config || contents.length === 0) {
         return <div className="p-8 text-text-main">Carregando...</div>;
@@ -59,6 +63,7 @@ export function DynamicContent() {
             activeFormId={formId!}
             formChange={handleFormChange}
             contents={contents}
+            onRefresh={loadData}
         />
     );
 }

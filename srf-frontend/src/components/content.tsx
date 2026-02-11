@@ -14,8 +14,8 @@ export interface ContentProps<T> {
     columns: ColumnProps<T>[],
     data: T[],
     rowIdField: keyof T,
-    renderActions: (item: T, isExpanded: boolean, toggleRow: (id: string) => void) => ReactNode,
-    renderExpansion?: (item: T, close: () => void) => ReactNode,
+    renderActions: (item: T, isExpanded: boolean, toggleRow: (id: string) => void, refresh: () => void) => ReactNode,
+    renderExpansion?: (item: T, close: () => void, refresh: () => void) => ReactNode,
     toolBar?: ReactNode,
 }
 
@@ -24,6 +24,7 @@ export interface PageProps {
     activeFormId: string,
     formChange: (formId: string) => void,
     contents: ContentProps<any>[],
+    onRefresh?: () => void,
 }
 
 export function Content({
@@ -31,6 +32,7 @@ export function Content({
     activeFormId,
     formChange,
     contents,
+    onRefresh
 }: PageProps) {
     const activeContent = contents.find(content => content.id === activeFormId);
     const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -42,6 +44,20 @@ export function Content({
         setExpandedId(null);
         setSortConfig({ key: null, direction: 'asc' });
     }, [activeContent])
+
+    const sortedData = useMemo(() => {
+        if (!filteredData) return [];
+        if (!sortConfig.key) return filteredData;
+
+        return [...filteredData].sort((a, b) => {
+            const aValue = String(a[sortConfig.key!]).toLowerCase();
+            const bValue = String(b[sortConfig.key!]).toLowerCase();
+
+            if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }, [filteredData, sortConfig]);
 
     function toggleRow(id: string) {
         setExpandedId(prev => (prev === id ? null : id));
@@ -63,20 +79,6 @@ export function Content({
             return { key, direction: 'asc' };
         });
     }
-
-    const sortedData = useMemo(() => {
-        if (!filteredData) return [];
-        if (!sortConfig.key) return filteredData;
-
-        return [...filteredData].sort((a, b) => {
-            const aValue = String(a[sortConfig.key!]).toLowerCase();
-            const bValue = String(b[sortConfig.key!]).toLowerCase();
-
-            if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-            if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-            return 0;
-        });
-    }, [filteredData, sortConfig]);
 
     return (
         <section className="ml-sidebar-size p-8 min-h-screen min-w-[600px] text-text-main">
@@ -147,7 +149,7 @@ export function Content({
                                                     </td>
                                                 ))}
                                                 <td className="px-4 py-4 text-right">
-                                                    {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id))}
+                                                    {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id), onRefresh || (() => { }))}
                                                 </td>
                                             </tr>
                                         </React.Fragment>
@@ -161,7 +163,7 @@ export function Content({
                                                 <tr>
                                                     <td colSpan={activeContent.columns.length + 1}>
                                                         <div className="bg-form-bg border border-border rounded my-2 px-4 py-2">
-                                                            {activeContent?.renderExpansion!(item, () => setExpandedId(null))}
+                                                            {activeContent?.renderExpansion!(item, () => setExpandedId(null), onRefresh || (() => { }))}
                                                         </div>
                                                     </td>
                                                 </tr>

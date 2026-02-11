@@ -30,7 +30,7 @@ export const ApplicantContentDefinition = {
         }
     ],
     rowIdField: 'id',
-    renderActions: (item: Applicant, isExpanded: boolean, toggle: (id: string) => void) => (
+    renderActions: (item: Applicant, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
             onClick={() => toggle(item.id)}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
@@ -38,14 +38,14 @@ export const ApplicantContentDefinition = {
             {isExpanded ? 'Recolher' : 'Expandir'}
         </button>
     ),
-    renderExpansion: (item: Applicant, close: () => void) => (
+    renderExpansion: (item: Applicant, close: () => void, refresh: () => void) => (
         <>
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                     <h3 className="font-bold text-text-main uppercase">Informações da Solicitação</h3>
                     <div className="flex gap-2 text-xs font-bold uppercase">
-                        <button onClick={() => acceptApplicant(item.id).then(() => window.location.reload())} className="text-green-600 uppercase cursor-pointer">Aceitar</button>
-                        <button onClick={() => rejectApplicant(item.id).then(() => window.location.reload())} className="text-red-600 uppercase cursor-pointer">Recusar</button>
+                        <button onClick={async () => { await acceptApplicant(item.id); refresh(); }} className="text-green-600 uppercase cursor-pointer">Aceitar</button>
+                        <button onClick={async () => { await rejectApplicant(item.id); refresh(); }} className="text-red-600 uppercase cursor-pointer">Recusar</button>
                         <button onClick={close} className="text-standard-blue uppercase cursor-pointer">Recolher</button>
                     </div>
                 </div>

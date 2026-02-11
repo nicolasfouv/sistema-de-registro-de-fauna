@@ -25,7 +25,7 @@ export const UsersContentDefinition = {
         }
     ],
     rowIdField: 'id' as keyof User,
-    renderActions: (_item: User, _isExpanded: boolean, _toggle: (id: string) => void) => (
+    renderActions: (item: User, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <div className="flex justify-end gap-2">
             <button title='Permissões' className="bg-standard-blue">📄</button>
             <button title='Editar' className="bg-standard-blue">✏️</button>
