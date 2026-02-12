@@ -11,6 +11,11 @@ export async function register(name: string, email: string, password: string, me
     return response.data;
 }
 
+export async function createUser(name: string, email: string, password: string) {
+    const response = await api.post('/user/create', { name, email, password });
+    return response.data;
+}
+
 export async function forgotPassword(email: string) {
     const response = await api.post('/forgot-password', { email });
     return response.data;

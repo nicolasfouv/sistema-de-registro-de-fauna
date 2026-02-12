@@ -5,7 +5,6 @@ export const createUserRequest = z.object({
     name: z.string().nonempty({ error: 'Nome inválido' }),
     email: z.email({ error: 'Email inválido' }),
     password: z.string().nonempty({ error: 'Senha inválida' }),
-    role: z.string().optional(),
 });
 
 const userAccessProps = z.object({

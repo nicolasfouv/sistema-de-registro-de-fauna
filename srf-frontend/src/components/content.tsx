@@ -17,7 +17,7 @@ export interface ContentProps<T> {
     rowIdField: keyof T,
     renderActions: (item: T, isExpanded: boolean, toggleRow: (id: string) => void, refresh: () => void) => ReactNode,
     renderExpansion?: (item: T, close: () => void, refresh: () => void) => ReactNode,
-    toolBar?: ReactNode,
+    toolBar?: (refresh: () => void) => ReactNode,
 }
 
 export interface PageProps {
@@ -104,7 +104,7 @@ export function Content({
                 </div>
 
                 {/* ToolBar */}
-                {activeContent?.toolBar && activeContent?.toolBar}
+                {activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
 
                 <FilterBar
                     key={activeContent?.id}

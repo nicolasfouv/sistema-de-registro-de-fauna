@@ -8,7 +8,7 @@ class UserService {
 
     async createUser(data: any) {
         // Verificações
-        const { name, email, password, role } = createUserRequest.parse(data);
+        const { name, email, password } = createUserRequest.parse(data);
 
         const userAlreadyExists = await prisma.user.findUnique({
             where: { email: email.toLowerCase() }
@@ -17,22 +17,12 @@ class UserService {
 
         // Criação do usuário
         const passwordHash = await hash(password, 10);
-        let roleIdFound: string | undefined;
-        if (role) {
-            const roleData = await prisma.role.findFirst({
-                where: { name: role },
-                select: { id: true }
-            });
-            if (!roleData) throw new Error('Função informada não existe');
 
-            roleIdFound = roleData.id;
-        }
         const user = await prisma.user.create({
             data: {
                 name: name,
                 email: email.toLowerCase(),
                 password: passwordHash,
-                roleId: roleIdFound!,
             },
             select: {
                 id: true,

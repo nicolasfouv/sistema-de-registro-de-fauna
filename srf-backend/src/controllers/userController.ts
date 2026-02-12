@@ -6,9 +6,9 @@ class UserController {
 
     async createUser(req: Request, res: Response) {
         try {
-            const data = req.body;
+            const { name, email, password } = req.body;
             const userService = new UserService()
-            const user = await userService.createUser(data);
+            const user = await userService.createUser({ name, email, password });
             return res.status(201).json(user);
         } catch (error: any) {
             if (error instanceof ZodError) {

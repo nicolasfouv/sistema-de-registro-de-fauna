@@ -1,5 +1,5 @@
 import { type ContentProps } from "../../components/content";
-import { deleteUser, getUsers, updateUserDetails } from "../../services/userService";
+import { createUser, deleteUser, getUsers, updateUserDetails } from "../../services/userService";
 import deleteButtonDisabledImg from '../../assets/deleteButtonDisabled.svg';
 import deleteButtonImg from '../../assets/deleteButton.svg';
 import editButtonImg from '../../assets/editButton.svg';
@@ -14,6 +14,46 @@ export interface User {
     email: string,
     userPic: string,
     role: { name: string },
+}
+
+function UserToolBar({ refresh }: { refresh: () => void }) {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState<{ name?: string, email?: string, password?: string } | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+        try {
+            await createUser(name, email, password);
+            refresh();
+            setName('');
+            setEmail('');
+            setPassword('');
+        } catch (error: any) {
+            setError(error.response?.data?.message as { name?: string, email?: string, password?: string });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="gap-4 bg-form-bg p-4 rounded-md mx-6 mb-6">
+            <h3 className="font-bold text-text-main uppercase text-xs mb-2">Adicionar usuário</h3>
+            <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4">
+                <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" value={name} onChange={(e) => setName(e.target.value)} />
+                <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type='text' placeholder='Senha' className="bg-white border border-border p-2 rounded" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded" disabled={loading}> {loading ? 'AGUARDE...' : 'ADICIONAR'}</button>
+            </form>
+            {error && (
+                <div className="text-red-500 text-sm mt-2">{error.name || error.email || error.password}</div>
+            )}
+        </div>
+    )
 }
 
 function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
@@ -207,19 +247,11 @@ export const UsersContentDefinition = {
         ) : null
     ),
     rowIdField: 'id' as keyof User,
-    renderActions: (item: User, _isExpanded: boolean, _toggle: (id: string) => void, refresh: () => void) => (
+    renderActions: (item: User, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <UserActions item={item} refresh={refresh} />
     ),
-    toolBar: (
-        <div className="gap-4 bg-form-bg p-4 rounded-md mx-6 mb-6">
-            <h3 className="font-bold text-text-main uppercase text-xs mb-2">Adicionar usuário</h3>
-            <form className="grid grid-cols-4 gap-4">
-                <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" />
-                <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" />
-                <input type='text' placeholder='Senha' className="bg-white border border-border p-2 rounded" />
-                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded">Adicionar</button>
-            </form>
-        </div>
+    toolBar: (refresh: () => void) => (
+        <UserToolBar refresh={refresh} />
     )
 };
 
