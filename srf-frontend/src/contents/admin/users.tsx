@@ -133,7 +133,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
                                         onChange={(e) => { setEditRole(e.target.value); setError(null); }}
                                         className="border border-border rounded p-2 bg-white"
                                     >
-                                        <option value="user">Usuário</option>
+                                        <option value="common">Usuário Comum</option>
                                         <option value="admin">Administrador</option>
                                     </select>
                                     {error?.role && <p className="text-red-500 text-left text-sm">{error.role}</p>}
