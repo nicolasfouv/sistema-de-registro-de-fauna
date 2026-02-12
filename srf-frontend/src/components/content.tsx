@@ -12,6 +12,7 @@ export interface ContentProps<T> {
     id: string,
     label: string,
     columns: ColumnProps<T>[],
+    firstColumnDetail?: (item: T) => ReactNode,
     data: T[],
     rowIdField: keyof T,
     renderActions: (item: T, isExpanded: boolean, toggleRow: (id: string) => void, refresh: () => void) => ReactNode,
@@ -145,7 +146,10 @@ export function Content({
                                             <tr className="border-b border-border">
                                                 {activeContent?.columns.map(col => (
                                                     <td key={String(col.key)} className="px-4 py-4 text-sm text-text-main">
-                                                        {String(item[col.key])}
+                                                        <div className="flex items-center gap-2">
+                                                            {String(item[col.key])}
+                                                            {activeContent?.firstColumnDetail && col === activeContent?.columns[0] && activeContent?.firstColumnDetail!(item)}
+                                                        </div>
                                                     </td>
                                                 ))}
                                                 <td className="px-4 py-4 text-right">

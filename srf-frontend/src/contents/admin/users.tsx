@@ -193,6 +193,13 @@ export const UsersContentDefinition = {
             width: 'w-3/5'
         }
     ],
+    firstColumnDetail: (item: User) => (
+        (item.role?.name === 'admin' || item.role?.name === 'owner') ? (
+            <p className="block bg-form-bg rounded-xl py-1 px-1.5 text-[14px] text-text-light-gray">
+                admin
+            </p>
+        ) : null
+    ),
     rowIdField: 'id' as keyof User,
     renderActions: (item: User, _isExpanded: boolean, _toggle: (id: string) => void, refresh: () => void) => (
         <UserActions item={item} refresh={refresh} />
