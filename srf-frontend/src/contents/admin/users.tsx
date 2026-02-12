@@ -17,6 +17,10 @@ export interface User {
 }
 
 function UserToolBar({ refresh }: { refresh: () => void }) {
+    const { user } = useAuth();
+    if (user?.role !== 'owner') {
+        return null;
+    }
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -133,7 +137,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
 
             {showEditModal && (
                 <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-                    <div className="relative flex flex-col bg-white w-160 h-140 justify-center items-center rounded-2xl shadow-xl p-10">
+                    <div className="relative flex flex-col bg-white w-160 justify-center items-center rounded-2xl shadow-xl p-10 gap-5">
                         <button
                             onClick={() => setShowEditModal(false)}
                             className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
@@ -141,7 +145,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
                             ✕
                         </button>
 
-                        <form onSubmit={(e) => handleSubmitEdit(e, item)} className="w-full h-full flex flex-col items-center justify-between">
+                        <form onSubmit={(e) => handleSubmitEdit(e, item)} className="w-full h-full flex flex-col items-center justify-between gap-5">
                             <div className="flex justify-center items-center rounded-full overflow-hidden size-24 bg-[#444141]">
                                 <img src={item.userPic || userImg} alt="User picture" />
                             </div>
