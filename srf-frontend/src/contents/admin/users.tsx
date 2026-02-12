@@ -57,7 +57,7 @@ function UserToolBar({ refresh }: { refresh: () => void }) {
 }
 
 function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
-    const { user } = useAuth();
+    const { user, signOut } = useAuth();
     const [loading, setLoading] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [error, setError] = useState<{ name?: string, email?: string, role?: string } | null>(null);
@@ -74,6 +74,10 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
         setError(null);
         try {
             await updateUserDetails(item.id, editName, editEmail, editRole);
+            if (item.id === user?.id) {
+                alert('Você será deslogado para que as alterações tenham efeito.');
+                signOut();
+            }
             refresh();
             setShowEditModal(false);
         } catch (error: any) {
