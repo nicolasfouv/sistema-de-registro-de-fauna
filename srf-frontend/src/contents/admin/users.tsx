@@ -16,47 +16,23 @@ export interface User {
     role: { name: string },
 }
 
-function UserToolBar({ refresh }: { refresh: () => void }) {
+function UserFirstColumnDetail({ item }: { item: User }) {
     const { user } = useAuth();
-    if (user?.role !== 'owner') {
-        return null;
-    }
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState<{ name?: string, email?: string, password?: string } | null>(null);
-    const [loading, setLoading] = useState(false);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(null);
-        try {
-            await createUser(name, email, password);
-            refresh();
-            setName('');
-            setEmail('');
-            setPassword('');
-        } catch (error: any) {
-            setError(error.response?.data?.message as { name?: string, email?: string, password?: string });
-        } finally {
-            setLoading(false);
-        }
-    };
-
     return (
-        <div className="gap-4 bg-form-bg p-4 rounded-md mx-6 mb-6">
-            <h3 className="font-bold text-text-main uppercase text-xs mb-2">Adicionar usuário</h3>
-            <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4">
-                <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" value={name} onChange={(e) => setName(e.target.value)} />
-                <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type='text' placeholder='Senha' className="bg-white border border-border p-2 rounded" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded" disabled={loading}> {loading ? 'AGUARDE...' : 'ADICIONAR'}</button>
-            </form>
-            {error && (
-                <div className="text-red-500 text-sm mt-2">{error.name || error.email || error.password}</div>
-            )}
-        </div>
+        (item.role?.name === 'admin' || item.role?.name === 'owner') ? (
+            (item.id === user?.id) ? (
+                <div className="flex gap-1">
+                    <p className="block bg-form-bg rounded-xl py-1 px-1.5 text-[14px] text-text-light-gray">(eu)</p>
+                    <p className="block bg-form-bg rounded-xl py-1 px-1.5 text-[14px] text-text-light-gray">
+                        admin
+                    </p>
+                </div>
+            ) : (
+                <p className="block bg-form-bg rounded-xl py-1 px-1.5 text-[14px] text-text-light-gray">
+                    admin
+                </p>
+            )
+        ) : null
     )
 }
 
@@ -232,6 +208,50 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
     );
 }
 
+function UserToolBar({ refresh }: { refresh: () => void }) {
+    const { user } = useAuth();
+    if (user?.role !== 'owner') {
+        return null;
+    }
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState<{ name?: string, email?: string, password?: string } | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+        try {
+            await createUser(name, email, password);
+            refresh();
+            setName('');
+            setEmail('');
+            setPassword('');
+        } catch (error: any) {
+            setError(error.response?.data?.message as { name?: string, email?: string, password?: string });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="gap-4 bg-form-bg p-4 rounded-md mx-6 mb-6">
+            <h3 className="font-bold text-text-main uppercase text-xs mb-2">Adicionar usuário</h3>
+            <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4">
+                <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" value={name} onChange={(e) => setName(e.target.value)} />
+                <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type='text' placeholder='Senha' className="bg-white border border-border p-2 rounded" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded" disabled={loading}> {loading ? 'AGUARDE...' : 'ADICIONAR'}</button>
+            </form>
+            {error && (
+                <div className="text-red-500 text-sm mt-2">{error.name || error.email || error.password}</div>
+            )}
+        </div>
+    )
+}
+
 export const UsersContentDefinition = {
     id: 'usuarios',
     label: 'Usuários',
@@ -239,20 +259,16 @@ export const UsersContentDefinition = {
         {
             key: 'name',
             label: 'Nome',
-            width: 'w-1/5'
+            width: 'w-2/5'
         },
         {
             key: 'email',
             label: 'E-mail',
-            width: 'w-3/5'
+            width: 'w-2/5'
         }
     ],
     firstColumnDetail: (item: User) => (
-        (item.role?.name === 'admin' || item.role?.name === 'owner') ? (
-            <p className="block bg-form-bg rounded-xl py-1 px-1.5 text-[14px] text-text-light-gray">
-                admin
-            </p>
-        ) : null
+        <UserFirstColumnDetail item={item} />
     ),
     rowIdField: 'id' as keyof User,
     renderActions: (item: User, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
