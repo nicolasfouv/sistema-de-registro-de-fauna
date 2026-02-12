@@ -38,10 +38,12 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             setShowEditModal(false);
         } catch (error: any) {
             console.error(error);
-            if (error.status === 409) {
+            if (error.response?.data?.message === 'Email já cadastrado') {
                 setError({ email: 'Email já cadastrado' });
-            } else {
-                setError({ email: error.response?.data?.message || 'Erro ao atualizar usuário' });
+            } else if (error.response?.data?.message === 'Função não existe') {
+                setError({ role: 'Função não existe' });
+            } else if (error.response?.data?.message.name[0] === 'Nome inválido') {
+                setError({ name: 'Nome inválido' });
             }
         } finally {
             setLoading(false);
