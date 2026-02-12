@@ -72,7 +72,7 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             <button onClick={() => {
                 setEditName(item.name);
                 setEditEmail(item.email);
-                setEditRole(item.role?.name || '');
+                setEditRole(item.role?.name);
                 setError(null);
                 setShowEditModal(true);
             }} className="size-8 cursor-pointer">
@@ -127,15 +127,19 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
                                 </div>
                                 <div className="flex flex-col">
                                     <label htmlFor="role" className="text-sm text-left font-bold mb-1">Função</label>
-                                    <select
-                                        id="role"
-                                        value={editRole}
-                                        onChange={(e) => { setEditRole(e.target.value); setError(null); }}
-                                        className="border border-border rounded p-2 bg-white"
-                                    >
-                                        <option value="common">Usuário Comum</option>
-                                        <option value="admin">Administrador</option>
-                                    </select>
+                                    {item.role?.name !== 'owner' ? (
+                                        <select
+                                            id="role"
+                                            value={editRole}
+                                            onChange={(e) => { setEditRole(e.target.value); setError(null); }}
+                                            className="border border-border rounded p-2 bg-white"
+                                        >
+                                            <option value="common">Usuário Comum</option>
+                                            <option value="admin">Administrador</option>
+                                        </select>
+                                    ) : (
+                                        <input type="text" value="Dono do Sistema" disabled className="border border-border rounded p-2 bg-gray-200" />
+                                    )}
                                     {error?.role && <p className="text-red-500 text-left text-sm">{error.role}</p>}
                                 </div>
                             </div>
