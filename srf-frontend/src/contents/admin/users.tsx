@@ -78,11 +78,11 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             </button>
             <button
                 onClick={() => setShowDeleteModal(true)}
-                className={`size-8 ${item.id === user?.id ? '' : 'cursor-pointer'}`}
-                disabled={item.id === user?.id}
+                className={`size-8 ${item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin' ? '' : 'cursor-pointer'}`}
+                disabled={item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin'}
                 title="Excluir"
             >
-                <img src={item.id === user?.id ? deleteButtonDisabledImg : deleteButtonImg} alt="Delete button" />
+                <img src={item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin' ? deleteButtonDisabledImg : deleteButtonImg} alt="Delete button" />
             </button>
 
             {showEditModal && (
