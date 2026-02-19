@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { login } from '../services/userService';
 
-interface User {
+interface UserLogin {
     id: string;
     name: string;
     email: string;
@@ -12,7 +12,7 @@ interface User {
 
 interface AuthContextType {
     signedIn: boolean;
-    user: User | null;
+    user: UserLogin | null;
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => void;
     loading: boolean;
@@ -21,7 +21,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserLogin | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

@@ -96,7 +96,6 @@ class UserController {
             if (error instanceof ZodError) return res.status(400).json({ message: error.flatten().fieldErrors });
             if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
             if (error.message === 'Outros usuários não podem alterar um usuário dono') return res.status(403).json({ message: error.message });
-            // Add other specific error handling as needed
             return res.status(500).json({ error: "Erro interno" });
         }
     }
@@ -139,7 +138,7 @@ class UserController {
     async getUsers(req: Request, res: Response) {
         const userService = new UserService();
         const users = await userService.getUsers();
-        return res.status(201).json(users);
+        return res.status(200).json(users);
     }
 
     async forgotPassword(req: Request, res: Response) {
@@ -154,6 +153,20 @@ class UserController {
                     message: error.flatten().fieldErrors,
                 });
             }
+            return res.status(500).json({ message: 'Erro interno' });
+        }
+    }
+
+    async getUserAccess(req: Request, res: Response) {
+        try {
+            const userId = req.params.userId as string;
+            const userService = new UserService();
+            const userAccess = await userService.getUserAccess(userId);
+            return res.status(200).json(userAccess);
+
+        } catch (error: any) {
+            if (error.message === 'ID do usuário não fornecido') return res.status(400).json({ message: error.message });
+            if (error.message === 'Usuário não encontrado') return res.status(404).json({ message: error.message });
             return res.status(500).json({ message: 'Erro interno' });
         }
     }

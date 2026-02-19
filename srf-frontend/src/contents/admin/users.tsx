@@ -7,6 +7,7 @@ import formsButtonImg from '../../assets/formsButton.svg';
 import userImg from '../../assets/loginUser.svg';
 import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
+import { FormsPermissionsModal } from "./formsPermissionsModal";
 
 export interface User {
     id: string,
@@ -36,22 +37,28 @@ function UserFirstColumnDetail({ item }: { item: User }) {
     )
 }
 
+
 function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
     const { user, signOut } = useAuth();
     const [loading, setLoading] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [error, setError] = useState<{ name?: string, email?: string, role?: string } | null>(null);
 
+    const [showFormsModal, setShowFormsModal] = useState(false);
+
+
+
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editError, setEditError] = useState<{ name?: string, email?: string, role?: string } | null>(null);
     const [editName, setEditName] = useState(item.name);
     const [editEmail, setEditEmail] = useState(item.email);
-    const [editRole, setEditRole] = useState(item.role?.name || '');
+    const [editRole, setEditRole] = useState(item.role?.name);
+
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
     async function handleSubmitEdit(e: React.FormEvent<HTMLFormElement>, item: User) {
         e.preventDefault();
         setLoading(true);
-        setError(null);
+        setEditError(null);
         try {
             await updateUserDetails(item.id, editName, editEmail, editRole);
             if (item.id === user?.id) {
@@ -63,11 +70,11 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
         } catch (error: any) {
             console.error(error);
             if (error.response?.data?.message === 'Email já cadastrado') {
-                setError({ email: 'Email já cadastrado' });
+                setEditError({ email: 'Email já cadastrado' });
             } else if (error.response?.data?.message === 'Função não existe') {
-                setError({ role: 'Função não existe' });
+                setEditError({ role: 'Função não existe' });
             } else if (error.response?.data?.message.name[0] === 'Nome inválido') {
-                setError({ name: 'Nome inválido' });
+                setEditError({ name: 'Nome inválido' });
             }
         } finally {
             setLoading(false);
@@ -90,14 +97,16 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
 
     return (
         <div className="flex justify-end gap-2">
-            <button title='Permissões' className="size-8 cursor-pointer">
+            <button onClick={() => {
+                setShowFormsModal(true);
+            }} className="size-8 cursor-pointer">
                 <img src={formsButtonImg} alt="Forms button" />
             </button>
             <button onClick={() => {
                 setEditName(item.name);
                 setEditEmail(item.email);
                 setEditRole(item.role?.name);
-                setError(null);
+                setEditError(null);
                 setShowEditModal(true);
             }} className="size-8 cursor-pointer">
                 <img src={editButtonImg} alt="Edit button" />
@@ -111,100 +120,134 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
                 <img src={item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin' ? deleteButtonDisabledImg : deleteButtonImg} alt="Delete button" />
             </button>
 
-            {showEditModal && (
-                <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-                    <div className="relative flex flex-col bg-white w-160 justify-center items-center rounded-2xl shadow-xl p-10 gap-5">
-                        <button
-                            onClick={() => setShowEditModal(false)}
-                            className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
-                        >
-                            ✕
-                        </button>
+            {/* FORMS PERMISSIONS MODAL */}
+            {showFormsModal && user && <FormsPermissionsModal user={item} close={() => setShowFormsModal(false)} />}
 
-                        <form onSubmit={(e) => handleSubmitEdit(e, item)} className="w-full h-full flex flex-col items-center justify-between gap-5">
-                            <div className="flex justify-center items-center rounded-full overflow-hidden size-24 bg-[#444141]">
-                                <img src={item.userPic || userImg} alt="User picture" />
-                            </div>
+            {/* EDIT USER MODAL */}
+            {
+                showEditModal && (
+                    <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
+                        <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl p-10 gap-5 w-160">
+                            <button
+                                onClick={() => setShowEditModal(false)}
+                                className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
+                            >
+                                ✕
+                            </button>
 
-                            <div className="w-full flex flex-col gap-4">
-                                <div className="flex flex-col">
-                                    <label htmlFor="name" className="text-sm text-left font-bold mb-1">Nome</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        value={editName}
-                                        onChange={(e) => { setEditName(e.target.value); setError(null); }}
-                                        className="border border-border rounded p-2"
-                                    />
-                                    {error?.name && <p className="text-red-500 text-left text-sm">{error.name}</p>}
+                            <h2 className="text-2xl text-standard-blue font-bold -mt-6">
+                                Editando Usuário
+                            </h2>
+
+                            <form onSubmit={(e) => handleSubmitEdit(e, item)} className="w-full h-full flex flex-col items-center justify-between gap-5">
+                                <div className="flex justify-center items-center rounded-full overflow-hidden size-24 bg-[#444141]">
+                                    <img src={item.userPic || userImg} alt="User picture" />
                                 </div>
-                                <div className="flex flex-col">
-                                    <label htmlFor="email" className="text-sm text-left font-bold mb-1">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        value={editEmail}
-                                        onChange={(e) => { setEditEmail(e.target.value); setError(null); }}
-                                        className="border border-border rounded p-2"
-                                    />
-                                    {error?.email && <p className="text-red-500 text-left text-sm">{error.email}</p>}
+
+                                <div className="w-full flex flex-col gap-4">
+                                    <div className="flex flex-col">
+                                        <label htmlFor="name" className="text-sm text-left font-bold mb-1">Nome</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            value={editName}
+                                            onChange={(e) => { setEditName(e.target.value); setEditError(null); }}
+                                            className="border border-border rounded p-2"
+                                        />
+                                        {editError?.name && <p className="text-red-500 text-left text-sm">{editError.name}</p>}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <label htmlFor="email" className="text-sm text-left font-bold mb-1">Email</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            value={editEmail}
+                                            onChange={(e) => { setEditEmail(e.target.value); setEditError(null); }}
+                                            className="border border-border rounded p-2"
+                                        />
+                                        {editError?.email && <p className="text-red-500 text-left text-sm">{editError.email}</p>}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <label htmlFor="role" className="text-sm text-left font-bold mb-1">Função</label>
+                                        {item.role?.name !== 'owner' ? (
+                                            <select
+                                                id="role"
+                                                value={editRole}
+                                                onChange={(e) => { setEditRole(e.target.value); setEditError(null); }}
+                                                className="border border-border rounded p-2 bg-white"
+                                            >
+                                                <option value="common">Usuário Comum</option>
+                                                <option value="admin">Administrador</option>
+                                            </select>
+                                        ) : (
+                                            <input type="text" value="Dono do Sistema" disabled className="border border-border rounded p-2 bg-gray-100" />
+                                        )}
+                                        {editError?.role && <p className="text-red-500 text-left text-sm">{editError.role}</p>}
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <label htmlFor="role" className="text-sm text-left font-bold mb-1">Função</label>
-                                    {item.role?.name !== 'owner' ? (
-                                        <select
-                                            id="role"
-                                            value={editRole}
-                                            onChange={(e) => { setEditRole(e.target.value); setError(null); }}
-                                            className="border border-border rounded p-2 bg-white"
-                                        >
-                                            <option value="common">Usuário Comum</option>
-                                            <option value="admin">Administrador</option>
-                                        </select>
-                                    ) : (
-                                        <input type="text" value="Dono do Sistema" disabled className="border border-border rounded p-2 bg-gray-200" />
-                                    )}
-                                    {error?.role && <p className="text-red-500 text-left text-sm">{error.role}</p>}
+
+                                <div className="flex justify-center items-center gap-5">
+                                    <button
+                                        type="submit"
+                                        className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Salvando...' : 'Salvar'}
+                                    </button>
+                                    <button
+                                        onClick={() => setShowEditModal(false)}
+                                        className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                                    >
+                                        Cancelar
+                                    </button>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+
+            {/* DELETE USER MODAL */}
+            {
+                showDeleteModal && (
+                    <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
+                        <div className="relative flex flex-col bg-white w-160 justify-center items-center rounded-2xl shadow-xl p-10">
 
                             <button
-                                type="submit"
-                                className="w-full h-14 rounded-md bg-standard-blue text-white text-xl font-bold mt-6 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled={loading}
+                                onClick={() => setShowDeleteModal(false)}
+                                className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
                             >
-                                {loading ? 'AGUARDE...' : 'CONFIRMAR'}
+                                ✕
                             </button>
-                        </form>
+
+                            <h2 className="text-2xl text-standard-blue font-bold -mt-6 mb-6">
+                                Confirmação de Exclusão
+                            </h2>
+
+                            <form onSubmit={(e) => handleSubmitDelete(e, item.id)} className="w-full h-full flex flex-col items-center justify-center">
+                                <p className="text-xl text-center">Deseja realmente excluir o usuário <span className="font-bold">{item.name}</span> ?</p>
+
+                                <div className="flex justify-center items-center gap-5 mt-4">
+                                    <button
+                                        type="submit"
+                                        className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Confirmando...' : 'Confirmar'}
+                                    </button>
+                                    <button
+                                        onClick={() => setShowDeleteModal(false)}
+                                        className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                                    >
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            )}
-
-            {showDeleteModal && (
-                <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-                    <div className="relative flex flex-col bg-white w-160 h-60 justify-center items-center rounded-2xl shadow-xl p-10">
-
-                        <button
-                            onClick={() => setShowDeleteModal(false)}
-                            className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
-                        >
-                            ✕
-                        </button>
-
-                        <form onSubmit={(e) => handleSubmitDelete(e, item.id)} className="w-full h-full flex flex-col items-center justify-center">
-                            <p className="text-xl text-center">Deseja realmente excluir o usuário <span className="font-bold">{item.name}</span> ?</p>
-                            <button
-                                type="submit"
-                                className="w-full h-14 rounded-md bg-standard-blue text-white text-xl font-bold mt-6 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled={loading}
-                            >
-                                {loading ? 'AGUARDE...' : 'CONFIRMAR'}
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 }
 
@@ -243,7 +286,7 @@ function UserToolBar({ refresh }: { refresh: () => void }) {
                 <input type='text' placeholder='Nome' className="bg-white border border-border p-2 rounded" value={name} onChange={(e) => setName(e.target.value)} />
                 <input type='text' placeholder='Email' className="bg-white border border-border p-2 rounded" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <input type='text' placeholder='Senha' className="bg-white border border-border p-2 rounded" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded" disabled={loading}> {loading ? 'AGUARDE...' : 'ADICIONAR'}</button>
+                <button className="bg-standard-blue text-white font-bold cursor-pointer px-4 rounded" disabled={loading}> {loading ? 'Aguarde...' : 'Adicionar'}</button>
             </form>
             {error && (
                 <div className="text-red-500 text-sm mt-2">{error.name || error.email || error.password}</div>

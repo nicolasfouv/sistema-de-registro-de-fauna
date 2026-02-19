@@ -50,3 +50,8 @@ export async function updateUserPassword(userId: string, password: string) {
     const response = await api.put('/user/update/password', { userId, password });
     return response.data;
 }
+
+export async function getUserAccess(userId: string) {
+    const response = await api.get("/user/user-access/" + userId);
+    return response.data;
+}

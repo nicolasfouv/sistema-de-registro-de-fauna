@@ -86,31 +86,38 @@ model form {
 }
 
 model userAccess {
-  id          String      @id @default(uuid())
-  userId      String      @map("id_usuario")
-  formId      String      @map("id_formulario")
-  accessLevel accessLevel @map("nivel_acesso")
-  user        user        @relation(fields: [userId], references: [id])
-  form        form        @relation(fields: [formId], references: [id])
+  id              String           @id @default(uuid())
+  userId          String           @map("id_usuario")
+  formId          String           @map("id_formulario")
+  accessLevelId   String?          @map("id_nivel_acesso")
+  user            user             @relation(fields: [userId], references: [id])
+  form            form             @relation(fields: [formId], references: [id])
+  enumAccessLevel enumAccessLevel? @relation(fields: [accessLevelId], references: [id])
 
   @@map("autorizacao_usuario")
 }
 
 model groupAccess {
-  id          String      @id @default(uuid())
-  groupId     String      @map("id_grupo")
-  formId      String      @map("id_formulario")
-  accessLevel accessLevel @map("nivel_acesso")
-  group       group       @relation(fields: [groupId], references: [id])
-  form        form        @relation(fields: [formId], references: [id])
+  id              String           @id @default(uuid())
+  groupId         String           @map("id_grupo")
+  formId          String           @map("id_formulario")
+  accessLevelId   String?          @map("id_nivel_acesso")
+  group           group            @relation(fields: [groupId], references: [id])
+  form            form             @relation(fields: [formId], references: [id])
+  enumAccessLevel enumAccessLevel? @relation(fields: [accessLevelId], references: [id])
 
   @@map("autorizacao_grupo")
 }
 
-enum accessLevel {
-  read
-  edit
-  edit_unrestricted
+model enumAccessLevel {
+  id    String @id @default(uuid())
+  value Int    @map("valor")
+  name  String @map("nome")
+
+  userAccess  userAccess[]
+  groupAccess groupAccess[]
+
+  @@map("enum_nivel_acesso")
 }
 
 model auditLog {

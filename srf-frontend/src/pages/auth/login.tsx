@@ -14,6 +14,7 @@ export function Login() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingForgot, setIsLoadingForgot] = useState(false);
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -36,23 +37,33 @@ export function Login() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    setIsLoading(true);
     try {
-      if (forgot) {
-        await forgotPassword(loginData.email);
-        alert('Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.');
-        setLoginData({ email: '', password: '' });
-        setForgot(false);
-      } else {
-        await signIn(loginData.email, loginData.password);
-        navigate('/minha-conta', { replace: true });
-      }
+      setIsLoading(true);
+      await signIn(loginData.email, loginData.password);
+      navigate('/minha-conta', { replace: true });
     } catch (error: any) {
       setErrorEmail(error.response.data.message.email);
       setErrorPassword(error.response.data.message.password);
       setErrorStatus(error.response.status);
     } finally {
+      setIsLoadingForgot(false);
       setIsLoading(false);
+    }
+  }
+
+  async function handleForgotPassword(event: FormEvent) {
+    event.preventDefault();
+    try {
+      setIsLoadingForgot(true);
+      await forgotPassword(loginData.email);
+      alert('Se o email informado estiver cadastrado, você receberá um email com a sua nova senha.');
+      setLoginData({ email: '', password: '' });
+      setForgot(false);
+    } catch (error: any) {
+      setErrorEmail(error.response.data.message.email);
+      setErrorStatus(error.response.status);
+    } finally {
+      setIsLoadingForgot(false);
     }
   }
 
@@ -63,16 +74,16 @@ export function Login() {
 
           <button onClick={() => setForgot(false)} className="absolute cursor-pointer bg-standard-blue size-10 rounded-xl top-2 right-2 text-white text-xl font-bold">✕</button>
 
-          <form onSubmit={handleSubmit} className="size-full flex flex-col items-center justify-center">
+          <form onSubmit={handleForgotPassword} className="size-full flex flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-5">Recuperar Senha</h2>
             <p className="text-xl text-center">Insira seu email cadastrado para receber sua senha.</p>
             <div className="flex items-center mt-5 relative w-full">
               <img src={loginEmailImg} alt="Email login image" className="absolute left-2 w-8 h-8" />
               <input type="email" id="email" placeholder="Email" className="w-full h-14 pl-11 border border-border rounded-xl text-2xl pb-1" value={loginData.email} onChange={handleInputChange} />
             </div>
-            <button type="submit" disabled={isLoading}
+            <button type="submit" disabled={isLoadingForgot}
               className="w-full h-14 rounded-md bg-standard-blue text-white text-xl font-bold mt-6 cursor-pointer">
-              {isLoading ? 'AGUARDE...' : 'ENVIAR'}
+              {isLoadingForgot ? 'AGUARDE...' : 'ENVIAR'}
             </button>
           </form>
         </div>

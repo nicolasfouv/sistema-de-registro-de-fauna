@@ -1,5 +1,4 @@
 import z from "zod";
-import { accessLevel } from "../../generated/prisma";
 
 export const createUserRequest = z.object({
     name: z.string().nonempty({ error: 'Nome inválido' }),
@@ -7,10 +6,6 @@ export const createUserRequest = z.object({
     password: z.string().nonempty({ error: 'Senha inválida' }),
 });
 
-const userAccessProps = z.object({
-    form: z.string().nonempty({ error: 'Nome do furmulário inválido' }),
-    level: z.enum(accessLevel, { error: 'Nível de acesso inválido' }),
-});
 
 export const updateUserDetailsRequest = z.object({
     userId: z.string().nonempty({ error: 'ID do usuário inválido' }),
@@ -22,6 +17,11 @@ export const updateUserDetailsRequest = z.object({
 export const updateUserPicRequest = z.object({
     userId: z.string().nonempty({ error: 'ID do usuário inválido' }),
     userPic: z.string().optional(),
+});
+
+const userAccessProps = z.object({
+    formId: z.string().nonempty({ error: 'ID do furmulário inválido' }),
+    accessLevelId: z.string().optional(),
 });
 
 export const updateUserAccessRequest = z.object({

@@ -1,14 +1,16 @@
 import 'dotenv/config';
 import { NextFunction, Request, Response } from "express";
-import { accessLevel } from "../../generated/prisma";
 import { verify } from "jsonwebtoken";
 import { prisma } from '..';
+import { enumAccessLevel } from '../../generated/prisma';
 
 interface Payload {
     sub: string,
 }
 
-export function authFormMiddleware(auditLogId: string, requiredLevel?: accessLevel) {
+
+
+export function authFormMiddleware(auditLogId: string, requiredLevelId?: string) {
 
     return async (req: Request, res: Response, next: NextFunction) => {
         const authHeader = req.headers.authorization;
@@ -31,19 +33,18 @@ export function authFormMiddleware(auditLogId: string, requiredLevel?: accessLev
 
             if (user?.role?.name === 'admin' || user?.role?.name === 'owner') return next();
 
-            if (requiredLevel) {
-                const levelOrder: Record<accessLevel, number> = {
-                    [accessLevel.read]: 0,
-                    [accessLevel.edit]: 1,
-                    [accessLevel.edit_unrestricted]: 2,
-                }
+            if (requiredLevelId) {
+                const levels = await prisma.enumAccessLevel.findMany({ select: { id: true, value: true } });
+                const requiredLevel = levels.find((level) => level.id === requiredLevelId);
+                if (!requiredLevel) return res.status(404).json({ message: 'Nível de acesso não encontrado' });
                 const userAccess = await prisma.userAccess.findFirst({
                     where: { userId: user_id, formId: auditLog.formId }
                 })
                 if (!userAccess) return res.status(403).json({ message: 'Acesso negado' });
-                const userLevel = levelOrder[userAccess.accessLevel];
-                let needsLevel = levelOrder[requiredLevel]
-                if (requiredLevel === 'edit' && auditLog.userId !== user_id) needsLevel = levelOrder[accessLevel.edit_unrestricted];
+                const userLevel = levels.find((level) => level.id === userAccess.accessLevelId)?.value!;
+
+                let needsLevel = requiredLevel.value!;
+                if (requiredLevel.id === 'edit' && auditLog.userId !== user_id) needsLevel = levels.find((level) => level.id === 'edit_unrestricted')?.value!;
                 if (userLevel < needsLevel) return res.status(403).json({ message: 'Acesso negado' });
             }
             return next();

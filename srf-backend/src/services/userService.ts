@@ -126,13 +126,19 @@ class UserService {
 
             if (userAccess.length > 0) {
                 for (const access of userAccess) {
-                    const form = await tx.form.findFirst({ where: { name: access.form } });
-                    if (!form) throw new Error(`Formulário '${access.form}' não encontrado`);
+                    const form = await tx.form.findFirst({ where: { id: access.formId } });
+                    if (!form) throw new Error(`Formulário '${access.formId}' não encontrado`);
+
+                    let accessLevelId: string | null = null;
+                    if (access.accessLevelId) {
+                        const foundAccessLevel = await tx.enumAccessLevel.findFirst({ where: { id: access.accessLevelId } });
+                        if (foundAccessLevel) accessLevelId = foundAccessLevel.id;
+                    }
                     await tx.userAccess.create({
                         data: {
                             userId: userId,
                             formId: form.id,
-                            accessLevel: access.level,
+                            accessLevelId: accessLevelId
                         }
                     });
                 }
@@ -215,14 +221,37 @@ class UserService {
 
     async forgotPassword(email: string) {
         const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
-        if (!user) throw new Error('Email não cadastrado');
+        if (!user) return "Usuário não encontrado";
 
         const password = Math.random().toString(36).slice(-8);
         await this.updateUserPassword({ userId: user.id, password: password }, user.id);
         await sendEmail(email, 'Recuperação de Senha', 'Sua nova senha: ' + password);
-        return password;
+        return "Senha enviada com sucesso";
     }
 
+    async getUserAccess(userId: string) {
+        if (!userId) throw new Error('ID do usuário não fornecido');
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) throw new Error('Usuário não encontrado');
+        const userAccess = await prisma.userAccess.findMany({
+            where: { userId: userId },
+            select: {
+                form: {
+                    select: {
+                        id: true,
+                    }
+                },
+                enumAccessLevel: true,
+
+            }
+        });
+        return userAccess.map((access) => {
+            return {
+                formId: access.form.id,
+                accessLevelId: access.enumAccessLevel?.id,
+            };
+        });
+    }
 }
 
 export { UserService };

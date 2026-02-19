@@ -6,7 +6,19 @@ class FormController {
     async getOptions(req: Request, res: Response) {
         const formService = new FormService();
         const options = await formService.getOptions();
-        return res.status(201).json(options);
+        return res.status(200).json(options);
+    }
+
+    async getForms(req: Request, res: Response) {
+        const formService = new FormService();
+        const forms = await formService.getForms();
+        return res.status(200).json(forms);
+    }
+
+    async getAccessLevel(req: Request, res: Response) {
+        const formService = new FormService();
+        const accessLevel = await formService.getAccessLevel();
+        return res.status(200).json(accessLevel);
     }
 
 }
