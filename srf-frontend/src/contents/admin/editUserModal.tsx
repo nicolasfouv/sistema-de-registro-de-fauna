@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { User } from "./users";
 import { updateUserDetails } from "../../services/userService";
 import { useAuth } from "../../contexts/AuthContext";
-import userImg from "../../assets/user.png";
+import userImg from "../../assets/loginUser.svg";
 
 interface EditUserModalProps {
     user: User

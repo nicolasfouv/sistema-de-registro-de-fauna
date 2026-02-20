@@ -6,13 +6,9 @@ import { getUserAccess, updateUserAccess } from "../../services/userService";
 
 interface UserPermissionsModalProps {
     user: User,
-    close: () => void
+    close: () => void,
 }
 
-interface Group {
-    id: string,
-    name: string,
-}
 
 interface Form {
     id: string,
@@ -30,10 +26,16 @@ export interface UserAccess {
     accessLevelId: string,
 }
 
+interface Group {
+    id: string,
+    name: string,
+    groupAccess: UserAccess[],
+}
 
 export function UserPermissionsModal({ user, close }: UserPermissionsModalProps) {
     const [loading, setLoading] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
+    const [userGroup, setUserGroup] = useState<{ id: string, name: string } | null>(null);
     const [forms, setForms] = useState<{ category: string, forms: Form[] }[]>([]);
     const [accessLevelOptions, setAccessLevelOptions] = useState<AccessLevel[]>([]);
     const [editedUserAccess, setEditedUserAccess] = useState<UserAccess[]>([]);
@@ -53,7 +55,6 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
             const accessLevel = await getAccessLevelOptions();
             const orderedAccessLevelOptions = accessLevel.sort((a: AccessLevel, b: AccessLevel) => a.value - b.value);
             setAccessLevelOptions(orderedAccessLevelOptions);
-            console.log(orderedAccessLevelOptions);
         }
 
         async function fetchUserAccess() {
@@ -61,11 +62,33 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
             setEditedUserAccess(userAccess);
         }
 
+
         fetchGroups();
         fetchForms();
         fetchAccessLevelOptions();
         fetchUserAccess();
     }, []);
+
+    useEffect(() => {
+        async function userHasGroup() {
+            for (let i = 0; i < groups.length; i++) {
+                let hasGroup = true;
+                for (let j = 0; j < groups[i].groupAccess.length; j++) {
+                    if (groups[i].groupAccess[j].formId !== editedUserAccess.find(a => a.formId === groups[i].groupAccess[j].formId)?.formId || groups[i].groupAccess[j].accessLevelId !== editedUserAccess.find(a => a.formId === groups[i].groupAccess[j].formId)?.accessLevelId) {
+                        hasGroup = false;
+                        break;
+                    }
+                }
+                if (hasGroup) {
+                    setUserGroup({ id: groups[i].id, name: groups[i].name });
+                    return;
+                }
+            }
+            setUserGroup(null);
+        }
+
+        userHasGroup();
+    }, [groups, editedUserAccess]);
 
 
 
@@ -102,7 +125,11 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
     }
 
     function handleGroupChange(groupId: string) {
-
+        const group = groups.find(g => g.id === groupId);
+        console.log(group);
+        if (group) {
+            setEditedUserAccess(group.groupAccess);
+        }
     }
 
     return (
@@ -133,15 +160,15 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
                         <label htmlFor="group" className="text-sm text-left font-bold mb-1">Grupo:</label>
                         <select
                             id="group"
-                            value={'a'}
+                            value={userGroup?.id ?? ''}
                             onChange={(e) => handleGroupChange(e.target.value)}
-                            className="border border-border rounded-md p-2"
+                            disabled={user.role.name === 'admin' || user.role.name === 'owner'}
+                            className="border border-border rounded-md p-2 disabled:bg-gray-100"
                         >
-                            <option value="">Selecione um grupo (opcional)</option>
+                            {userGroup ? <option value={userGroup.id}>{userGroup.name}</option> : <option value="">{user.role.name === 'admin' || user.role.name === 'owner' ? 'Administradores não precisam de grupo' : 'Selecione um grupo (opcional)'}</option>}
                             {groups.map((group) => (
                                 <option key={group.id} value={group.id}>{group.name}</option>
                             ))}
-                            <option value="custom">Personalizado</option>
                         </select>
                     </div>
                 </div>
