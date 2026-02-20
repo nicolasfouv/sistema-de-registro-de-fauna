@@ -4,7 +4,7 @@ import { getGroups } from "../../services/groupsService";
 import { getAccessLevelOptions, getForms } from "../../services/formService";
 import { getUserAccess, updateUserAccess } from "../../services/userService";
 
-interface FormsPermissionsModalProps {
+interface UserPermissionsModalProps {
     user: User,
     close: () => void
 }
@@ -31,7 +31,7 @@ export interface UserAccess {
 }
 
 
-export function FormsPermissionsModal({ user, close }: FormsPermissionsModalProps) {
+export function UserPermissionsModal({ user, close }: UserPermissionsModalProps) {
     const [loading, setLoading] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
     const [forms, setForms] = useState<{ category: string, forms: Form[] }[]>([]);

@@ -1,13 +1,14 @@
 import { type ContentProps } from "../../components/content";
-import { createUser, deleteUser, getUsers } from "../../services/userService";
+import { createUser, getUsers } from "../../services/userService";
 import deleteButtonDisabledImg from '../../assets/deleteButtonDisabled.svg';
 import deleteButtonImg from '../../assets/deleteButton.svg';
 import editButtonImg from '../../assets/editButton.svg';
 import formsButtonImg from '../../assets/formsButton.svg';
 import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
-import { FormsPermissionsModal } from "./formsPermissionsModal";
+import { UserPermissionsModal } from "./userPermissionsModal";
 import { EditUserModal } from "./editUserModal";
+import { DeleteUserModal } from "./deleteUserModal";
 
 export interface User {
     id: string,
@@ -40,25 +41,10 @@ function UserFirstColumnDetail({ item }: { item: User }) {
 
 function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
     const { user } = useAuth();
-    const [loading, setLoading] = useState(false);
 
     const [showFormsModal, setShowFormsModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-    async function handleSubmitDelete(e: React.FormEvent<HTMLFormElement>, id: string) {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            await deleteUser(id);
-            refresh();
-            setShowDeleteModal(false);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }
 
     return (
         <div className="flex justify-end gap-2">
@@ -67,11 +53,13 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             }} className="size-8 cursor-pointer">
                 <img src={formsButtonImg} alt="Forms button" />
             </button>
+
             <button onClick={() => {
                 setShowEditModal(true);
             }} className="size-8 cursor-pointer">
                 <img src={editButtonImg} alt="Edit button" />
             </button>
+
             <button
                 onClick={() => setShowDeleteModal(true)}
                 className={`size-8 ${item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin' ? '' : 'cursor-pointer'}`}
@@ -82,50 +70,14 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             </button>
 
             {/* FORMS PERMISSIONS MODAL */}
-            {showFormsModal && user && <FormsPermissionsModal user={item} close={() => setShowFormsModal(false)} />}
+            {showFormsModal && user && <UserPermissionsModal user={item} close={() => setShowFormsModal(false)} />}
 
             {/* EDIT USER MODAL */}
             {showEditModal && <EditUserModal user={item} close={() => setShowEditModal(false)} refresh={refresh} />}
 
             {/* DELETE USER MODAL */}
             {
-                showDeleteModal && (
-                    <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-                        <div className="relative flex flex-col bg-white w-160 justify-center items-center rounded-2xl shadow-xl p-10">
-
-                            <button
-                                onClick={() => setShowDeleteModal(false)}
-                                className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
-                            >
-                                ✕
-                            </button>
-
-                            <h2 className="text-2xl text-standard-blue font-bold -mt-6 mb-6">
-                                Confirmação de Exclusão
-                            </h2>
-
-                            <form onSubmit={(e) => handleSubmitDelete(e, item.id)} className="w-full h-full flex flex-col items-center justify-center">
-                                <p className="text-xl text-center">Deseja realmente excluir o usuário <span className="font-bold">{item.name}</span> ?</p>
-
-                                <div className="flex justify-center items-center gap-5 mt-4">
-                                    <button
-                                        type="submit"
-                                        className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
-                                        disabled={loading}
-                                    >
-                                        {loading ? 'Confirmando...' : 'Confirmar'}
-                                    </button>
-                                    <button
-                                        onClick={() => setShowDeleteModal(false)}
-                                        className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
-                                    >
-                                        Cancelar
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                )
+                showDeleteModal && <DeleteUserModal user={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
             }
         </div >
     );
