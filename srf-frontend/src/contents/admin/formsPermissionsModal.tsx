@@ -69,7 +69,7 @@ export function FormsPermissionsModal({ user, close }: FormsPermissionsModalProp
 
 
 
-    async function handleSubmitFormsPermissions(e: React.FormEvent<HTMLFormElement>, item: User) {
+    async function handleSubmitFormsPermissions(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setLoading(true);
         try {
@@ -145,7 +145,7 @@ export function FormsPermissionsModal({ user, close }: FormsPermissionsModalProp
                         </select>
                     </div>
                 </div>
-                <form onSubmit={(e) => handleSubmitFormsPermissions(e, user)} className="w-full h-[90%] flex flex-col items-center justify-between">
+                <form onSubmit={(e) => handleSubmitFormsPermissions(e)} className="w-full h-[90%] flex flex-col items-center justify-between">
 
                     <div className="w-full overflow-y-auto">
                         {forms.map((category) => (
