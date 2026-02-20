@@ -48,18 +48,24 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
 
     return (
         <div className="flex justify-end gap-2">
+
+            {/* FORMS PERMISSIONS MODAL */}
             <button onClick={() => {
                 setShowFormsModal(true);
             }} className="size-8 cursor-pointer">
                 <img src={formsButtonImg} alt="Forms button" />
             </button>
+            {showFormsModal && user && <UserPermissionsModal user={item} close={() => setShowFormsModal(false)} />}
 
+            {/* EDIT USER MODAL */}
             <button onClick={() => {
                 setShowEditModal(true);
             }} className="size-8 cursor-pointer">
                 <img src={editButtonImg} alt="Edit button" />
             </button>
+            {showEditModal && <EditUserModal user={item} close={() => setShowEditModal(false)} refresh={refresh} />}
 
+            {/* DELETE USER MODAL */}
             <button
                 onClick={() => setShowDeleteModal(true)}
                 className={`size-8 ${item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin' ? '' : 'cursor-pointer'}`}
@@ -68,17 +74,8 @@ function UserActions({ item, refresh }: { item: User, refresh: () => void }) {
             >
                 <img src={item.id === user?.id || item.role?.name === 'owner' || item.role?.name === 'admin' ? deleteButtonDisabledImg : deleteButtonImg} alt="Delete button" />
             </button>
+            {showDeleteModal && <DeleteUserModal user={item} close={() => setShowDeleteModal(false)} refresh={refresh} />}
 
-            {/* FORMS PERMISSIONS MODAL */}
-            {showFormsModal && user && <UserPermissionsModal user={item} close={() => setShowFormsModal(false)} />}
-
-            {/* EDIT USER MODAL */}
-            {showEditModal && <EditUserModal user={item} close={() => setShowEditModal(false)} refresh={refresh} />}
-
-            {/* DELETE USER MODAL */}
-            {
-                showDeleteModal && <DeleteUserModal user={item} close={() => setShowDeleteModal(false)} refresh={refresh} />
-            }
         </div >
     );
 }
