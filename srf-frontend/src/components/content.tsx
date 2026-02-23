@@ -26,6 +26,7 @@ export interface PageProps {
     formChange: (formId: string) => void,
     contents: ContentProps<any>[],
     onRefresh?: () => void,
+    hasAccess?: boolean,
 }
 
 export function Content({
@@ -33,7 +34,8 @@ export function Content({
     activeFormId,
     formChange,
     contents,
-    onRefresh
+    onRefresh,
+    hasAccess
 }: PageProps) {
     const activeContent = contents.find(content => content.id === activeFormId);
     const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -104,87 +106,95 @@ export function Content({
                 </div>
 
                 {/* ToolBar */}
-                {activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
+                {activeContent && hasAccess !== false && <>
+                    {activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
 
-                <FilterBar
-                    key={activeContent?.id}
-                    columns={activeContent?.columns || []}
-                    onFilter={handleFilter}
-                />
+                    <FilterBar
+                        key={activeContent?.id}
+                        columns={activeContent?.columns || []}
+                        onFilter={handleFilter}
+                    />
 
-                {/* Table */}
-                <div className="px-6 pb-6">
-                    <table className="w-full border-collapse">
-                        <thead>
-                            <tr className="bg-form-bg border-b border-border">
-                                {activeContent?.columns.map(col => (
-                                    <th
-                                        key={String(col.key)}
-                                        className={`px-4 py-3 text-left text-sm font-bold text-text-main ${col.width ?? ''} cursor-pointer hover:bg-black/5 select-none`}
-                                        onClick={() => handleSort(col.key)}
-                                    >
-                                        <div className="flex items-center gap-1">
-                                            {col.label}
-                                            {sortConfig.key === col.key && (
-                                                <span>{sortConfig.direction === 'asc' ? '▲' : '▼'}</span>
-                                            )}
-                                        </div>
-                                    </th>
-                                ))}
-                                <th className="px-4 py-3 text-sm font-bold text-text-main text-right pr-6">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {sortedData && sortedData.length > 0 && sortedData.map((item) => {
-                                const id = item[activeContent?.rowIdField!] as unknown as string;
-                                const isExpanded = expandedId === id;
+                    {/* Table */}
+                    <div className="px-6 pb-6">
+                        <table className="w-full border-collapse">
+                            <thead>
+                                <tr className="bg-form-bg border-b border-border">
+                                    {activeContent?.columns.map(col => (
+                                        <th
+                                            key={String(col.key)}
+                                            className={`px-4 py-3 text-left text-sm font-bold text-text-main ${col.width ?? ''} cursor-pointer hover:bg-black/5 select-none`}
+                                            onClick={() => handleSort(col.key)}
+                                        >
+                                            <div className="flex items-center gap-1">
+                                                {col.label}
+                                                {sortConfig.key === col.key && (
+                                                    <span>{sortConfig.direction === 'asc' ? '▲' : '▼'}</span>
+                                                )}
+                                            </div>
+                                        </th>
+                                    ))}
+                                    <th className="px-4 py-3 text-sm font-bold text-text-main text-right pr-6">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {sortedData && sortedData.length > 0 && sortedData.map((item) => {
+                                    const id = item[activeContent?.rowIdField!] as unknown as string;
+                                    const isExpanded = expandedId === id;
 
-                                if (!isExpanded) {
-                                    return (
-                                        <React.Fragment key={id}>
+                                    if (!isExpanded) {
+                                        return (
+                                            <React.Fragment key={id}>
 
-                                            <tr className="border-b border-border">
-                                                {activeContent?.columns.map(col => (
-                                                    <td key={String(col.key)} className="px-4 py-4 text-sm text-text-main">
-                                                        <div className="flex items-center gap-2">
-                                                            {String(item[col.key])}
-                                                            {activeContent?.firstColumnDetail && col === activeContent?.columns[0] && activeContent?.firstColumnDetail!(item)}
-                                                        </div>
-                                                    </td>
-                                                ))}
-                                                <td className="px-4 py-4 text-right">
-                                                    {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id), onRefresh || (() => { }))}
-                                                </td>
-                                            </tr>
-                                        </React.Fragment>
-                                    )
-                                } else {
-                                    {/* Expansion */ }
-                                    return (
-                                        <React.Fragment key={id}>
-
-                                            {activeContent?.renderExpansion && (
-                                                <tr>
-                                                    <td colSpan={activeContent.columns.length + 1}>
-                                                        <div className="bg-form-bg border border-border rounded my-2 px-4 py-2">
-                                                            {activeContent?.renderExpansion!(item, () => setExpandedId(null), onRefresh || (() => { }))}
-                                                        </div>
+                                                <tr className="border-b border-border">
+                                                    {activeContent?.columns.map(col => (
+                                                        <td key={String(col.key)} className="px-4 py-4 text-sm text-text-main">
+                                                            <div className="flex items-center gap-2">
+                                                                {String(item[col.key])}
+                                                                {activeContent?.firstColumnDetail && col === activeContent?.columns[0] && activeContent?.firstColumnDetail!(item)}
+                                                            </div>
+                                                        </td>
+                                                    ))}
+                                                    <td className="px-4 py-4 text-right">
+                                                        {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id), onRefresh || (() => { }))}
                                                     </td>
                                                 </tr>
-                                            )}
+                                            </React.Fragment>
+                                        )
+                                    } else {
+                                        {/* Expansion */ }
+                                        return (
+                                            <React.Fragment key={id}>
 
-                                        </React.Fragment>
-                                    )
-                                }
-                            })}
-                        </tbody>
-                    </table>
-                    {sortedData?.length === 0 && (
-                        <div className="px-4 py-4 text-center text-sm text-text-main">
-                            Nenhum dado encontrado.
-                        </div>
-                    )}
-                </div>
+                                                {activeContent?.renderExpansion && (
+                                                    <tr>
+                                                        <td colSpan={activeContent.columns.length + 1}>
+                                                            <div className="bg-form-bg border border-border rounded my-2 px-4 py-2">
+                                                                {activeContent?.renderExpansion!(item, () => setExpandedId(null), onRefresh || (() => { }))}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )}
+
+                                            </React.Fragment>
+                                        )
+                                    }
+                                })}
+                            </tbody>
+                        </table>
+                        {sortedData?.length === 0 && (
+                            <div className="px-4 py-4 text-center text-sm text-text-main">
+                                Nenhum dado encontrado.
+                            </div>
+                        )}
+                    </div>
+                </>}
+                {hasAccess === false && (
+                    <div className="p-16 text-center">
+                        <h2 className="text-xl font-bold text-standard-red mb-2">Acesso Negado</h2>
+                        <p className="text-text-main">Você não tem permissão para visualizar o conteúdo deste formulário.</p>
+                    </div>
+                )}
             </div>
         </section>
     );

@@ -2,6 +2,7 @@ import { type ContentProps } from "../components/content";
 
 export interface PageConfig {
     title: string;
+    adminOnly?: boolean;
     contents: ContentConfig[];
 }
 
@@ -19,7 +20,8 @@ export function registerContent(
     categoryId: string,
     subCategoryId: string,
     pageTitle: string,
-    content: ContentConfig
+    content: ContentConfig,
+    adminOnly?: boolean
 ) {
     if (!registry[categoryId]) {
         registry[categoryId] = {};
@@ -27,6 +29,7 @@ export function registerContent(
     if (!registry[categoryId][subCategoryId]) {
         registry[categoryId][subCategoryId] = {
             title: pageTitle,
+            adminOnly: adminOnly,
             contents: []
         };
     }
@@ -52,12 +55,12 @@ export function initRegistry() {
         label: 'Usuários',
         loader: fetchUsersData,
         component: UsersPermissionsContent
-    });
+    }, true);
 
     registerContent('admin', 'permissoes', 'Permissões', {
         id: 'solicitacoes',
         label: 'Solicitações',
         loader: fetchApplicantsData,
         component: ApplicantPermissionsContent
-    });
+    }, true);
 }

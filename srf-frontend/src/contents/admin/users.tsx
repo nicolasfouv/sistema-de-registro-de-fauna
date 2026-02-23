@@ -151,7 +151,7 @@ export const UsersContentDefinition = {
     )
 };
 
-export const fetchUsersData = async () => {
+export async function fetchUsersData() {
     return getUsers();
 };
 
