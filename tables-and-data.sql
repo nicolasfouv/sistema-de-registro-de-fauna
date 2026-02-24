@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `srf` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `srf`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: srf
@@ -18,10 +20,24 @@ SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
 SET @@SESSION.SQL_LOG_BIN= 0;
 
 --
--- GTID state at the beginning of the backup 
+-- Table structure for table `_prisma_migrations`
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f3ce19b-f3da-11f0-8ce9-0250f71b524a:1-4906';
+DROP TABLE IF EXISTS `_prisma_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `_prisma_migrations` (
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `checksum` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `finished_at` datetime(3) DEFAULT NULL,
+  `migration_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `rolled_back_at` datetime(3) DEFAULT NULL,
+  `started_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `applied_steps_count` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `_prisma_migrations`
@@ -34,6 +50,27 @@ INSERT INTO `_prisma_migrations` VALUES ('10b67c60-7c52-4f81-b75f-b7de44d2091a',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `auditlog`
+--
+
+DROP TABLE IF EXISTS `auditlog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auditlog` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `acao` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_usuario` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_formulario` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `auditlog_id_usuario_fkey` (`id_usuario`),
+  KEY `auditlog_id_formulario_fkey` (`id_formulario`),
+  CONSTRAINT `auditlog_id_formulario_fkey` FOREIGN KEY (`id_formulario`) REFERENCES `formulario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `auditlog_id_usuario_fkey` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `auditlog`
 --
 
@@ -41,6 +78,28 @@ LOCK TABLES `auditlog` WRITE;
 /*!40000 ALTER TABLE `auditlog` DISABLE KEYS */;
 /*!40000 ALTER TABLE `auditlog` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `autorizacao_grupo`
+--
+
+DROP TABLE IF EXISTS `autorizacao_grupo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `autorizacao_grupo` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_nivel_acesso` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_formulario` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_grupo` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `autorizacao_grupo_id_formulario_fkey` (`id_formulario`),
+  KEY `autorizacao_grupo_id_grupo_fkey` (`id_grupo`),
+  KEY `autorizacao_grupo_id_nivel_acesso_fkey` (`id_nivel_acesso`),
+  CONSTRAINT `autorizacao_grupo_id_formulario_fkey` FOREIGN KEY (`id_formulario`) REFERENCES `formulario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `autorizacao_grupo_id_grupo_fkey` FOREIGN KEY (`id_grupo`) REFERENCES `grupo` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `autorizacao_grupo_id_nivel_acesso_fkey` FOREIGN KEY (`id_nivel_acesso`) REFERENCES `enum_nivel_acesso` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `autorizacao_grupo`
@@ -53,6 +112,28 @@ INSERT INTO `autorizacao_grupo` VALUES ('001','read','analiseectoparasitos-am','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `autorizacao_usuario`
+--
+
+DROP TABLE IF EXISTS `autorizacao_usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `autorizacao_usuario` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_nivel_acesso` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_formulario` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_usuario` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `autorizacao_usuario_id_usuario_fkey` (`id_usuario`),
+  KEY `autorizacao_usuario_id_formulario_fkey` (`id_formulario`),
+  KEY `autorizacao_usuario_id_nivel_acesso_fkey` (`id_nivel_acesso`),
+  CONSTRAINT `autorizacao_usuario_id_formulario_fkey` FOREIGN KEY (`id_formulario`) REFERENCES `formulario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `autorizacao_usuario_id_nivel_acesso_fkey` FOREIGN KEY (`id_nivel_acesso`) REFERENCES `enum_nivel_acesso` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `autorizacao_usuario_id_usuario_fkey` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `autorizacao_usuario`
 --
 
@@ -61,6 +142,22 @@ LOCK TABLES `autorizacao_usuario` WRITE;
 INSERT INTO `autorizacao_usuario` VALUES ('1b9ef3a6-97c1-4013-a521-ee37cbda5662','edit','animal-av','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('31c6c105-f12c-41a2-8f3a-5ed2827f4033','read','animal-am','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('4cf0232f-dbf8-4176-aad2-f7e8d64443d2','edit_unrestricted','tutor','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('aa58d1a4-488e-4fa8-a86c-16f08e0a0358','edit_unrestricted','analisehelmintos','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('c0a357e7-2acd-475b-8ce8-be8671869ad6','read','analisefezes','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('f9b999d7-867b-4be1-a279-a530a3db49b2','edit_unrestricted','resultadoexame-am','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('ff70f339-e0bd-4f29-aac4-5bf3147496c4','read','necropsia','b5b7be60-4ded-4937-bad8-af5dbb611bdb'),('ff9be46e-e2ed-4c9b-98b1-06af1fa8fe6d','edit_unrestricted','analisemolecular','b5b7be60-4ded-4937-bad8-af5dbb611bdb');
 /*!40000 ALTER TABLE `autorizacao_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `categoria`
+--
+
+DROP TABLE IF EXISTS `categoria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categoria` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icone_categoria` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `categoria_nome_key` (`nome`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `categoria`
@@ -73,6 +170,27 @@ INSERT INTO `categoria` VALUES ('0_animaisvivos','Animais Vivos','https://www.sv
 UNLOCK TABLES;
 
 --
+-- Table structure for table `changelog`
+--
+
+DROP TABLE IF EXISTS `changelog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `changelog` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_auditlog` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tabela` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_registro` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_acao` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dados_antigos` json DEFAULT NULL,
+  `dados_novos` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `changelog_id_auditlog_fkey` (`id_auditlog`),
+  CONSTRAINT `changelog_id_auditlog_fkey` FOREIGN KEY (`id_auditlog`) REFERENCES `auditlog` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `changelog`
 --
 
@@ -80,6 +198,21 @@ LOCK TABLES `changelog` WRITE;
 /*!40000 ALTER TABLE `changelog` DISABLE KEYS */;
 /*!40000 ALTER TABLE `changelog` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `enum_nivel_acesso`
+--
+
+DROP TABLE IF EXISTS `enum_nivel_acesso`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `enum_nivel_acesso` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `valor` int NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `enum_nivel_acesso`
@@ -92,6 +225,23 @@ INSERT INTO `enum_nivel_acesso` VALUES ('edit',2,'Editar'),('edit_unrestricted',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `formulario`
+--
+
+DROP TABLE IF EXISTS `formulario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `formulario` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_sub_categoria` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `formulario_id_sub_categoria_fkey` (`id_sub_categoria`),
+  CONSTRAINT `formulario_id_sub_categoria_fkey` FOREIGN KEY (`id_sub_categoria`) REFERENCES `sub_categoria` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `formulario`
 --
 
@@ -100,6 +250,20 @@ LOCK TABLES `formulario` WRITE;
 INSERT INTO `formulario` VALUES ('analiseectoparasitos-am','Análise de Ectoparasitos','resultadoseanalises'),('analiseectoparasitos-av','Análise de Ectoparasitos','exameseanalises'),('analisefezes','Análise de Fezes','exameseanalises'),('analisehelmintos','Análise de Helmintos','resultadoseanalises'),('analisemolecular','Análise Molecular','exameseanalises'),('analiseovocistos','Análise de Ovos/Cistos','exameseanalises'),('animal-am','Animal','animaisatropelados'),('animal-av','Animal','animais'),('entrevista','Entrevista','entrevistas'),('especiesanimaisvivosmortos','Espécies de Animais Vivos/Mortos','geral'),('necropsia','Necropsia','necropsias'),('rastreiogps','Rastreio de GPS','rastreiodegps'),('resultadoexame-am','Resultado de Exames','resultadoseanalises'),('resultadoexame-av','Resultado de Exames','exameseanalises'),('resultadosorologico','Resultado Sorológico','exameseanalises'),('tutor','Tutor','animais'),('vacina','Vacina','veterinario'),('visitaveterinaria','Visita Veterinária','veterinario');
 /*!40000 ALTER TABLE `formulario` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `funcao`
+--
+
+DROP TABLE IF EXISTS `funcao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `funcao` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `funcao`
@@ -112,6 +276,21 @@ INSERT INTO `funcao` VALUES ('0','owner'),('1','admin'),('2','common');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `grupo`
+--
+
+DROP TABLE IF EXISTS `grupo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `grupo` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `grupo_nome_key` (`nome`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `grupo`
 --
 
@@ -120,6 +299,25 @@ LOCK TABLES `grupo` WRITE;
 INSERT INTO `grupo` VALUES ('entr','Entrevistador'),('leg','Legista'),('pesqecto','Pesquisador de Ectoparasitos'),('pesqfez','Pesquisador de Fezes'),('pesqhelm','Pesquisador de Helmintos'),('pesqsor','Pesquisador de Sorológico'),('vet','Veterinário');
 /*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `solicitante`
+--
+
+DROP TABLE IF EXISTS `solicitante`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `solicitante` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `senha` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mensagem` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `solicitante_email_key` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `solicitante`
@@ -131,6 +329,24 @@ LOCK TABLES `solicitante` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sub_categoria`
+--
+
+DROP TABLE IF EXISTS `sub_categoria`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sub_categoria` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_categoria` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sub_categoria_nome_key` (`nome`),
+  KEY `sub_categoria_id_categoria_fkey` (`id_categoria`),
+  CONSTRAINT `sub_categoria_id_categoria_fkey` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `sub_categoria`
 --
 
@@ -139,6 +355,27 @@ LOCK TABLES `sub_categoria` WRITE;
 INSERT INTO `sub_categoria` VALUES ('animais','Animais','0_animaisvivos'),('animaisatropelados','Animais Atropelados','1_animaismortos'),('entrevistas','Entrevistas','0_animaisvivos'),('exameseanalises','Exames e Análises','0_animaisvivos'),('geral','Geral','2_cadastrosbasicos'),('necropsias','Necrópsias','1_animaismortos'),('rastreiodegps','Rastreio de GPS','0_animaisvivos'),('resultadoseanalises','Resultados e Análises','1_animaismortos'),('veterinario','Veterinário','0_animaisvivos');
 /*!40000 ALTER TABLE `sub_categoria` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuario` (
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `senha` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_funcao` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '2',
+  `userPic` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `usuario_email_key` (`email`),
+  KEY `usuario_id_funcao_fkey` (`id_funcao`),
+  CONSTRAINT `usuario_id_funcao_fkey` FOREIGN KEY (`id_funcao`) REFERENCES `funcao` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `usuario`
@@ -160,4 +397,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-23 17:31:48
+-- Dump completed on 2026-02-23 21:52:59
