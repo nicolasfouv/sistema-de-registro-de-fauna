@@ -33,6 +33,9 @@ export class GroupService {
             }[]
         }[] = [];
         groupAccesses.forEach(access => {
+            const groupId = access.group?.id;
+            if (!groupId) return;
+
             const group = groups.find(g => g.id === access.group.id);
             if (group) {
                 group.groupAccess.push({
