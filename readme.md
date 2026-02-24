@@ -68,7 +68,7 @@ npm i
 npm start
 </pre>
 <h5>Banco de Dados</h5>
-<p>Importe os dados básicos para seu banco de dados local utilizando o arquivo <a href='https://github.com/nicolasfouv/sistema-de-registro-de-fauna/blob/main/system-body.sql'>system-body.sql</a>. Em seguida, rode na pasta de <strong>back-end</strong>:</p>
+<p>Importe os dados básicos para seu banco de dados local utilizando o arquivo <a href='https://github.com/nicolasfouv/sistema-de-registro-de-fauna/blob/main/tables-and-data.sql'>system-body.sql</a>. Em seguida, rode na pasta de <strong>back-end</strong>:</p>
 <pre>
 npx prisma db push
 </pre>
