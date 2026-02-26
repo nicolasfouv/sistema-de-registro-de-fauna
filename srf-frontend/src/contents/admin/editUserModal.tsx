@@ -67,24 +67,32 @@ export function EditUserModal({ user, close, refresh }: EditUserModalProps) {
                     <div className="w-full flex flex-col gap-4">
                         <div className="flex flex-col">
                             <label htmlFor="name" className="text-sm text-left font-bold mb-1">Nome</label>
-                            <input
-                                type="text"
-                                id="name"
-                                value={editName}
-                                onChange={(e) => { setEditName(e.target.value); setEditError(null); }}
-                                className="border border-border rounded p-2"
-                            />
+                            {(user.id === currentUser?.id || user.role.name !== 'owner') ? (
+                                <input
+                                    type="text"
+                                    id="name"
+                                    value={editName}
+                                    onChange={(e) => { setEditName(e.target.value); setEditError(null); }}
+                                    className="border border-border rounded p-2"
+                                />
+                            ) : (
+                                <input type="text" value={editName} disabled className="border border-border rounded p-2 bg-gray-100" />
+                            )}
                             {editError?.name && <p className="text-red-500 text-left text-sm">{editError.name}</p>}
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="email" className="text-sm text-left font-bold mb-1">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={editEmail}
-                                onChange={(e) => { setEditEmail(e.target.value); setEditError(null); }}
-                                className="border border-border rounded p-2"
-                            />
+                            {(user.id === currentUser?.id || user.role.name !== 'owner') ? (
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={editEmail}
+                                    onChange={(e) => { setEditEmail(e.target.value); setEditError(null); }}
+                                    className="border border-border rounded p-2"
+                                />
+                            ) : (
+                                <input type="text" value={editEmail} disabled className="border border-border rounded p-2 bg-gray-100" />
+                            )}
                             {editError?.email && <p className="text-red-500 text-left text-sm">{editError.email}</p>}
                         </div>
                         <div className="flex flex-col">
