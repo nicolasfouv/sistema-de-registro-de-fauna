@@ -108,7 +108,7 @@ export function EditUserModal({ user, close, refresh }: EditUserModalProps) {
                                     <option value="admin">Administrador</option>
                                 </select>
                             ) : (
-                                <input type="text" value="Dono do Sistema" disabled className="border border-border rounded p-2 bg-gray-100" />
+                                <input type="text" value="Super Admin" disabled className="border border-border rounded p-2 bg-gray-100" />
                             )}
                             {editError?.role && <p className="text-red-500 text-left text-sm">{editError.role}</p>}
                         </div>
