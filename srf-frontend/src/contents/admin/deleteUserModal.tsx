@@ -27,8 +27,8 @@ export function DeleteUserModal({ user, close, refresh }: DeleteUserModalProps) 
     }
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-            <div className="relative flex flex-col bg-white w-160 justify-center items-center rounded-2xl shadow-xl p-10">
+        <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
+            <div className="relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl p-6 md:p-10">
 
                 <button
                     onClick={() => close()}

@@ -55,11 +55,11 @@ export function EditUserModal({ user, close, refresh }: EditUserModalProps) {
                     ✕
                 </button>
 
-                <h2 className="text-2xl text-standard-blue font-bold -mt-6">
+                <h2 className="text-2xl text-standard-blue font-bold absolute top-2">
                     Editando Usuário
                 </h2>
 
-                <form onSubmit={(e) => handleSubmitEdit(e)} className="w-full h-full flex flex-col items-center justify-between gap-5">
+                <form onSubmit={(e) => handleSubmitEdit(e)} className="w-full h-full flex flex-col items-center justify-between gap-5 mt-5">
                     <div className="flex justify-center items-center rounded-full overflow-hidden size-24 bg-[#444141]">
                         <img src={user.userPic || userImg} alt="User picture" />
                     </div>
