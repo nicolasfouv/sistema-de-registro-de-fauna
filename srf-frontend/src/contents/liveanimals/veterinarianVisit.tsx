@@ -126,7 +126,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                     {isEditing ? 'Editando Visita Veterinária' : 'Nova Visita Veterinária'}
                 </h2>
 
-                <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 overflow-y-auto">
+                <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
                     <div className="grid grid-cols-2 gap-4">
                         {/* Visit */}
                         <div className="flex flex-col">
@@ -138,7 +138,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                                 className={`border border-border rounded p-2 ${isEditing ? 'bg-form-bg' : 'bg-white'}`}
                                 disabled={isEditing}
                                 required
-                                placeholder="Código da visita"
+                                placeholder="Código da visita..."
                             />
                         </div>
                         {/* Animal */}
@@ -199,7 +199,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                     </div>
 
                     {/* Body Measurements */}
-                    <div className="flex flex-col gap-2 mt-2">
+                    <div className="flex flex-col gap-2 mt-2 flex-1 min-h-0 overflow-y-auto">
                         <div className="flex justify-between items-center">
                             <label className="text-sm font-bold text-left">Medidas Corporais</label>
                             <button
