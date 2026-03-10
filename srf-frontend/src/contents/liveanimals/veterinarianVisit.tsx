@@ -433,7 +433,8 @@ function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData;
                 <hr className="border-gray-200" />
 
             </div>
-            <div className="flex gap-2 w-full text-sm grid grid-cols-3 mb-1">
+            {/* ==== Expansion Body ==== */}
+            <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                 <div className="flex flex-col w-full">
                     <label htmlFor="email" className="ml-1 font-bold">Veterinário</label>
                     <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -443,6 +444,7 @@ function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData;
                     <input type="text" disabled value={item.cardLink || 'Nenhum link informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
             </div>
+
             {item.bodyMeasurements.length > 0 && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
@@ -455,6 +457,21 @@ function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData;
                                 <input type="text" disabled value={bm.value} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                             </div>
                         ))}
+                    </div>
+                </>
+            )}
+            {item.hasSample && (
+                <>
+                    <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                        <h3 className="font-bold text-text-main uppercase">Amostras Coletadas na Visita</h3>
+                    </div>
+                    <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
+                        <button
+                            // onClick={() => setShowCreateModal(true)}
+                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                        >
+                            Visualizar
+                        </button>
                     </div>
                 </>
             )}
