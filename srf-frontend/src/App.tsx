@@ -4,7 +4,7 @@ import { Login } from "./pages/auth/login";
 import { Register } from "./pages/auth/register";
 import { Layout } from "./components/layout";
 import { User } from "./pages/user";
-import { DynamicContent } from "./pages/dynamic-content";
+import { DynamicContent } from "./pages/dynamicContent";
 
 const router = createBrowserRouter([
   {
