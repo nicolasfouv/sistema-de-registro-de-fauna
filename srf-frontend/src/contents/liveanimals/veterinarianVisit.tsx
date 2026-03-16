@@ -128,18 +128,6 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
 
                 <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
                     <div className="grid grid-cols-2 gap-4">
-                        {/* Visit ID (display only when editing) */}
-                        {isEditing && (
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Código</label>
-                                <input
-                                    type="text"
-                                    value={visit?.id}
-                                    className="border border-border rounded p-2 bg-form-bg"
-                                    disabled
-                                />
-                            </div>
-                        )}
                         {/* Animal */}
                         <div className="flex flex-col">
                             <label className="text-sm font-bold mb-1 text-left">Animal</label>
@@ -185,7 +173,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                         </div>
 
                         {/* Card Link */}
-                        <div className="flex flex-col col-span-2">
+                        <div className="flex flex-col">
                             <label className="text-sm font-bold mb-1 text-left">Link da Carteirinha</label>
                             <input
                                 type="text"
@@ -228,7 +216,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                                         >
                                             <option value="">Selecione...</option>
                                             {options.bodyMeasurementTypes.map(t => (
-                                                <option key={t.id} value={t.id}>{t.description} ({t.unit})</option>
+                                                <option key={t.id} value={t.id} disabled={bodyMeasurements.some(bm => bm.bodyMeasurementTypeId === t.id)}>{t.description} ({t.unit})</option>
                                             ))}
                                         </select>
                                     </div>

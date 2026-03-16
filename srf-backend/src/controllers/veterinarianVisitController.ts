@@ -45,8 +45,8 @@ class VeterinarianVisitController {
             return res.status(201).json(visit);
         } catch (error: any) {
             console.error(error);
-            if (error.message)
-                if (error.message === 'Visita veterinária já existe') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível criar uma visita veterinária com a mesma data e veterinário para o mesmo animal.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível criar uma visita veterinária com o tipo de medida corporal duplicado.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -68,6 +68,8 @@ class VeterinarianVisitController {
             return res.status(200).json(visit);
         } catch (error: any) {
             console.error(error);
+            if (error.message === 'Não é possível alterar uma visita veterinária para a mesma data e veterinário para o mesmo animal.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível alterar uma visita veterinária com o tipo de medida corporal duplicado.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -79,8 +81,7 @@ class VeterinarianVisitController {
             return res.status(200).json(result);
         } catch (error: any) {
             console.error(error);
-            if (error.message)
-                if (error.message === 'Visita veterinária não encontrada') return res.status(404).json({ error: error.message });
+            if (error.message === 'Visita veterinária não encontrada') return res.status(404).json({ error: error.message });
             if (error.message === 'Não é possível excluir a visita pois existem amostras vinculadas a ela. Remova as amostras antes de excluir a visita.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }

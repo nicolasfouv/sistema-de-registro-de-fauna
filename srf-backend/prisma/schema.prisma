@@ -382,6 +382,7 @@ model veterinarianVisit {
   sorologyAnalysis     sorologyAnalysis[]
   sampleAllocation     sampleAllocationVeterinarian[]
 
+  @@unique([liveAnimalId, veterinarianId, date])
   @@map("visita_veterinaria")
 }
 
@@ -606,6 +607,7 @@ model bodyMeasurementVeterinarian {
   bodyMeasurementType   bodyMeasurementTypeVeterinarian @relation(fields: [bodyMeasurementTypeId], references: [id])
   value                 Float                           @map("valor")
 
+  @@unique([veterinarianVisitId, bodyMeasurementTypeId])
   @@map("medida_corporal_veterinario")
 }
 
@@ -899,6 +901,7 @@ model bodyMeasurementNecropsy {
   bodyMeasurementType   bodyMeasurementTypeNecropsy @relation(fields: [bodyMeasurementTypeId], references: [id])
   value                 Float                       @map("valor")
 
+  @@unique([necropsyId, bodyMeasurementTypeId])
   @@map("medida_corporal_necropsia")
 }
 

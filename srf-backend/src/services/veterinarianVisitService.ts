@@ -94,6 +94,19 @@ export class VeterinarianVisitService {
     async create(data: VeterinarianVisitCreateInput, userId: string) {
 
         return prisma.$transaction(async (tx) => {
+            // Check if veterinarian visit already exists
+            const existingVisit = await tx.veterinarianVisit.findFirst({
+                where: {
+                    liveAnimalId: data.liveAnimalId,
+                    veterinarianId: data.veterinarianId,
+                    date: new Date(data.date + 'T12:00:00'),
+                }
+            });
+
+            if (existingVisit) {
+                throw new Error('Não é possível criar uma visita veterinária com a mesma data e veterinário para o mesmo animal.');
+            }
+
             // Create veterinarian visit
             const visit = await tx.veterinarianVisit.create({
                 data: {
@@ -103,6 +116,15 @@ export class VeterinarianVisitService {
                     cardLink: data.cardLink || null,
                 }
             });
+
+            // Check for duplicate body measurements
+            data.bodyMeasurements.forEach(e => {
+                const countTypeId = data.bodyMeasurements.filter(bm => bm.bodyMeasurementTypeId === e.bodyMeasurementTypeId).length;
+                if (countTypeId > 1) {
+                    throw new Error('Não é possível criar uma visita veterinária com o tipo de medida corporal duplicado.');
+                }
+            });
+
 
             // Create body measurements
             const measurements = [];
@@ -151,6 +173,30 @@ export class VeterinarianVisitService {
             if (!oldVisit) {
                 throw new Error('Visita veterinária não encontrada');
             }
+
+            // Check if veterinarian visit already exists
+            const existingVisit = await tx.veterinarianVisit.findFirst({
+                where: {
+                    id: {
+                        not: visitId
+                    },
+                    liveAnimalId: data.liveAnimalId,
+                    veterinarianId: data.veterinarianId,
+                    date: new Date(data.date + 'T12:00:00'),
+                }
+            });
+
+            if (existingVisit) {
+                throw new Error('Não é possível alterar uma visita veterinária para a mesma data e veterinário para o mesmo animal.');
+            }
+
+            // Check for duplicate body measurements
+            data.bodyMeasurements.forEach(e => {
+                const countTypeId = data.bodyMeasurements.filter(bm => bm.bodyMeasurementTypeId === e.bodyMeasurementTypeId).length;
+                if (countTypeId > 1) {
+                    throw new Error('Não é possível alterar uma visita veterinária com o tipo de medida corporal duplicado.');
+                }
+            });
 
             // Update veterinarian visit
             const updatedVisit = await tx.veterinarianVisit.update({
