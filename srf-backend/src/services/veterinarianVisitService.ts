@@ -22,7 +22,7 @@ interface VeterinarianVisitUpdateInput {
     bodyMeasurements: BodyMeasurementInput[],
 }
 
-class VeterinarianVisitService {
+export class VeterinarianVisitService {
     private auditService = new AuditService();
     private formId = 'visitaveterinaria';
 
@@ -74,9 +74,19 @@ class VeterinarianVisitService {
 
     async getFormOptions() {
         const [liveAnimals, veterinarians, bodyMeasurementTypes] = await Promise.all([
-            prisma.liveAnimal.findMany({ select: { id: true, name: true }, where: { active: true } }),
-            prisma.veterinarian.findMany({ select: { id: true, name: true } }),
-            prisma.bodyMeasurementTypeVeterinarian.findMany({ select: { id: true, description: true, unit: true } }),
+            prisma.liveAnimal.findMany({
+                select: { id: true, name: true },
+                where: { active: true },
+                orderBy: { name: 'asc' }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
+            }),
+            prisma.bodyMeasurementTypeVeterinarian.findMany({
+                select: { id: true, description: true, unit: true },
+                orderBy: { description: 'asc' }
+            }),
         ]);
         return { liveAnimals, veterinarians, bodyMeasurementTypes };
     }
@@ -253,5 +263,3 @@ class VeterinarianVisitService {
         });
     }
 }
-
-export { VeterinarianVisitService };
