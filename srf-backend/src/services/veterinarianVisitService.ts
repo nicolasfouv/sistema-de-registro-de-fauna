@@ -2,22 +2,21 @@ import { prisma } from "..";
 import { AuditService } from "./auditService";
 
 interface BodyMeasurementInput {
-    bodyMeasurementTypeId: string,
+    bodyMeasurementTypeId: number,
     value: number,
 }
 
 interface VeterinarianVisitCreateInput {
-    id: string,
-    liveAnimalId: string,
-    veterinarianId: string,
+    liveAnimalId: number,
+    veterinarianId: number,
     date: string,
     cardLink: string | null,
     bodyMeasurements: BodyMeasurementInput[],
 }
 
 interface VeterinarianVisitUpdateInput {
-    liveAnimalId: string,
-    veterinarianId: string,
+    liveAnimalId: number,
+    veterinarianId: number,
     date: string,
     cardLink: string | null,
     bodyMeasurements: BodyMeasurementInput[],
@@ -48,7 +47,7 @@ class VeterinarianVisitService {
 
         const visitsWithPermission = await Promise.all(
             visits.map(async (v) => {
-                const permission = await this.auditService.canUserEditRecord(userId, 'veterinarianVisit', v.id, this.formId);
+                const permission = await this.auditService.canUserEditRecord(userId, 'veterinarianVisit', String(v.id), this.formId);
                 return {
                     id: v.id,
                     canEdit: permission.canEdit,
@@ -86,12 +85,8 @@ class VeterinarianVisitService {
 
         return prisma.$transaction(async (tx) => {
             // Create veterinarian visit
-            const visitExists = await tx.veterinarianVisit.findUnique({ where: { id: data.id } });
-            if (visitExists) throw new Error('Visita veterinária já existe');
-
             const visit = await tx.veterinarianVisit.create({
                 data: {
-                    id: data.id,
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00'),
@@ -116,13 +111,13 @@ class VeterinarianVisitService {
             const changes = [
                 {
                     table: 'veterinarianVisit',
-                    recordId: visit.id,
+                    recordId: String(visit.id),
                     action: 'CREATE' as const,
                     newData: visit,
                 },
                 ...measurements.map(m => ({
                     table: 'bodyMeasurementVeterinarian',
-                    recordId: m.id,
+                    recordId: String(m.id),
                     action: 'CREATE' as const,
                     newData: m,
                 }))
@@ -134,7 +129,7 @@ class VeterinarianVisitService {
         });
     }
 
-    async update(visitId: string, data: VeterinarianVisitUpdateInput, userId: string) {
+    async update(visitId: number, data: VeterinarianVisitUpdateInput, userId: string) {
 
         return prisma.$transaction(async (tx) => {
             // Get old data
@@ -180,20 +175,20 @@ class VeterinarianVisitService {
             const changes = [
                 {
                     table: 'veterinarianVisit',
-                    recordId: visitId,
+                    recordId: String(visitId),
                     action: 'UPDATE' as const,
                     oldData: oldVisit,
                     newData: updatedVisit,
                 },
                 ...oldVisit.bodyMeasurement.map(m => ({
                     table: 'bodyMeasurementVeterinarian',
-                    recordId: m.id,
+                    recordId: String(m.id),
                     action: 'DELETE' as const,
                     oldData: m,
                 })),
                 ...newMeasurements.map(m => ({
                     table: 'bodyMeasurementVeterinarian',
-                    recordId: m.id,
+                    recordId: String(m.id),
                     action: 'CREATE' as const,
                     newData: m,
                 }))
@@ -205,7 +200,7 @@ class VeterinarianVisitService {
         });
     }
 
-    async delete(visitId: string, userId: string) {
+    async delete(visitId: number, userId: string) {
 
         return prisma.$transaction(async (tx) => {
             // Get old data for audit
@@ -240,13 +235,13 @@ class VeterinarianVisitService {
             const changes = [
                 ...oldVisit.bodyMeasurement.map(m => ({
                     table: 'bodyMeasurementVeterinarian',
-                    recordId: m.id,
+                    recordId: String(m.id),
                     action: 'DELETE' as const,
                     oldData: m,
                 })),
                 {
                     table: 'veterinarianVisit',
-                    recordId: visitId,
+                    recordId: String(visitId),
                     action: 'DELETE' as const,
                     oldData: oldVisit,
                 },

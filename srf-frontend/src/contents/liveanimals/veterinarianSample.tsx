@@ -78,7 +78,7 @@ export const VeterinarianSampleContentDefinition = {
     rowIdField: 'id',
     renderActions: (item: VeterinarianSampleData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
-            onClick={() => toggle(item.id)}
+            onClick={() => toggle(String(item.id))}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
         >
             Expandir

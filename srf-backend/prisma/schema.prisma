@@ -157,11 +157,11 @@ model changeLog {
 // ===== FORMS =====
 // ==x== Live Animal ==x==
 model liveAnimal {
-  id        String           @id @default(uuid())
-  specieId  String           @map("id_especie")
+  id        Int              @id @default(autoincrement())
+  specieId  Int              @map("id_especie")
   specie    specie           @relation(fields: [specieId], references: [id])
   name      String           @map("nome")
-  genderId  String           @map("id_genero")
+  genderId  Int              @map("id_genero")
   gender    enumAnimalGender @relation(fields: [genderId], references: [id])
   birthDate DateTime         @map("data_nascimento")
   active    Boolean          @map("ativo")
@@ -176,7 +176,7 @@ model liveAnimal {
 }
 
 model specie {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   liveAnimal liveAnimal[]
@@ -186,7 +186,7 @@ model specie {
 }
 
 model enumAnimalGender {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   liveAnimal liveAnimal[]
@@ -196,10 +196,10 @@ model enumAnimalGender {
 
 // ==x== GPS ==x==
 model gpsTracking {
-  id                    String           @id @default(uuid())
-  liveAnimalId          String           @unique @map("id_animal_vivo")
+  id                    Int              @id @default(autoincrement())
+  liveAnimalId          Int              @unique @map("id_animal_vivo")
   liveAnimal            liveAnimal       @relation(fields: [liveAnimalId], references: [id])
-  trackingDeviceId      String           @map("id_dispositivo_rastreio")
+  trackingDeviceId      Int              @map("id_dispositivo_rastreio")
   trackingDevice        trackingDevice   @relation(fields: [trackingDeviceId], references: [id])
   startDate             DateTime         @map("data_inicio")
   endDate               DateTime?        @map("data_fim")
@@ -207,7 +207,7 @@ model gpsTracking {
   monitoredDays         Int              @map("dias_monitorados")
   locationPoints        Int              @map("pontos_localizacao")
   livingArea            Float            @map("area_vida")
-  monitoringMethodId    String           @map("id_metodo_monitoramento")
+  monitoringMethodId    Int              @map("id_metodo_monitoramento")
   monitoringMethod      monitoringMethod @relation(fields: [monitoringMethodId], references: [id])
   rawSpreadsheetLink    String?          @map("link_planilha_bruta")
   editedSpreadsheetLink String?          @map("link_planilha_editada")
@@ -216,7 +216,7 @@ model gpsTracking {
 }
 
 model monitoringMethod {
-  id          String @id @default(uuid())
+  id          Int @id @default(autoincrement())
   description String @map("descricao")
 
   gpsTracking gpsTracking[]
@@ -225,7 +225,7 @@ model monitoringMethod {
 }
 
 model trackingDevice {
-  id           String  @id @default(uuid())
+  id           Int     @id @default(autoincrement())
   brand        String  @map("marca")
   serialNumber String  @map("numero_serie")
   note         String? @map("observacao")
@@ -237,8 +237,8 @@ model trackingDevice {
 
 // ==x== Interviews and Tutor ==x==
 model animalInterview {
-  id           String     @id @default(uuid())
-  liveAnimalId String     @unique @map("id_animal_vivo")
+  id           Int        @id @default(autoincrement())
+  liveAnimalId Int        @unique @map("id_animal_vivo")
   liveAnimal   liveAnimal @relation(fields: [liveAnimalId], references: [id])
 
   animalAnswer animalAnswer[]
@@ -247,21 +247,21 @@ model animalInterview {
 }
 
 model animalAnswer {
-  id                   String              @id @default(uuid())
-  animalInterviewId    String              @map("id_entrevista_animal")
+  id                   Int                 @id @default(autoincrement())
+  animalInterviewId    Int                 @map("id_entrevista_animal")
   animalInterview      animalInterview     @relation(fields: [animalInterviewId], references: [id])
-  animalQuestionId     String              @map("id_pergunta_animal")
+  animalQuestionId     Int                 @map("id_pergunta_animal")
   animalQuestion       animalQuestion      @relation(fields: [animalQuestionId], references: [id])
   text                 String?             @map("texto")
   quantity             Int?                @map("quantidade")
-  animalAnswerOptionId String?             @map("id_opcao_resposta_animal")
+  animalAnswerOptionId Int?                @map("id_opcao_resposta_animal")
   animalAnswerOption   animalAnswerOption? @relation(fields: [animalAnswerOptionId], references: [id])
 
   @@map("resposta_animal")
 }
 
 model animalQuestion {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   text String @map("pergunta")
 
   animalAnswerOption animalAnswerOption[]
@@ -271,8 +271,8 @@ model animalQuestion {
 }
 
 model animalAnswerOption {
-  id               String         @id @default(uuid())
-  animalQuestionId String         @map("id_pergunta_animal")
+  id               Int            @id @default(autoincrement())
+  animalQuestionId Int            @map("id_pergunta_animal")
   animalQuestion   animalQuestion @relation(fields: [animalQuestionId], references: [id])
   text             String         @map("resposta_possivel")
 
@@ -282,8 +282,8 @@ model animalAnswerOption {
 }
 
 model tutorInterview {
-  id      String   @id @default(uuid())
-  tutorId String   @unique @map("id_tutor")
+  id      Int      @id @default(autoincrement())
+  tutorId Int      @unique @map("id_tutor")
   tutor   tutor    @relation(fields: [tutorId], references: [id])
   date    DateTime @map("data")
 
@@ -293,9 +293,9 @@ model tutorInterview {
 }
 
 model tutor {
-  id        String     @id @default(uuid())
+  id        Int        @id @default(autoincrement())
   name      String     @map("nome")
-  genderId  String     @map("id_genero")
+  genderId  Int        @map("id_genero")
   gender    enumGender @relation(fields: [genderId], references: [id])
   birthDate DateTime   @map("data_nascimento")
 
@@ -306,7 +306,7 @@ model tutor {
 }
 
 model enumGender {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   tutor tutor[]
@@ -315,22 +315,22 @@ model enumGender {
 }
 
 model tutorAnswer {
-  id                  String             @id @default(uuid())
-  tutorInterviewId    String             @map("id_entrevista_tutor")
+  id                  Int                @id @default(autoincrement())
+  tutorInterviewId    Int                @map("id_entrevista_tutor")
   tutorInterview      tutorInterview     @relation(fields: [tutorInterviewId], references: [id])
-  tutorQuestionId     String             @map("id_pergunta_tutor")
+  tutorQuestionId     Int                @map("id_pergunta_tutor")
   tutorQuestion       tutorQuestion      @relation(fields: [tutorQuestionId], references: [id])
   text                String?            @map("texto")
   quantity            Int?               @map("quantidade")
-  tutorAnswerOptionId String?            @map("id_opcao_resposta_tutor")
+  tutorAnswerOptionId Int?               @map("id_opcao_resposta_tutor")
   tutorAnswerOption   tutorAnswerOption? @relation(fields: [tutorAnswerOptionId], references: [id])
 
   @@map("resposta_tutor")
 }
 
 model tutorAnswerOption {
-  id              String        @id @default(uuid())
-  tutorQuestionId String        @map("id_pergunta_tutor")
+  id              Int           @id @default(autoincrement())
+  tutorQuestionId Int           @map("id_pergunta_tutor")
   tutorQuestion   tutorQuestion @relation(fields: [tutorQuestionId], references: [id])
   text            String        @map("resposta_possivel")
 
@@ -340,7 +340,7 @@ model tutorAnswerOption {
 }
 
 model tutorQuestion {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   text String @map("pergunta")
 
   tutorAnswerOption tutorAnswerOption[]
@@ -352,10 +352,10 @@ model tutorQuestion {
 // Health
 
 model castration {
-  id                  String            @id @default(uuid())
-  liveAnimalId        String            @unique @map("id_animal_vivo")
+  id                  Int               @id @default(autoincrement())
+  liveAnimalId        Int               @unique @map("id_animal_vivo")
   liveAnimal          liveAnimal        @relation(fields: [liveAnimalId], references: [id])
-  veterinarianVisitId String            @unique @map("id_visita_veterinaria")
+  veterinarianVisitId Int               @unique @map("id_visita_veterinaria")
   veterinarianVisit   veterinarianVisit @relation(fields: [veterinarianVisitId], references: [id])
   date                DateTime          @map("data")
   note                String?           @map("observacao")
@@ -364,10 +364,10 @@ model castration {
 }
 
 model veterinarianVisit {
-  id             String       @id @default(uuid())
-  liveAnimalId   String       @map("id_animal_vivo")
+  id             Int          @id @default(autoincrement())
+  liveAnimalId   Int          @map("id_animal_vivo")
   liveAnimal     liveAnimal   @relation(fields: [liveAnimalId], references: [id])
-  veterinarianId String       @map("id_veterinario")
+  veterinarianId Int          @map("id_veterinario")
   veterinarian   veterinarian @relation(fields: [veterinarianId], references: [id])
   date           DateTime     @map("data")
   cardLink       String?      @map("link_carteirinha")
@@ -386,7 +386,7 @@ model veterinarianVisit {
 }
 
 model veterinarian {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   veterinarianVisit veterinarianVisit[]
@@ -395,7 +395,7 @@ model veterinarian {
 }
 
 model vaccine {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   vaccineApplication vaccineApplication[]
@@ -404,22 +404,22 @@ model vaccine {
 }
 
 model vaccineApplication {
-  id                  String             @id @default(uuid())
-  liveAnimalId        String             @map("id_animal_vivo")
+  id                  Int                @id @default(autoincrement())
+  liveAnimalId        Int                @map("id_animal_vivo")
   liveAnimal          liveAnimal         @relation(fields: [liveAnimalId], references: [id])
-  vaccineId           String             @map("id_vacina")
+  vaccineId           Int                @map("id_vacina")
   vaccine             vaccine            @relation(fields: [vaccineId], references: [id])
-  veterinarianVisitId String?            @map("id_visita_veterinaria")
+  veterinarianVisitId Int?               @map("id_visita_veterinaria")
   veterinarianVisit   veterinarianVisit? @relation(fields: [veterinarianVisitId], references: [id])
   date                DateTime           @map("data")
-  vaccineTypeId       String             @map("id_tipo_vacina")
+  vaccineTypeId       Int                @map("id_tipo_vacina")
   vaccineType         enumVaccineType    @relation(fields: [vaccineTypeId], references: [id])
 
   @@map("aplicacao_vacina")
 }
 
 model enumVaccineType {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   vaccineApplication vaccineApplication[]
@@ -428,12 +428,12 @@ model enumVaccineType {
 }
 
 model exam {
-  id                  String                   @id @default(uuid())
-  veterinarianVisitId String                   @unique @map("id_visita_veterinaria")
+  id                  Int                      @id @default(autoincrement())
+  veterinarianVisitId Int                      @unique @map("id_visita_veterinaria")
   veterinarianVisit   veterinarianVisit        @relation(fields: [veterinarianVisitId], references: [id])
-  generalConditionId  String                   @map("id_estado_geral")
+  generalConditionId  Int                      @map("id_estado_geral")
   generalCondition    enumExamGeneralCondition @relation(fields: [generalConditionId], references: [id])
-  interpretationId    String                   @map("id_interpretacao")
+  interpretationId    Int                      @map("id_interpretacao")
   interpretation      enumExamInterpretation   @relation(fields: [interpretationId], references: [id])
   note                String?                  @map("observacao")
 
@@ -443,7 +443,7 @@ model exam {
 }
 
 model enumExamGeneralCondition {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   exam exam[]
@@ -452,7 +452,7 @@ model enumExamGeneralCondition {
 }
 
 model enumExamInterpretation {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   exam exam[]
@@ -461,20 +461,20 @@ model enumExamInterpretation {
 }
 
 model examValue {
-  id               String                       @id @default(uuid())
-  examId           String                       @map("id_exame")
+  id               Int                          @id @default(autoincrement())
+  examId           Int                          @map("id_exame")
   exam             exam                         @relation(fields: [examId], references: [id])
-  examTypeId       String                       @map("id_tipo_exame")
+  examTypeId       Int                          @map("id_tipo_exame")
   examType         examType                     @relation(fields: [examTypeId], references: [id])
   value            String                       @map("valor")
-  interpretationId String?                      @map("id_interpretacao")
+  interpretationId Int?                         @map("id_interpretacao")
   interpretation   enumExamValueInterpretation? @relation(fields: [interpretationId], references: [id])
 
   @@map("valor_exame")
 }
 
 model enumExamValueInterpretation {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   examValue examValue[]
@@ -483,7 +483,7 @@ model enumExamValueInterpretation {
 }
 
 model examType {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   examValue examValue[]
@@ -492,11 +492,11 @@ model examType {
 }
 
 model stoolAnalysis {
-  id                     String               @id @default(uuid())
-  veterinarianVisitId    String               @unique @map("id_visita_veterinaria")
+  id                     Int                  @id @default(autoincrement())
+  veterinarianVisitId    Int                  @unique @map("id_visita_veterinaria")
   veterinarianVisit      veterinarianVisit    @relation(fields: [veterinarianVisitId], references: [id])
   weight                 Float                @map("peso")
-  processingTechnologyId String               @map("id_tecnologia_processamento")
+  processingTechnologyId Int                  @map("id_tecnologia_processamento")
   processingTechnology   processingTechnology @relation(fields: [processingTechnologyId], references: [id])
   note                   String?              @map("observacao")
 
@@ -507,7 +507,7 @@ model stoolAnalysis {
 }
 
 model processingTechnology {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   stoolAnalysis stoolAnalysis[]
@@ -516,10 +516,10 @@ model processingTechnology {
 }
 
 model eggCystAnalysis {
-  id              String        @id @default(uuid())
-  stoolAnalysisId String        @map("id_analise_fezes")
+  id              Int           @id @default(autoincrement())
+  stoolAnalysisId Int           @map("id_analise_fezes")
   stoolAnalysis   stoolAnalysis @relation(fields: [stoolAnalysisId], references: [id])
-  eggCystSpecieId String        @map("id_especie_ovo_cisto")
+  eggCystSpecieId Int           @map("id_especie_ovo_cisto")
   eggCystSpecie   eggCystSpecie @relation(fields: [eggCystSpecieId], references: [id])
   quantity        Int           @map("quantidade")
   note            String?       @map("observacao")
@@ -528,7 +528,7 @@ model eggCystAnalysis {
 }
 
 model eggCystSpecie {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   eggCystAnalysis   eggCystAnalysis[]
@@ -538,10 +538,10 @@ model eggCystSpecie {
 }
 
 model molecularAnalysis {
-  id              String        @id @default(uuid())
-  stoolAnalysisId String        @map("id_analise_fezes")
+  id              Int           @id @default(autoincrement())
+  stoolAnalysisId Int           @map("id_analise_fezes")
   stoolAnalysis   stoolAnalysis @relation(fields: [stoolAnalysisId], references: [id])
-  eggCystSpecieId String        @map("id_especie_ovo_cisto")
+  eggCystSpecieId Int           @map("id_especie_ovo_cisto")
   eggCystSpecie   eggCystSpecie @relation(fields: [eggCystSpecieId], references: [id])
   note            String?       @map("observacao")
 
@@ -549,18 +549,18 @@ model molecularAnalysis {
 }
 
 model physicalExam {
-  id                  String                           @id @default(uuid())
-  veterinarianVisitId String                           @unique @map("id_visita_veterinaria")
+  id                  Int                              @id @default(autoincrement())
+  veterinarianVisitId Int                              @unique @map("id_visita_veterinaria")
   veterinarianVisit   veterinarianVisit                @relation(fields: [veterinarianVisitId], references: [id])
-  generalConditionId  String                           @map("id_estado_geral")
+  generalConditionId  Int                              @map("id_estado_geral")
   generalCondition    enumPhysicalExamGeneralCondition @relation(fields: [generalConditionId], references: [id])
   fr                  String                           @map("FR")
   fc                  Int                              @map("FC")
   tempRectal          Float                            @map("temp_retal")
-  mucousId            String                           @map("id_mucosa")
+  mucousId            Int                              @map("id_mucosa")
   mucous              enumMucous                       @relation(fields: [mucousId], references: [id])
   tpc                 Int                              @map("TPC")
-  hydrationId         String                           @map("id_hidratacao")
+  hydrationId         Int                              @map("id_hidratacao")
   hydration           enumHydration                    @relation(fields: [hydrationId], references: [id])
   weight              Float                            @map("peso")
   score               Int                              @map("score")
@@ -572,7 +572,7 @@ model physicalExam {
 }
 
 model enumPhysicalExamGeneralCondition {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   physicalExam physicalExam[]
@@ -581,7 +581,7 @@ model enumPhysicalExamGeneralCondition {
 }
 
 model enumMucous {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   physicalExam physicalExam[]
@@ -590,7 +590,7 @@ model enumMucous {
 }
 
 model enumHydration {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   physicalExam physicalExam[]
@@ -599,10 +599,10 @@ model enumHydration {
 }
 
 model bodyMeasurementVeterinarian {
-  id                    String                          @id @default(uuid())
-  veterinarianVisitId   String                          @map("id_visita_veterinaria")
+  id                    Int                             @id @default(autoincrement())
+  veterinarianVisitId   Int                             @map("id_visita_veterinaria")
   veterinarianVisit     veterinarianVisit               @relation(fields: [veterinarianVisitId], references: [id])
-  bodyMeasurementTypeId String                          @map("id_tipo_medida_corporal")
+  bodyMeasurementTypeId Int                             @map("id_tipo_medida_corporal")
   bodyMeasurementType   bodyMeasurementTypeVeterinarian @relation(fields: [bodyMeasurementTypeId], references: [id])
   value                 Float                           @map("valor")
 
@@ -610,7 +610,7 @@ model bodyMeasurementVeterinarian {
 }
 
 model bodyMeasurementTypeVeterinarian {
-  id          String @id @default(uuid())
+  id          Int @id @default(autoincrement())
   description String @map("descricao")
   unit        String @map("unidade")
 
@@ -620,7 +620,7 @@ model bodyMeasurementTypeVeterinarian {
 }
 
 model bodyMeasurementTypeNecropsy {
-  id          String @id @default(uuid())
+  id          Int @id @default(autoincrement())
   description String @map("descricao")
   unit        String @map("unidade")
 
@@ -630,14 +630,14 @@ model bodyMeasurementTypeNecropsy {
 }
 
 model ectoparasiteAnalysisVeterinarian {
-  id                      String             @id @default(uuid())
-  veterinarianVisitId     String             @map("id_visita_veterinaria")
+  id                      Int                @id @default(autoincrement())
+  veterinarianVisitId     Int                @map("id_visita_veterinaria")
   veterinarianVisit       veterinarianVisit  @relation(fields: [veterinarianVisitId], references: [id])
-  ectoparasiteGenusId     String             @map("id_genero_ectoparasito")
+  ectoparasiteGenusId     Int                @map("id_genero_ectoparasito")
   ectoparasiteGenus       ectoparasiteGenus  @relation(fields: [ectoparasiteGenusId], references: [id])
-  ectoparasiteSpecieId    String             @map("id_especie_ectoparasito")
+  ectoparasiteSpecieId    Int                @map("id_especie_ectoparasito")
   ectoparasiteSpecie      ectoparasiteSpecie @relation("specie", fields: [ectoparasiteSpecieId], references: [id])
-  ectoparasiteSubSpecieId String             @map("id_subespecie_ectoparasito")
+  ectoparasiteSubSpecieId Int                @map("id_subespecie_ectoparasito")
   ectoparasiteSubSpecie   ectoparasiteSpecie @relation("subspecie", fields: [ectoparasiteSubSpecieId], references: [id])
   maleQuantity            Int                @map("quantidade_machos")
   femaleQuantity          Int                @map("quantidade_femeas")
@@ -650,7 +650,7 @@ model ectoparasiteAnalysisVeterinarian {
 }
 
 model ectoparasiteGenus {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   ectoparasiteAnalysisVeterinarian ectoparasiteAnalysisVeterinarian[]
@@ -660,7 +660,7 @@ model ectoparasiteGenus {
 }
 
 model ectoparasiteSpecie {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   ectoparasiteAnalysisVeterinarianSpecie    ectoparasiteAnalysisVeterinarian[] @relation("specie")
@@ -672,25 +672,25 @@ model ectoparasiteSpecie {
 }
 
 model sorologyAnalysis {
-  id                  String                       @id @default(uuid())
-  veterinarianVisitId String                       @map("id_visita_veterinaria")
+  id                  Int                          @id @default(autoincrement())
+  veterinarianVisitId Int                          @map("id_visita_veterinaria")
   veterinarianVisit   veterinarianVisit            @relation(fields: [veterinarianVisitId], references: [id])
-  sampleId            String                       @map("id_amostra")
+  sampleId            Int                          @map("id_amostra")
   sample              sampleAllocationVeterinarian @relation(fields: [sampleId], references: [id])
-  sorologyTestId      String                       @map("id_teste_sorologico")
+  sorologyTestId      Int                          @map("id_teste_sorologico")
   sorologyTest        sorologyTest                 @relation(fields: [sorologyTestId], references: [id])
-  sorologyAgentId     String                       @map("id_agente_sorologico")
+  sorologyAgentId     Int                          @map("id_agente_sorologico")
   sorologyAgent       sorologyAgent                @relation(fields: [sorologyAgentId], references: [id])
   cuttingPoint        String                       @map("ponto_corte")
   result              Float                        @map("resultado")
-  interpretationId    String                       @map("id_interpretacao")
+  interpretationId    Int                          @map("id_interpretacao")
   interpretation      enumSorologyInterpretation   @relation(fields: [interpretationId], references: [id])
 
   @@map("analise_sorologica")
 }
 
 model enumSorologyInterpretation {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   sorologyAnalysis sorologyAnalysis[]
@@ -699,7 +699,7 @@ model enumSorologyInterpretation {
 }
 
 model sorologyTest {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   sorologyAnalysis sorologyAnalysis[]
@@ -708,7 +708,7 @@ model sorologyTest {
 }
 
 model sorologyAgent {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   sorologyAnalysis sorologyAnalysis[]
@@ -717,14 +717,14 @@ model sorologyAgent {
 }
 
 model sampleAllocationVeterinarian {
-  id                  String                     @id @default(uuid())
-  veterinarianVisitId String                     @map("id_visita_veterinaria")
+  id                  Int                        @id @default(autoincrement())
+  veterinarianVisitId Int                        @map("id_visita_veterinaria")
   veterinarianVisit   veterinarianVisit          @relation(fields: [veterinarianVisitId], references: [id])
-  sampleTypeId        String                     @map("id_tipo_amostra")
+  sampleTypeId        Int                        @map("id_tipo_amostra")
   sampleType          sampleType                 @relation(fields: [sampleTypeId], references: [id])
-  storageId           String                     @map("id_armazenamento")
+  storageId           Int                        @map("id_armazenamento")
   storage             storage                    @relation(fields: [storageId], references: [id])
-  statusId            String                     @map("id_status")
+  statusId            Int                        @map("id_status")
   status              enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
   sendDate            DateTime?                  @map("data_envio")
   imageLink           String?                    @map("link_imagem")
@@ -736,7 +736,7 @@ model sampleAllocationVeterinarian {
 }
 
 model enumSampleAllocationStatus {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
@@ -746,7 +746,7 @@ model enumSampleAllocationStatus {
 }
 
 model sampleType {
-  id          String @id @default(uuid())
+  id          Int @id @default(autoincrement())
   description String @map("descricao")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
@@ -758,7 +758,7 @@ model sampleType {
 }
 
 model storage {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
@@ -769,17 +769,17 @@ model storage {
 
 // ==x== Dead Animal ==x==
 model deadAnimal {
-  id                      String                @id @default(uuid())
-  deadAnimalGroupId       String                @map("id_grupo_animal_morto")
+  id                      Int                   @id @default(autoincrement())
+  deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
   deadAnimalGroup         deadAnimalGroup       @relation(fields: [deadAnimalGroupId], references: [id])
-  specieId                String                @map("id_especie")
+  specieId                Int                   @map("id_especie")
   specie                  specie                @relation(fields: [specieId], references: [id])
-  deadAnimalOriginId      String                @map("id_origem_animal_morto")
+  deadAnimalOriginId      Int                   @map("id_origem_animal_morto")
   deadAnimalOrigin        enumDeadAnimalOrigin  @relation(fields: [deadAnimalOriginId], references: [id])
-  deadAnimalStatusId      String                @map("id_status_animal_morto")
+  deadAnimalStatusId      Int                   @map("id_status_animal_morto")
   deadAnimalStatus        enumDeadAnimalStatus  @relation(fields: [deadAnimalStatusId], references: [id])
   collectionDate          DateTime              @map("data_coleta")
-  collectionResponsibleId String                @map("id_responsavel_coleta")
+  collectionResponsibleId Int                   @map("id_responsavel_coleta")
   collectionResponsible   collectionResponsible @relation(fields: [collectionResponsibleId], references: [id])
   collectionLongitude     Float                 @map("longitude_coleta")
   collectionLatitude      Float                 @map("latitude_coleta")
@@ -792,7 +792,7 @@ model deadAnimal {
 }
 
 model deadAnimalGroup {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -801,7 +801,7 @@ model deadAnimalGroup {
 }
 
 model enumDeadAnimalOrigin {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -810,7 +810,7 @@ model enumDeadAnimalOrigin {
 }
 
 model enumDeadAnimalStatus {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -819,7 +819,7 @@ model enumDeadAnimalStatus {
 }
 
 model collectionResponsible {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -828,20 +828,20 @@ model collectionResponsible {
 }
 
 model necropsy {
-  id                      String                    @id @default(uuid())
-  deadAnimalId            String                    @unique @map("id_animal_morto")
+  id                      Int                       @id @default(autoincrement())
+  deadAnimalId            Int                       @unique @map("id_animal_morto")
   deadAnimal              deadAnimal                @relation(fields: [deadAnimalId], references: [id])
   performedDate           DateTime                  @map("data_realizacao")
-  bodyConditionId         String                    @map("id_estado_corporal")
+  bodyConditionId         Int                       @map("id_estado_corporal")
   bodyCondition           enumBodyCondition         @relation(fields: [bodyConditionId], references: [id])
-  clinicalConditionId     String                    @map("id_estado_clinico")
+  clinicalConditionId     Int                       @map("id_estado_clinico")
   clinicalCondition       enumClinicalCondition     @relation(fields: [clinicalConditionId], references: [id])
-  tutorId                 String?                   @map("id_tutor")
+  tutorId                 Int?                      @map("id_tutor")
   tutor                   tutor?                    @relation(fields: [tutorId], references: [id])
-  reproductiveConditionId String                    @map("id_condicao_reprodutiva")
+  reproductiveConditionId Int                       @map("id_condicao_reprodutiva")
   reproductiveCondition   enumReproductiveCondition @relation(fields: [reproductiveConditionId], references: [id])
   weight                  Float                     @map("peso")
-  ageId                   String                    @map("id_faixa_etaria")
+  ageId                   Int                       @map("id_faixa_etaria")
   age                     enumAge                   @relation(fields: [ageId], references: [id])
   note                    String?                   @map("observacao")
 
@@ -856,7 +856,7 @@ model necropsy {
 }
 
 model enumBodyCondition {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -865,7 +865,7 @@ model enumBodyCondition {
 }
 
 model enumClinicalCondition {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -874,7 +874,7 @@ model enumClinicalCondition {
 }
 
 model enumReproductiveCondition {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -883,7 +883,7 @@ model enumReproductiveCondition {
 }
 
 model enumAge {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -892,10 +892,10 @@ model enumAge {
 }
 
 model bodyMeasurementNecropsy {
-  id                    String                      @id @default(uuid())
-  necropsyId            String                      @map("id_necropsia")
+  id                    Int                         @id @default(autoincrement())
+  necropsyId            Int                         @map("id_necropsia")
   necropsy              necropsy                    @relation(fields: [necropsyId], references: [id])
-  bodyMeasurementTypeId String                      @map("id_tipo_medida_corporal")
+  bodyMeasurementTypeId Int                         @map("id_tipo_medida_corporal")
   bodyMeasurementType   bodyMeasurementTypeNecropsy @relation(fields: [bodyMeasurementTypeId], references: [id])
   value                 Float                       @map("valor")
 
@@ -903,10 +903,10 @@ model bodyMeasurementNecropsy {
 }
 
 model helminthAnalysis {
-  id               String         @id @default(uuid())
-  necropsyId       String         @map("id_necropsia")
+  id               Int            @id @default(autoincrement())
+  necropsyId       Int            @map("id_necropsia")
   necropsy         necropsy       @relation(fields: [necropsyId], references: [id])
-  helminthSpecieId String         @map("id_especie_helminto")
+  helminthSpecieId Int            @map("id_especie_helminto")
   helminthSpecie   helminthSpecie @relation(fields: [helminthSpecieId], references: [id])
   location         String         @map("localizacao")
   maleQuantity     Int            @map("quantidade_machos")
@@ -918,7 +918,7 @@ model helminthAnalysis {
 }
 
 model helminthSpecie {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   helminthAnalysis helminthAnalysis[]
@@ -927,14 +927,14 @@ model helminthSpecie {
 }
 
 model ectoparasiteAnalysisNecropsy {
-  id                      String             @id @default(uuid())
-  necropsyId              String             @map("id_necropsia")
+  id                      Int                @id @default(autoincrement())
+  necropsyId              Int                @map("id_necropsia")
   necropsy                necropsy           @relation(fields: [necropsyId], references: [id])
-  ectoparasiteGenusId     String             @map("id_genero_ectoparasito")
+  ectoparasiteGenusId     Int                @map("id_genero_ectoparasito")
   ectoparasiteGenus       ectoparasiteGenus  @relation(fields: [ectoparasiteGenusId], references: [id])
-  ectoparasiteSpecieId    String             @map("id_especie_ectoparasito")
+  ectoparasiteSpecieId    Int                @map("id_especie_ectoparasito")
   ectoparasiteSpecie      ectoparasiteSpecie @relation("specie", fields: [ectoparasiteSpecieId], references: [id])
-  ectoparasiteSubSpecieId String             @map("id_subespecie_ectoparasito")
+  ectoparasiteSubSpecieId Int                @map("id_subespecie_ectoparasito")
   ectoparasiteSubSpecie   ectoparasiteSpecie @relation("subspecie", fields: [ectoparasiteSubSpecieId], references: [id])
   maleQuantity            Int                @map("quantidade_machos")
   femaleQuantity          Int                @map("quantidade_femeas")
@@ -947,14 +947,14 @@ model ectoparasiteAnalysisNecropsy {
 }
 
 model sampleAllocationNecropsy {
-  id           String                     @id @default(uuid())
-  necropsyId   String                     @map("id_necropsia")
+  id           Int                        @id @default(autoincrement())
+  necropsyId   Int                        @map("id_necropsia")
   necropsy     necropsy                   @relation(fields: [necropsyId], references: [id])
-  sampleTypeId String                     @map("id_tipo_amostra")
+  sampleTypeId Int                        @map("id_tipo_amostra")
   sampleType   sampleType                 @relation(fields: [sampleTypeId], references: [id])
-  storageId    String                     @map("id_armazenamento")
+  storageId    Int                        @map("id_armazenamento")
   storage      storage                    @relation(fields: [storageId], references: [id])
-  statusId     String                     @map("id_status")
+  statusId     Int                        @map("id_status")
   status       enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
   sendDate     DateTime?                  @map("data_envio")
   imageLink    String?                    @map("link_imagem")
@@ -964,23 +964,23 @@ model sampleAllocationNecropsy {
 }
 
 model cpcrResult {
-  id                String          @id @default(uuid())
-  necropsyId        String          @map("id_necropsia")
+  id                Int             @id @default(autoincrement())
+  necropsyId        Int             @map("id_necropsia")
   necropsy          necropsy        @relation(fields: [necropsyId], references: [id])
-  sampleTypeId      String          @map("id_tipo_amostra")
+  sampleTypeId      Int             @map("id_tipo_amostra")
   sampleType        sampleType      @relation(fields: [sampleTypeId], references: [id])
   performedDate     DateTime        @map("data_realizacao")
-  extractionTypeId  String          @map("id_tipo_extracao")
+  extractionTypeId  Int             @map("id_tipo_extracao")
   extractionType    extractionType  @relation(fields: [extractionTypeId], references: [id])
-  targetGeneId      String          @map("id_gene_alvo")
+  targetGeneId      Int             @map("id_gene_alvo")
   targetGene        targetGene      @relation(fields: [targetGeneId], references: [id])
   primer            String          @map("primer")
   pb                Int             @map("pb")
-  suspiciousAgentId String          @map("id_agente_suspeito")
+  suspiciousAgentId Int             @map("id_agente_suspeito")
   suspiciousAgent   suspiciousAgent @relation(fields: [suspiciousAgentId], references: [id])
-  cpcrMethodId      String          @map("id_metodo_cpcr")
+  cpcrMethodId      Int             @map("id_metodo_cpcr")
   cpcrMethod        enumCpcrMethod  @relation(fields: [cpcrMethodId], references: [id])
-  cpcrStatusId      String          @map("id_resultado_cpcr")
+  cpcrStatusId      Int             @map("id_resultado_cpcr")
   cpcrStatus        enumCpcrStatus  @relation(fields: [cpcrStatusId], references: [id])
   control           String          @map("controle")
 
@@ -988,19 +988,19 @@ model cpcrResult {
 }
 
 model qpcrResult {
-  id                String          @id @default(uuid())
-  necropsyId        String          @map("id_necropsia")
+  id                Int             @id @default(autoincrement())
+  necropsyId        Int             @map("id_necropsia")
   necropsy          necropsy        @relation(fields: [necropsyId], references: [id])
-  sampleTypeId      String          @map("id_tipo_amostra")
+  sampleTypeId      Int             @map("id_tipo_amostra")
   sampleType        sampleType      @relation(fields: [sampleTypeId], references: [id])
   performedDate     DateTime        @map("data_realizacao")
-  targetGeneId      String          @map("id_gene_alvo")
+  targetGeneId      Int             @map("id_gene_alvo")
   targetGene        targetGene      @relation(fields: [targetGeneId], references: [id])
-  suspiciousAgentId String          @map("id_agente_suspeito")
+  suspiciousAgentId Int             @map("id_agente_suspeito")
   suspiciousAgent   suspiciousAgent @relation(fields: [suspiciousAgentId], references: [id])
   meanCt            Float           @map("ct_medio")
   estimatedCopies   Float           @map("copias_estimadas")
-  qpcrStatusId      String          @map("id_resultado_qpcr")
+  qpcrStatusId      Int             @map("id_resultado_qpcr")
   qpcrStatus        enumQpcrStatus  @relation(fields: [qpcrStatusId], references: [id])
   control           String          @map("controle")
 
@@ -1008,7 +1008,7 @@ model qpcrResult {
 }
 
 model extractionType {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1017,7 +1017,7 @@ model extractionType {
 }
 
 model targetGene {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1027,7 +1027,7 @@ model targetGene {
 }
 
 model suspiciousAgent {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1037,7 +1037,7 @@ model suspiciousAgent {
 }
 
 model enumCpcrMethod {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1046,7 +1046,7 @@ model enumCpcrMethod {
 }
 
 model enumCpcrStatus {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1055,7 +1055,7 @@ model enumCpcrStatus {
 }
 
 model enumQpcrStatus {
-  id   String @id @default(uuid())
+  id   Int @id @default(autoincrement())
   name String @map("nome")
 
   qpcrResult qpcrResult[]

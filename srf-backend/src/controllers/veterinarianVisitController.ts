@@ -32,21 +32,21 @@ class VeterinarianVisitController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const { id, liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = req.body;
+            const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = req.body;
 
             if (!liveAnimalId || !veterinarianId || !date) {
                 return res.status(400).json({ error: "Campos obrigatórios não informados" });
             }
 
             const visit = await new VeterinarianVisitService().create(
-                { id, liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements: bodyMeasurements || [] },
+                { liveAnimalId: Number(liveAnimalId), veterinarianId: Number(veterinarianId), date, cardLink, bodyMeasurements: (bodyMeasurements || []).map((bm: any) => ({ bodyMeasurementTypeId: Number(bm.bodyMeasurementTypeId), value: bm.value })) },
                 req.userId
             );
             return res.status(201).json(visit);
         } catch (error: any) {
             console.error(error);
             if (error.message)
-                if (error.message === 'Visita veterinária já existe' || 'O ID deve ser fornecido') return res.status(400).json({ error: error.message });
+                if (error.message === 'Visita veterinária já existe') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -61,8 +61,8 @@ class VeterinarianVisitController {
             }
 
             const visit = await new VeterinarianVisitService().update(
-                String(id),
-                { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements: bodyMeasurements || [] },
+                Number(id),
+                { liveAnimalId: Number(liveAnimalId), veterinarianId: Number(veterinarianId), date, cardLink, bodyMeasurements: (bodyMeasurements || []).map((bm: any) => ({ bodyMeasurementTypeId: Number(bm.bodyMeasurementTypeId), value: bm.value })) },
                 req.userId
             );
             return res.status(200).json(visit);
@@ -75,7 +75,7 @@ class VeterinarianVisitController {
     delete = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const result = await new VeterinarianVisitService().delete(String(id), req.userId);
+            const result = await new VeterinarianVisitService().delete(Number(id), req.userId);
             return res.status(200).json(result);
         } catch (error: any) {
             console.error(error);

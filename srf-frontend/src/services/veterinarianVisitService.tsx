@@ -1,12 +1,12 @@
 import { api } from "./api";
 
 export interface VeterinarianVisitData {
-    id: string;
+    id: number;
     canEdit: boolean;
     hasSample: boolean;
-    liveAnimalId: string;
+    liveAnimalId: number;
     liveAnimalName: string;
-    veterinarianId: string;
+    veterinarianId: number;
     veterinarianName: string;
     date: string;
     dateFormatted?: string;
@@ -15,17 +15,17 @@ export interface VeterinarianVisitData {
 }
 
 export interface BodyMeasurementData {
-    id?: string;
-    bodyMeasurementTypeId: string;
+    id?: number;
+    bodyMeasurementTypeId: number;
     bodyMeasurementTypeDescription?: string;
     bodyMeasurementTypeUnit?: string;
     value: number;
 }
 
 export interface VeterinarianVisitFormOptions {
-    liveAnimals: { id: string; name: string }[];
-    veterinarians: { id: string; name: string }[];
-    bodyMeasurementTypes: { id: string; description: string; unit: string }[];
+    liveAnimals: { id: number; name: string }[];
+    veterinarians: { id: number; name: string }[];
+    bodyMeasurementTypes: { id: number; description: string; unit: string }[];
 }
 
 export async function getVeterinarianVisits(): Promise<VeterinarianVisitData[]> {
@@ -39,29 +39,28 @@ export async function getVeterinarianVisitOptions(): Promise<VeterinarianVisitFo
 }
 
 export async function createVeterinarianVisit(data: {
-    id: string,
-    liveAnimalId: string,
-    veterinarianId: string,
+    liveAnimalId: number,
+    veterinarianId: number,
     date: string,
     cardLink: string,
-    bodyMeasurements: { bodyMeasurementTypeId: string; value: number }[];
+    bodyMeasurements: { bodyMeasurementTypeId: number; value: number }[];
 }) {
     const response = await api.post('/veterinarian-visit/create', data);
     return response.data;
 }
 
-export async function updateVeterinarianVisit(visitId: string, data: {
-    liveAnimalId: string,
-    veterinarianId: string,
+export async function updateVeterinarianVisit(visitId: number, data: {
+    liveAnimalId: number,
+    veterinarianId: number,
     date: string,
     cardLink: string,
-    bodyMeasurements: { bodyMeasurementTypeId: string; value: number }[],
+    bodyMeasurements: { bodyMeasurementTypeId: number; value: number }[],
 }) {
     const response = await api.put(`/veterinarian-visit/update/${visitId}`, data);
     return response.data;
 }
 
-export async function deleteVeterinarianVisit(id: string) {
+export async function deleteVeterinarianVisit(id: number) {
     const response = await api.delete(`/veterinarian-visit/delete/${id}`);
     return response.data;
 }

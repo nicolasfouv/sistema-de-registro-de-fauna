@@ -2,11 +2,11 @@ import { prisma } from "..";
 import { AuditService } from "./auditService";
 
 interface SampleInput {
-    visitId: string,
-    sampleTypeId: string,
+    visitId: number,
+    sampleTypeId: number,
     date: string | null,
-    statusId: string,
-    storageId: string,
+    statusId: number,
+    storageId: number,
     quantity: number,
     note: string | null,
 }
@@ -36,7 +36,7 @@ export class VeterinarianSampleService {
 
         const samplesWithPermission = await Promise.all(
             samples.map(async (s) => {
-                const permission = await this.auditService.canUserEditRecord(userId, 'sampleAllocationVeterinarian', s.id, this.formId);
+                const permission = await this.auditService.canUserEditRecord(userId, 'sampleAllocationVeterinarian', String(s.id), this.formId);
                 return {
                     id: s.id,
                     canEdit: permission.canEdit,

@@ -28,9 +28,8 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
     const [options, setOptions] = useState<VeterinarianVisitFormOptions | null>(null);
 
     // Form fields
-    const [visitId, setVisitId] = useState(visit?.id || '');
-    const [liveAnimalId, setLiveAnimalId] = useState(visit?.liveAnimalId || '');
-    const [veterinarianId, setVeterinarianId] = useState(visit?.veterinarianId || '');
+    const [liveAnimalId, setLiveAnimalId] = useState<number | ''>(visit?.liveAnimalId || '');
+    const [veterinarianId, setVeterinarianId] = useState<number | ''>(visit?.veterinarianId || '');
     const [date, setDate] = useState(visit?.date ? new Date(visit.date).toISOString().slice(0, 10) : '');
     const [cardLink, setCardLink] = useState(visit?.cardLink || '');
     const [bodyMeasurements, setBodyMeasurements] = useState<BodyMeasurementData[]>(
@@ -50,7 +49,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
     }, []);
 
     function addMeasurement() {
-        setBodyMeasurements([...bodyMeasurements, { bodyMeasurementTypeId: '', value: 0 }]);
+        setBodyMeasurements([...bodyMeasurements, { bodyMeasurementTypeId: 0, value: 0 }]);
     }
 
     function removeMeasurement(index: number) {
@@ -59,7 +58,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
 
     function updateMeasurement(index: number, field: string, value: any) {
         const updated = [...bodyMeasurements];
-        (updated[index] as any)[field] = field === 'value' ? parseFloat(value) : value;
+        (updated[index] as any)[field] = field === 'value' ? parseFloat(value) : Number(value);
         setBodyMeasurements(updated);
     }
 
@@ -71,8 +70,8 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
         try {
             if (isEditing) {
                 const data = {
-                    liveAnimalId: liveAnimalId,
-                    veterinarianId: veterinarianId,
+                    liveAnimalId: Number(liveAnimalId),
+                    veterinarianId: Number(veterinarianId),
                     date: date,
                     cardLink: cardLink,
                     bodyMeasurements: bodyMeasurements.map(bm => ({
@@ -83,9 +82,8 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                 await updateVeterinarianVisit(visit!.id, data);
             } else {
                 const data = {
-                    id: visitId,
-                    liveAnimalId: liveAnimalId,
-                    veterinarianId: veterinarianId,
+                    liveAnimalId: Number(liveAnimalId),
+                    veterinarianId: Number(veterinarianId),
                     date: date,
                     cardLink: cardLink,
                     bodyMeasurements: bodyMeasurements.map(bm => ({
@@ -130,25 +128,24 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
 
                 <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
                     <div className="grid grid-cols-2 gap-4">
-                        {/* Visit */}
-                        <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Código</label>
-                            <input
-                                type="text"
-                                value={visitId}
-                                onChange={(e) => setVisitId(e.target.value)}
-                                className={`border border-border rounded p-2 ${isEditing ? 'bg-form-bg' : 'bg-white'}`}
-                                disabled={isEditing}
-                                required
-                                placeholder="Código da visita..."
-                            />
-                        </div>
+                        {/* Visit ID (display only when editing) */}
+                        {isEditing && (
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Código</label>
+                                <input
+                                    type="text"
+                                    value={visit?.id}
+                                    className="border border-border rounded p-2 bg-form-bg"
+                                    disabled
+                                />
+                            </div>
+                        )}
                         {/* Animal */}
                         <div className="flex flex-col">
                             <label className="text-sm font-bold mb-1 text-left">Animal</label>
                             <select
                                 value={liveAnimalId}
-                                onChange={(e) => setLiveAnimalId(e.target.value)}
+                                onChange={(e) => setLiveAnimalId(Number(e.target.value))}
                                 className="border border-border rounded p-2 bg-white"
                                 required
                             >
@@ -164,7 +161,7 @@ function VeterinarianVisitFormModal({ visit, close, refresh }: VeterinarianVisit
                             <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
                             <select
                                 value={veterinarianId}
-                                onChange={(e) => setVeterinarianId(e.target.value)}
+                                onChange={(e) => setVeterinarianId(Number(e.target.value))}
                                 className="border border-border rounded p-2 bg-white"
                                 required
                             >
@@ -499,7 +496,7 @@ export const VeterinarianVisitContentDefinition = {
     rowIdField: 'id',
     renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
-            onClick={() => toggle(item.id)}
+            onClick={() => toggle(String(item.id))}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
         >
             Expandir
