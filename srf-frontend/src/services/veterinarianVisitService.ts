@@ -34,7 +34,7 @@ export async function getVeterinarianVisits(): Promise<VeterinarianVisitData[]> 
 }
 
 export async function getVeterinarianVisitOptions(): Promise<VeterinarianVisitFormOptions> {
-    const response = await api.get('/veterinarian-visit/options');
+    const response = await api.get('/veterinarian-visit/form-options');
     return response.data;
 }
 
