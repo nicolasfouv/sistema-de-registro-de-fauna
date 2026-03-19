@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import React, { type ReactNode } from "react";
-import { FilterBar } from "./filterbar";
+import { FilterBar } from "./filter";
 
 export interface ColumnProps<T> {
     key: keyof T | string,
@@ -106,7 +106,7 @@ export function Content({
 
             <div className="max-2-6xl mx-auto bg-white rounded shadow-sm border border-border">
                 {/* Tabs */}
-                <div className="px-6 pt-4 border-b border-border mb-6">
+                <div className="px-6 pt-4 border-b border-border mb-3">
                     <div className="flex gap-2">
                         {contents.map((content) => (
                             <button
@@ -122,15 +122,17 @@ export function Content({
 
                 {/* ToolBar */}
                 {activeContent && hasAccess !== false && <>
-                    {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
-
-                    <FilterBar
-                        key={activeContent?.id}
-                        columns={activeContent?.columns || []}
-                        onFilter={handleFilter}
-                        initialColumn={initialFilter?.column}
-                        initialTerm={initialFilter?.term}
-                    />
+                    {/* Action Icons */}
+                    <div className="flex justify-end mx-6 gap-1">
+                        {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
+                        <FilterBar
+                            key={activeContent?.id}
+                            columns={activeContent?.columns || []}
+                            onFilter={handleFilter}
+                            initialColumn={initialFilter?.column}
+                            initialTerm={initialFilter?.term}
+                        />
+                    </div>
 
                     {/* Table */}
                     <div className="px-6 pb-6">

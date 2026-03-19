@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { VeterinarianSampleFormModal } from "./formSampleModal";
+import greenPlusIcon from "../../../assets/greenPlus.svg";
 
 export function SampleToolBar({ refresh }: { refresh: () => void }) {
     const [showCreateModal, setShowCreateModal] = useState(false);
 
     return (
-        <div className="gap-4 bg-form-bg p-4 rounded-md mx-6 mb-6 flex flex-col">
-            <h3 className="font-bold text-text-main uppercase text-xs">Amostras</h3>
+        <>
             <button
                 onClick={() => setShowCreateModal(true)}
-                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm w-1/4"
+                className="flex items-center justify-center bg-form-bg w-10 rounded-t-xl cursor-pointer"
+                title="Novo Registro"
             >
-                Novo Registro
+                <img src={greenPlusIcon} alt="Novo Registro" className="w-4 h-4" />
             </button>
             {showCreateModal && (
                 <VeterinarianSampleFormModal
@@ -19,6 +20,6 @@ export function SampleToolBar({ refresh }: { refresh: () => void }) {
                     refresh={refresh}
                 />
             )}
-        </div>
+        </>
     );
 }
