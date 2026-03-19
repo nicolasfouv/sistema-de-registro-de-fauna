@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { ModalPortal } from "./modalPortal";
 import blueFilterIcon from "../assets/blueFilter.svg";
+import grayFilterIcon from "../assets/grayFilter.svg";
 
 interface FilterBarProps<T> {
     columns: {
@@ -18,28 +19,45 @@ interface FilterBarProps<T> {
 export function FilterBar<T>({ columns, onFilter, initialColumn, initialTerm }: FilterBarProps<T>) {
     const [selectedCol, setSelectedCol] = useState<string>(initialColumn || String(columns[0].key || ''));
     const [searchTerm, setSearchTerm] = useState(initialTerm || '');
+    const [hasFilter, setHasFilter] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     function handleApplyFilter(e: React.FormEvent) {
         e.preventDefault();
         onFilter(selectedCol, searchTerm);
+        if (searchTerm !== '' && selectedCol !== '') {
+            setHasFilter(true);
+        } else {
+            setHasFilter(false);
+        }
         setIsOpen(false);
+    }
+
+    function handleClose() {
+        if (hasFilter) {
+            setIsOpen(false);
+        } else {
+            setSearchTerm('');
+            setSelectedCol(String(columns[0].key || ''));
+            setHasFilter(false);
+            setIsOpen(false);
+        }
     }
 
     return (
         <>
             <button onClick={() => setIsOpen(true)}
-                className="flex items-center justify-center bg-form-bg w-10 pt-0.5 rounded-t-xl cursor-pointer"
+                className={`flex items-center justify-center bg-form-bg w-10 pt-0.5 rounded-t-xl cursor-pointer ${isOpen || hasFilter ? "h-8" : "h-6"}`}
                 title="Filtrar"
             >
-                <img src={blueFilterIcon} alt="Filtrar" className="w-5 h-5" />
+                <img src={hasFilter ? blueFilterIcon : grayFilterIcon} alt="Filtrar" className="w-5 h-5" />
             </button>
             {isOpen && (
                 <ModalPortal>
                     <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
                         <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-200 max-h-[90vh]">
                             <button
-                                onClick={() => setIsOpen(false)}
+                                onClick={handleClose}
                                 className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
                             >
                                 ✕

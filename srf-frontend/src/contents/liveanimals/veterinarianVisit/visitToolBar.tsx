@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { VeterinarianVisitFormModal } from "./formVisitModal";
 import greenPlusIcon from "../../../assets/greenPlus.svg";
+import grayPlusIcon from "../../../assets/grayPlus.svg";
 
 export function VisitToolBar({ refresh }: { refresh: () => void }) {
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -9,10 +10,10 @@ export function VisitToolBar({ refresh }: { refresh: () => void }) {
         <>
             <button
                 onClick={() => setShowCreateModal(true)}
-                className="flex items-center justify-center bg-form-bg w-10 rounded-t-xl cursor-pointer"
+                className={`flex items-center justify-center bg-form-bg w-10 rounded-t-xl cursor-pointer ${showCreateModal ? "h-8" : "h-6"}`}
                 title="Novo Registro"
             >
-                <img src={greenPlusIcon} alt="Novo Registro" className="w-4 h-4" />
+                <img src={showCreateModal ? greenPlusIcon : grayPlusIcon} alt="Novo Registro" className="w-4 h-4" />
             </button>
             {showCreateModal && (
                 <VeterinarianVisitFormModal

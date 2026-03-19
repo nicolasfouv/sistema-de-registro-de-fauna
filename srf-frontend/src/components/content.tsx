@@ -108,7 +108,7 @@ export function Content({
         <section className="ml-sidebar-size p-8 min-h-screen min-w-[600px] text-text-main">
 
             {/* Header */}
-            <h1 className="text-standard-red font-bold text-xl mb-3 uppercase">{title}</h1>
+            <h1 className="text-standard-red font-bold text-xl mb-1 uppercase">{title}</h1>
 
             <div className="max-2-6xl mx-auto bg-white rounded shadow-sm border border-border">
                 {/* Tabs */}
@@ -129,7 +129,7 @@ export function Content({
                 {/* ToolBar */}
                 {activeContent && hasAccess !== false && <>
                     {/* Action Icons */}
-                    <div className="flex justify-end mx-6 gap-1">
+                    <div className="flex justify-end items-end mx-6 gap-1 h-8">
                         {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
                         <FilterBar
                             key={activeContent?.id}
