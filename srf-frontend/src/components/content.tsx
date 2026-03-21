@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import React, { type ReactNode } from "react";
-import { FilterBar, type FilterValue } from "./filter";
+import { FilterBar, type FilterValue, type ActiveFilter } from "./filter";
 
 export interface ColumnProps<T> {
     key: keyof T | string,
@@ -77,13 +77,19 @@ export function Content({
     const [filteredData, setFilteredData] = useState(activeContent?.data);
     const [sortConfig, setSortConfig] = useState<{ key: string | null, direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
 
+    const initialFilters: ActiveFilter[] | undefined = initialFilter
+        ? [{
+            field: initialFilter.field,
+            label: activeContent?.filterFields?.find(f => String(f.key) === initialFilter.field)?.label
+                || activeContent?.columns?.find(c => String(c.key) === initialFilter.field)?.label
+                || initialFilter.field,
+            value: { type: 'text' as const, term: initialFilter.term },
+        }]
+        : undefined;
+
     useEffect(() => {
-        if (initialFilter && activeContent?.data) {
-            const searchTerm = initialFilter.term.toLocaleLowerCase();
-            const newData = activeContent.data.filter(item =>
-                String(item[initialFilter.field]).toLowerCase().includes(searchTerm)
-            );
-            setFilteredData(newData);
+        if (initialFilters && activeContent?.data) {
+            setFilteredData(applyFilters(activeContent.data, initialFilters));
         } else {
             setFilteredData(activeContent?.data);
         }
@@ -112,19 +118,16 @@ export function Content({
         setExpandedId(prev => (prev === id ? null : id));
     }
 
-    function handleFilter(field: string, filterValue: FilterValue) {
-        if (!activeContent?.data) return;
-
+    function applySingleFilter(data: any[], field: string, filterValue: FilterValue): any[] {
         if (filterValue.type === 'text') {
             const searchTerm = filterValue.term.toLocaleLowerCase();
-            const newData = activeContent.data.filter(item =>
+            return data.filter(item =>
                 String(item[field]).toLowerCase().includes(searchTerm)
             );
-            setFilteredData(newData);
         } else if (filterValue.type === 'date') {
             const from = filterValue.from ? new Date(filterValue.from + 'T00:00:00') : null;
             const to = filterValue.to ? new Date(filterValue.to + 'T23:59:59') : null;
-            const newData = activeContent.data.filter(item => {
+            return data.filter(item => {
                 const raw = item[field];
                 if (!raw) return false;
                 const itemDate = new Date(raw);
@@ -132,19 +135,31 @@ export function Content({
                 if (to && itemDate > to) return false;
                 return true;
             });
-            setFilteredData(newData);
         } else if (filterValue.type === 'boolean') {
             const target = filterValue.value;
-            const newData = activeContent.data.filter(item =>
+            return data.filter(item =>
                 String(item[field]).toLowerCase() === target
             );
-            setFilteredData(newData);
         } else if (filterValue.type === 'enum') {
             const target = filterValue.value;
-            const newData = activeContent.data.filter(item =>
+            return data.filter(item =>
                 String(item[field]).toLowerCase() === target.toLowerCase()
             );
-            setFilteredData(newData);
+        }
+        return data;
+    }
+
+    function applyFilters(data: any[], filters: ActiveFilter[]): any[] {
+        return filters.reduce((result, filter) => applySingleFilter(result, filter.field, filter.value), data);
+    }
+
+    function handleFilter(filters: ActiveFilter[]) {
+        if (!activeContent?.data) return;
+
+        if (filters.length === 0) {
+            setFilteredData(activeContent.data);
+        } else {
+            setFilteredData(applyFilters(activeContent.data, filters));
         }
     }
 
@@ -188,8 +203,7 @@ export function Content({
                             key={activeContent?.id}
                             fields={activeContent?.filterFields || (activeContent?.columns || []).map(c => ({ ...c, type: 'text' as const }))}
                             onFilter={handleFilter}
-                            initialField={initialFilter?.field}
-                            initialTerm={initialFilter?.term}
+                            initialFilters={initialFilters}
                         />
                     </div>
 

@@ -10,27 +10,52 @@ export type FilterValue =
     | { type: 'boolean'; value: string }
     | { type: 'enum'; value: string };
 
-interface FilterBarProps<T> {
-    fields: FilterFieldProps<T>[],
-    onFilter: (
-        field: string,
-        value: FilterValue,
-    ) => void,
-    initialField?: string,
-    initialTerm?: string,
+export interface ActiveFilter {
+    field: string;
+    label: string;
+    value: FilterValue;
 }
 
-export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: FilterBarProps<T>) {
-    const [selectedField, setSelectedField] = useState<string>(initialField || String(fields[0]?.key || ''));
-    const [searchTerm, setSearchTerm] = useState(initialTerm || '');
+function formatFilterValue(filter: ActiveFilter): string {
+    switch (filter.value.type) {
+        case 'text': return `"${filter.value.term}"`;
+        case 'date': {
+            const from = filter.value.from || '...';
+            const to = filter.value.to || '...';
+            return `${from} → ${to}`;
+        }
+        case 'boolean': return filter.value.value === 'true' ? 'Sim' : 'Não';
+        case 'enum': return filter.value.value;
+        default: return '';
+    }
+}
+
+interface FilterBarProps<T> {
+    fields: FilterFieldProps<T>[],
+    onFilter: (filters: ActiveFilter[]) => void,
+    initialFilters?: ActiveFilter[],
+}
+
+export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProps<T>) {
+    const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(initialFilters || []);
+    const [pendingFilters, setPendingFilters] = useState<ActiveFilter[]>(initialFilters || []);
+
+    const usedFields = pendingFilters.map(f => f.field);
+    const availableFields = fields.filter(f => !usedFields.includes(String(f.key)));
+
+    const [selectedField, setSelectedField] = useState<string>(
+        availableFields.length > 0 ? String(availableFields[0].key) : ''
+    );
+    const [searchTerm, setSearchTerm] = useState('');
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [selectedOption, setSelectedOption] = useState('');
-    const [hasFilter, setHasFilter] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     const currentField = fields.find(f => String(f.key) === selectedField);
     const currentType = currentField?.type ?? 'text';
+
+    const hasFilter = activeFilters.length > 0;
 
     function resetInputs() {
         setSearchTerm('');
@@ -64,27 +89,50 @@ export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: Fi
         }
     }
 
-    function handleApplyFilter(e: React.FormEvent) {
+    function handleAddFilter(e: React.FormEvent) {
         e.preventDefault();
-        const filterVal = buildFilterValue();
-        onFilter(selectedField, filterVal);
-        if (hasValue()) {
-            setHasFilter(true);
-        } else {
-            setHasFilter(false);
+        if (!hasValue() || !currentField) return;
+
+        const newFilter: ActiveFilter = {
+            field: selectedField,
+            label: currentField.label,
+            value: buildFilterValue(),
+        };
+
+        const updated = [...pendingFilters, newFilter];
+        setPendingFilters(updated);
+        resetInputs();
+
+        const newAvailable = fields.filter(f => !updated.map(af => af.field).includes(String(f.key)));
+        setSelectedField(newAvailable.length > 0 ? String(newAvailable[0].key) : '');
+    }
+
+    function handleRemoveFilter(field: string) {
+        const updated = pendingFilters.filter(f => f.field !== field);
+        setPendingFilters(updated);
+
+        if (selectedField === '' || !fields.some(f => String(f.key) === selectedField && !updated.map(af => af.field).includes(String(f.key)))) {
+            const newAvailable = fields.filter(f => !updated.map(af => af.field).includes(String(f.key)));
+            if (newAvailable.length > 0) {
+                setSelectedField(String(newAvailable[0].key));
+                resetInputs();
+            }
         }
+    }
+
+    function handleApplyFilters() {
+        setActiveFilters(pendingFilters);
+        onFilter(pendingFilters);
         setIsOpen(false);
     }
 
     function handleClose() {
-        if (hasFilter) {
-            setIsOpen(false);
-        } else {
-            resetInputs();
-            setSelectedField(String(fields[0]?.key || ''));
-            setHasFilter(false);
-            setIsOpen(false);
-        }
+        setPendingFilters(activeFilters);
+        resetInputs();
+        const usedByActive = activeFilters.map(f => f.field);
+        const newAvailable = fields.filter(f => !usedByActive.includes(String(f.key)));
+        setSelectedField(newAvailable.length > 0 ? String(newAvailable[0].key) : '');
+        setIsOpen(false);
     }
 
     function renderInput() {
@@ -96,12 +144,12 @@ export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: Fi
                         placeholder='Termo para o filtro...'
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-3/5 bg-white border border-border p-2 rounded"
+                        className="flex-1 bg-white border border-border p-2 rounded"
                     />
                 );
             case 'date':
                 return (
-                    <div className="w-3/5 flex items-center gap-2">
+                    <div className="flex-1 flex items-center gap-2">
                         <label className="text-sm text-text-main font-bold whitespace-nowrap">De</label>
                         <input
                             type='date'
@@ -124,7 +172,7 @@ export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: Fi
                     <select
                         value={selectedOption}
                         onChange={(e) => setSelectedOption(e.target.value)}
-                        className="w-3/5 bg-white border border-border p-2 rounded"
+                        className="flex-1 bg-white border border-border p-2 rounded"
                     >
                         <option value="">Selecione...</option>
                         <option value="true">{boolField.trueLabel}</option>
@@ -138,7 +186,7 @@ export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: Fi
                     <select
                         value={selectedOption}
                         onChange={(e) => setSelectedOption(e.target.value)}
-                        className="w-3/5 bg-white border border-border p-2 rounded"
+                        className="flex-1 bg-white border border-border p-2 rounded"
                     >
                         <option value="">Selecione...</option>
                         {enumField.options.map(opt => (
@@ -173,30 +221,60 @@ export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: Fi
                             <h2 className="absolute top-2 text-2xl text-standard-blue font-bold">
                                 Filtros
                             </h2>
-                            <form onSubmit={handleApplyFilter} className="flex w-full gap-4">
-                                <div className="w-1/5">
-                                    <select
-                                        value={selectedField}
-                                        onChange={(e) => handleFieldChange(e.target.value)}
-                                        className="bg-white border border-border p-2 rounded w-full"
-                                    >
-                                        {fields.map((field) => (
-                                            <option key={String(field.key)} value={String(field.key)}>
-                                                {field.label}
-                                            </option>
-                                        ))}
-                                    </select>
+
+                            {pendingFilters.length > 0 && (
+                                <div className="flex flex-wrap gap-2 w-full">
+                                    {pendingFilters.map(filter => (
+                                        <span
+                                            key={filter.field}
+                                            className="flex items-center gap-1.5 bg-blue-100 text-standard-blue text-sm font-semibold px-3 py-1.5 rounded-full"
+                                        >
+                                            {filter.label}: {formatFilterValue(filter)}
+                                            <button
+                                                onClick={() => handleRemoveFilter(filter.field)}
+                                                className="text-standard-blue hover:text-red-500 font-bold cursor-pointer ml-1 text-base leading-none"
+                                                title="Remover filtro"
+                                            >
+                                                ✕
+                                            </button>
+                                        </span>
+                                    ))}
                                 </div>
+                            )}
 
-                                {renderInput()}
+                            {availableFields.length > 0 && (
+                                <form onSubmit={handleAddFilter} className="flex w-full gap-4">
+                                    <div className="w-1/5">
+                                        <select
+                                            value={selectedField}
+                                            onChange={(e) => handleFieldChange(e.target.value)}
+                                            className="bg-white border border-border p-2 rounded w-full"
+                                        >
+                                            {availableFields.map((field) => (
+                                                <option key={String(field.key)} value={String(field.key)}>
+                                                    {field.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-                                <button
-                                    type="submit"
-                                    className="w-1/5 bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded"
-                                >
-                                    Filtrar
-                                </button>
-                            </form>
+                                    {renderInput()}
+
+                                    <button
+                                        type="submit"
+                                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded whitespace-nowrap"
+                                    >
+                                        Adicionar
+                                    </button>
+                                </form>
+                            )}
+
+                            <button
+                                onClick={handleApplyFilters}
+                                className="w-full bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded"
+                            >
+                                Filtrar
+                            </button>
                         </div>
                     </div>
                 </ModalPortal>
