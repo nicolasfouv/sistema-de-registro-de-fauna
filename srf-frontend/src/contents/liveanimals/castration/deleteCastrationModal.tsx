@@ -34,7 +34,7 @@ export function DeleteCastrationModal({ castration, close, refresh }: DeleteCast
                     <h2 className="absolute top-2 text-2xl text-standard-red font-bold">Atenção!</h2>
 
                     <p className="text-center font-bold text-lg">
-                        Tem certeza que deseja EXCLUIR a castração do animal <span className="text-standard-blue">{castration.liveAnimalName}</span>?
+                        Tem certeza que deseja EXCLUIR a castração do animal <span className="text-standard-blue">{castration.liveAnimalCode}</span>?
                     </p>
 
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}

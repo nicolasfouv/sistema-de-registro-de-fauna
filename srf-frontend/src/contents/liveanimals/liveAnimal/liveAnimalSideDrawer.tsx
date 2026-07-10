@@ -6,6 +6,7 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface LiveAnimalSideDrawerFilters {
     liveAnimalId?: number;
+    tutorId?: number;
 }
 
 interface LiveAnimalSideDrawerProps {
