@@ -47,14 +47,14 @@ export function CastrationSideDrawer({ filters, onClose }: CastrationSideDrawerP
     const pageFilters: any[] = [];
     if (filters.liveAnimalId) {
         const firstCastration = castrations[0];
-        if (firstCastration) pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstCastration.liveAnimalName } });
+        if (firstCastration) pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: firstCastration.liveAnimalCode } });
     }
     if (filters.veterinarianVisitId) {
         const firstCastration = castrations[0];
         if (firstCastration?.veterinarianVisitDate) {
             const date = firstCastration.veterinarianVisitDate.split('T')[0];
             pageFilters.push({ field: 'date', value: { type: 'date' as const, from: date, to: date } });
-            pageFilters.push({ field: 'liveAnimalName', value: { type: 'text' as const, term: firstCastration.liveAnimalName } });
+            pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: firstCastration.liveAnimalCode } });
         }
     }
     const pageUrl = `/animaisvivos/animais/castracao?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -100,7 +100,7 @@ export function CastrationSideDrawer({ filters, onClose }: CastrationSideDrawerP
                                     className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
                                 >
                                     <div className="flex flex-col items-start gap-0.5">
-                                        <span className="text-sm font-bold text-text-main">{castration.liveAnimalName}</span>
+                                        <span className="text-sm font-bold text-text-main">{castration.liveAnimalCode}</span>
                                         <span className="text-xs text-text-light-gray">
                                             {castration.dateFormatted}
                                         </span>
@@ -117,7 +117,7 @@ export function CastrationSideDrawer({ filters, onClose }: CastrationSideDrawerP
                                             Detalhes da Castração
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Animal" value={castration.liveAnimalName} />
+                                            <Field label="Animal" value={castration.liveAnimalCode} />
                                             <Field label="Data" value={castration.dateFormatted || ''} />
                                             <Field label="Observações" value={castration.note || 'Nenhuma observação informada'} fullWidth />
                                         </div>
