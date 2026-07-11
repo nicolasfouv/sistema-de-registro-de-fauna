@@ -5,10 +5,7 @@ import { router } from './routes/index';
 
 export const app: Application = express();
 app.use(express.json());
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    credentials: true
-}));
+app.use(cors());
 app.use(router);
 
 const PORT: number = Number(process.env.PORT) || 3333;
