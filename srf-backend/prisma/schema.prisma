@@ -204,6 +204,14 @@ model liveAnimalCodeSail {
   @@map("codigo_sigla_animal_vivo")
 }
 
+model deadAnimalCodeSail {
+  id         Int          @id @default(autoincrement())
+  sail       String       @unique @map("sigla")
+  deadAnimal deadAnimal[]
+
+  @@map("codigo_sigla_animal_morto")
+}
+
 model specie {
   id         Int          @id @default(autoincrement())
   name       String       @map("nome")
@@ -888,6 +896,8 @@ model storage {
 
 model deadAnimal {
   id                      Int                   @id @default(autoincrement())
+  codeSailId              Int                   @map("id_codigo_sigla")
+  codeNumber              Int                   @map("codigo_numero")
   deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
   specieId                Int                   @map("id_especie")
   deadAnimalOriginId      Int                   @map("id_origem_animal_morto")
@@ -898,7 +908,7 @@ model deadAnimal {
   collectionLatitude      Float                 @map("latitude_coleta")
   imageLink               String?               @map("link_imagem")
   note                    String?               @map("observacao")
-  code                    String                @unique @map("codigo")
+  codeSail                deadAnimalCodeSail    @relation(fields: [codeSailId], references: [id])
   specie                  specie                @relation(fields: [specieId], references: [id])
   deadAnimalGroup         deadAnimalGroup       @relation(fields: [deadAnimalGroupId], references: [id])
   deadAnimalOrigin        enumDeadAnimalOrigin  @relation(fields: [deadAnimalOriginId], references: [id])
@@ -906,6 +916,8 @@ model deadAnimal {
   deadAnimalStatus        enumDeadAnimalStatus  @relation(fields: [deadAnimalStatusId], references: [id])
   necropsy                necropsy?
 
+  @@unique([codeSailId, codeNumber])
+  @@index([codeSailId], map: "animal_morto_id_codigo_sigla_fkey")
   @@index([specieId], map: "animal_morto_id_especie_fkey")
   @@index([deadAnimalGroupId], map: "animal_morto_id_grupo_animal_morto_fkey")
   @@index([deadAnimalOriginId], map: "animal_morto_id_origem_animal_morto_fkey")

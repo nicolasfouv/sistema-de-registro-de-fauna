@@ -4,6 +4,7 @@ import { getDeadAnimals, getDeadAnimalFormOptions } from "../../../services/dead
 import { DeadAnimalToolBar } from "./deadAnimalToolBar";
 import { DeadAnimalExpansion } from "./deadAnimalExpansion";
 
+let codeSailsOptions: { value: string | number; label: string }[] = [];
 let originsOptions: { value: string | number; label: string }[] = [];
 let speciesOptions: { value: string | number; label: string }[] = [];
 let statusesOptions: { value: string | number; label: string }[] = [];
@@ -14,6 +15,7 @@ async function loadFilterOptions() {
     if (optionsLoaded) return;
     try {
         const opts = await getDeadAnimalFormOptions();
+        codeSailsOptions = opts.codeSails.map(s => ({ value: s.sail, label: s.sail }));
         originsOptions = opts.deadAnimalOrigins.map(o => ({ value: o.name, label: o.name }));
         speciesOptions = opts.species.map(s => ({ value: s.name, label: s.name }));
         statusesOptions = opts.deadAnimalStatuses.map(s => ({ value: s.name, label: s.name }));
@@ -38,6 +40,8 @@ export const DeadAnimalContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'code', label: 'Código', type: 'text' },
+            { key: 'sailCode', label: 'Sigla (Código)', type: 'enum', options: codeSailsOptions },
+            { key: 'codeNumber', label: 'Número (Código)', type: 'text' },
             { key: 'deadAnimalOriginName', label: 'Origem', type: 'enum', options: originsOptions },
             { key: 'specieName', label: 'Espécie', type: 'enum', options: speciesOptions },
             { key: 'collectionDate', label: 'Data da Coleta', type: 'date' },

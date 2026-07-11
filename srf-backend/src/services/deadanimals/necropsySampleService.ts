@@ -19,7 +19,7 @@ export class NecropsySampleService {
                 necropsy: {
                     select: {
                         id: true, performedDate: true,
-                        deadAnimal: { select: { id: true, code: true } }
+                        deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } }
                     }
                 },
                 sampleType: { select: { id: true, description: true } },
@@ -74,7 +74,7 @@ export class NecropsySampleService {
                     necropsyId: s.necropsy.id,
                     necropsyDate: s.necropsy.performedDate.toISOString(),
                     deadAnimalId: s.necropsy.deadAnimal.id,
-                    deadAnimalCode: s.necropsy.deadAnimal.code,
+                    deadAnimalCode: `${s.necropsy.deadAnimal.codeSail.sail}_${s.necropsy.deadAnimal.codeNumber}`,
                     sampleTypeId: s.sampleType.id,
                     sampleTypeDescription: s.sampleType.description,
                     statusId: s.status.id,
@@ -109,7 +109,7 @@ export class NecropsySampleService {
                 select: {
                     id: true,
                     performedDate: true,
-                    deadAnimal: { select: { id: true, code: true } }
+                    deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } }
                 },
                 orderBy: { performedDate: 'desc' }
             }),
@@ -131,7 +131,7 @@ export class NecropsySampleService {
             necropsies: necropsies.map(n => ({
                 id: n.id,
                 performedDate: n.performedDate.toISOString(),
-                deadAnimal: n.deadAnimal
+                deadAnimal: { id: n.deadAnimal.id, code: `${n.deadAnimal.codeSail.sail}_${n.deadAnimal.codeNumber}` }
             })),
             sampleTypes, status, storages
         };

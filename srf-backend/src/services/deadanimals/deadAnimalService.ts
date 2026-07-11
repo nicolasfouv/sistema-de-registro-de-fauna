@@ -17,7 +17,8 @@ export class DeadAnimalService {
             select: {
                 // Dados principais
                 id: true,
-                code: true,
+                codeSail: { select: { id: true, sail: true } },
+                codeNumber: true,
                 deadAnimalGroupId: true,
                 deadAnimalGroup: { select: { id: true, name: true } },
                 specieId: true,
@@ -36,9 +37,7 @@ export class DeadAnimalService {
                 // Registros associados
                 necropsy: { select: { id: true } }
             },
-            orderBy: {
-                code: 'asc'
-            }
+            orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
         });
 
         // Permissões
@@ -69,7 +68,10 @@ export class DeadAnimalService {
                     id: a.id,
                     createdByMe: creatorMap.get(String(a.id)) === requesterId,
                     canEdit: permission.canEdit,
-                    code: a.code,
+                    sailId: a.codeSail.id,
+                    sailCode: a.codeSail.sail,
+                    codeNumber: a.codeNumber,
+                    code: `${a.codeSail.sail}_${a.codeNumber}`,
                     deadAnimalGroupId: a.deadAnimalGroupId,
                     deadAnimalGroupName: a.deadAnimalGroup.name,
                     specieId: a.specieId,
@@ -94,7 +96,11 @@ export class DeadAnimalService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsDeadAnimalOutput> {
-        const [deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles] = await Promise.all([
+        const [codeSails, deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles] = await Promise.all([
+            prisma.deadAnimalCodeSail.findMany({
+                select: { id: true, sail: true },
+                orderBy: { sail: 'asc' }
+            }),
             prisma.deadAnimalGroup.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
@@ -117,20 +123,24 @@ export class DeadAnimalService {
             })
         ]);
 
-        return { deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles };
+        return { codeSails, deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles };
     }
 
     async create(data: CreateDeadAnimalInput, requesterId: string) {
-        // Verifica se já existe um animal morto com esse código
-        const existingAnimal = await prisma.deadAnimal.findFirst({
-            where: { code: data.code }
+        // Verifica se já existe um animal morto com essa sigla e número
+        const existingCode = await prisma.deadAnimal.findFirst({
+            where: {
+                codeSailId: data.sailId,
+                codeNumber: data.codeNumber
+            }
         });
-        if (existingAnimal) throw new Error('Já existe um animal morto com este código.');
+        if (existingCode) throw new Error('Já existe um animal morto cadastrado com esta sigla e número.');
 
         return prisma.$transaction(async (tx) => {
             const animal = await tx.deadAnimal.create({
                 data: {
-                    code: data.code,
+                    codeSailId: data.sailId,
+                    codeNumber: data.codeNumber,
                     deadAnimalGroupId: data.deadAnimalGroupId,
                     specieId: data.specieId,
                     deadAnimalOriginId: data.deadAnimalOriginId,
@@ -160,14 +170,15 @@ export class DeadAnimalService {
     }
 
     async update(recordId: number, data: UpdateDeadAnimalInput, requesterId: string) {
-        // Verifica se já existe outro animal morto com esse código
-        const existingAnimal = await prisma.deadAnimal.findFirst({
+        // Verifica se já existe outro animal morto com essa sigla e número
+        const existingCode = await prisma.deadAnimal.findFirst({
             where: {
-                code: data.code,
+                codeSailId: data.sailId,
+                codeNumber: data.codeNumber,
                 id: { not: recordId }
             }
         });
-        if (existingAnimal) throw new Error('Já existe um animal morto com este código.');
+        if (existingCode) throw new Error('Já existe um animal morto cadastrado com esta sigla e número.');
 
         return prisma.$transaction(async (tx) => {
             const existing = await tx.deadAnimal.findUnique({
@@ -178,7 +189,8 @@ export class DeadAnimalService {
             const updatedAnimal = await tx.deadAnimal.update({
                 where: { id: recordId },
                 data: {
-                    code: data.code,
+                    codeSailId: data.sailId,
+                    codeNumber: data.codeNumber,
                     deadAnimalGroupId: data.deadAnimalGroupId,
                     specieId: data.specieId,
                     deadAnimalOriginId: data.deadAnimalOriginId,
