@@ -7,7 +7,7 @@ export declare const answerOutputSchema: z.ZodObject<{
 export declare const animalInterviewOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     answers: z.ZodArray<z.ZodObject<{
         questionId: z.ZodNumber;
         questionText: z.ZodString;
@@ -30,14 +30,14 @@ export declare const getAllInterviewOutputSchema: z.ZodObject<{
     animalInterviews: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         liveAnimalId: z.ZodNumber;
-        liveAnimalName: z.ZodString;
+        liveAnimalCode: z.ZodString;
         answers: z.ZodArray<z.ZodObject<{
             questionId: z.ZodNumber;
             questionText: z.ZodString;
             answerText: z.ZodString;
         }, z.core.$strip>>;
     }, z.core.$strip>>;
-    liveAnimalNames: z.ZodOptional<z.ZodString>;
+    liveAnimaCodes: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const questionOptionSchema: z.ZodObject<{
     id: z.ZodNumber;
@@ -66,7 +66,7 @@ export declare const getFormOptionsInterviewOutputSchema: z.ZodObject<{
     }, z.core.$strip>>;
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
-        name: z.ZodString;
+        code: z.ZodString;
         tutorId: z.ZodNumber;
     }, z.core.$strip>>;
     animalQuestions: z.ZodArray<z.ZodObject<{

@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
 import {
-    type VeterinarianVisitData,
-    type VeterinarianVisitFormOptions,
-    type BodyMeasurementData,
     getVeterinarianVisitOptions,
     createVeterinarianVisit,
     updateVeterinarianVisit
 } from "../../../services/liveanimals/veterinarianVisitService";
+import {
+    type GetAllVeterinarianVisitOutput,
+    type GetFormOptionsVeterinarianVisitOutput
+} from "srf-shared-types";
+
+// Tipo para os itens do formulário: cobre tanto os já existentes (com id/descrição/unidade) como os novos
+type FormBodyMeasurement = { bodyMeasurementTypeId: number; value: number; id?: number; bodyMeasurementTypeDescription?: string; bodyMeasurementTypeUnit?: string; };
 
 interface VeterinarianVisitFormModalProps {
-    visit?: VeterinarianVisitData;
+    visit?: GetAllVeterinarianVisitOutput;
     close: () => void;
     refresh: () => void;
 }
@@ -20,14 +24,14 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [options, setOptions] = useState<VeterinarianVisitFormOptions | null>(null);
+    const [options, setOptions] = useState<GetFormOptionsVeterinarianVisitOutput | null>(null);
 
     const [liveAnimalId, setLiveAnimalId] = useState<number | ''>(visit?.liveAnimalId || '');
     const [veterinarianId, setVeterinarianId] = useState<number | ''>(visit?.veterinarianId || '');
     const [date, setDate] = useState(visit?.date ? new Date(visit.date).toISOString().slice(0, 10) : '');
     const [animalPicture, setAnimalPicture] = useState(visit?.animalPicture || '');
     const [note, setNote] = useState(visit?.note || '');
-    const [bodyMeasurements, setBodyMeasurements] = useState<BodyMeasurementData[]>(
+    const [bodyMeasurements, setBodyMeasurements] = useState<FormBodyMeasurement[]>(
         visit?.bodyMeasurements || []
     );
 

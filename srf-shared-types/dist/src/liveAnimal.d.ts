@@ -3,9 +3,13 @@ export declare const getAllLiveAnimalOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     createdByMe: z.ZodBoolean;
     canEdit: z.ZodBoolean;
+    sailId: z.ZodNumber;
+    sailCode: z.ZodString;
+    codeNumber: z.ZodNumber;
+    code: z.ZodOptional<z.ZodString>;
+    name: z.ZodOptional<z.ZodString>;
     specieId: z.ZodNumber;
     specieName: z.ZodString;
-    name: z.ZodString;
     genderId: z.ZodNumber;
     genderName: z.ZodString;
     birthDate: z.ZodString;
@@ -14,8 +18,8 @@ export declare const getAllLiveAnimalOutputSchema: z.ZodObject<{
     activeFormatted: z.ZodOptional<z.ZodString>;
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
-    tutorId: z.ZodNumber;
-    tutorName: z.ZodString;
+    tutorId: z.ZodOptional<z.ZodNumber>;
+    tutorName: z.ZodOptional<z.ZodString>;
     hasGpsTracking: z.ZodBoolean;
     hasCastration: z.ZodBoolean;
     hasVeterinarianVisit: z.ZodBoolean;
@@ -23,6 +27,10 @@ export declare const getAllLiveAnimalOutputSchema: z.ZodObject<{
     hasAnimalInterview: z.ZodBoolean;
 }, z.core.$strip>;
 export declare const getFormOptionsAnimalOutputSchema: z.ZodObject<{
+    codeSails: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        sail: z.ZodString;
+    }, z.core.$strip>>;
     species: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
@@ -37,24 +45,28 @@ export declare const getFormOptionsAnimalOutputSchema: z.ZodObject<{
     }, z.core.$strip>>;
 }, z.core.$strip>;
 export declare const createLiveAnimalInputSchema: z.ZodObject<{
+    sailId: z.ZodNumber;
+    codeNumber: z.ZodNumber;
+    name: z.ZodOptional<z.ZodString>;
     specieId: z.ZodNumber;
-    name: z.ZodString;
     genderId: z.ZodNumber;
     birthDate: z.ZodString;
     active: z.ZodBoolean;
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
-    tutorId: z.ZodNumber;
+    tutorId: z.ZodOptional<z.ZodNumber>;
 }, z.core.$strip>;
 export declare const updateLiveAnimalInputSchema: z.ZodObject<{
+    sailId: z.ZodNumber;
+    codeNumber: z.ZodNumber;
+    name: z.ZodOptional<z.ZodString>;
     specieId: z.ZodNumber;
-    name: z.ZodString;
     genderId: z.ZodNumber;
     birthDate: z.ZodString;
     active: z.ZodBoolean;
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
-    tutorId: z.ZodNumber;
+    tutorId: z.ZodOptional<z.ZodNumber>;
 }, z.core.$strip>;
 export type GetAllLiveAnimalOutput = z.infer<typeof getAllLiveAnimalOutputSchema>;
 export type GetFormOptionsAnimalOutput = z.infer<typeof getFormOptionsAnimalOutputSchema>;

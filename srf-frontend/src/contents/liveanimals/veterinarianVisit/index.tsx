@@ -1,8 +1,8 @@
 import { type ContentProps } from "../../../components/content";
 import {
     getVeterinarianVisits,
-    type VeterinarianVisitData,
 } from "../../../services/liveanimals/veterinarianVisitService";
+import { type GetAllVeterinarianVisitOutput } from "srf-shared-types";
 import { VisitExpansion } from "./visitExpansion";
 import { VisitToolBar } from "./visitToolBar";
 
@@ -29,7 +29,7 @@ export const VeterinarianVisitContentDefinition = {
         { key: 'hasStoolAnalysis', label: 'Possui Análise de Fezes', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],
     rowIdField: 'id',
-    renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
+    renderActions: (item: GetAllVeterinarianVisitOutput, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
             onClick={() => toggle(String(item.id))}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
@@ -37,7 +37,7 @@ export const VeterinarianVisitContentDefinition = {
             Expandir
         </button>
     ),
-    renderExpansion: (item: VeterinarianVisitData, close: () => void, refresh: () => void) => (
+    renderExpansion: (item: GetAllVeterinarianVisitOutput, close: () => void, refresh: () => void) => (
         <VisitExpansion item={item} close={close} refresh={refresh} />
     ),
     toolBar: (refresh: () => void) => (
@@ -53,7 +53,7 @@ export async function fetchVeterinarianVisitData() {
     }));
 }
 
-export const VeterinarianVisitContent: ContentProps<VeterinarianVisitData> = {
+export const VeterinarianVisitContent: ContentProps<GetAllVeterinarianVisitOutput> = {
     ...VeterinarianVisitContentDefinition,
     data: [],
-} as unknown as ContentProps<VeterinarianVisitData>;
+} as unknown as ContentProps<GetAllVeterinarianVisitOutput>;

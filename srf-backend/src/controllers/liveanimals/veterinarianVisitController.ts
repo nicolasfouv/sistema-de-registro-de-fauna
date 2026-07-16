@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { VeterinarianVisitService } from "../../services/liveanimals/veterinarianVisitService";
 import { AuditService } from "../../services/auditService";
-import { veterinarianVisitCreateInput, veterinarianVisitUpdateInput } from "../../models/veterinarianVisitModel";
+import {
+    createVeterinarianVisitInputSchema,
+    updateVeterinarianVisitInputSchema
+} from "srf-shared-types";
 
 class VeterinarianVisitController {
     private auditService = new AuditService();
@@ -34,7 +37,7 @@ class VeterinarianVisitController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements } = veterinarianVisitCreateInput.parse(req.body);
+            const { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements } = createVeterinarianVisitInputSchema.parse(req.body);
 
             const visit = await this.veterinarianVisitService.create(
                 { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements },
@@ -53,7 +56,7 @@ class VeterinarianVisitController {
         try {
             // sem verificação de permissão
             const { id } = req.params;
-            const { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements } = veterinarianVisitUpdateInput.parse(req.body);
+            const { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements } = updateVeterinarianVisitInputSchema.parse(req.body);
 
             const visit = await this.veterinarianVisitService.update(
                 Number(id),

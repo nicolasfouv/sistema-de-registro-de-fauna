@@ -1,13 +1,6 @@
 import { type ContentProps } from "../../components/content";
 import { acceptApplicant, getApplicants, rejectApplicant } from "../../services/applicantService";
-
-export interface Applicant {
-    id: string,
-    name: string,
-    email: string,
-    date: string,
-    message: string,
-}
+import { type GetAllApplicantOutput } from "srf-shared-types";
 
 export const ApplicantContentDefinition = {
     id: 'solicitacoes',
@@ -30,7 +23,7 @@ export const ApplicantContentDefinition = {
         }
     ],
     rowIdField: 'id',
-    renderActions: (item: Applicant, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
+    renderActions: (item: GetAllApplicantOutput, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
             onClick={() => toggle(item.id)}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
@@ -38,7 +31,7 @@ export const ApplicantContentDefinition = {
             Expandir
         </button>
     ),
-    renderExpansion: (item: Applicant, close: () => void, refresh: () => void) => (
+    renderExpansion: (item: GetAllApplicantOutput, close: () => void, refresh: () => void) => (
         <>
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
@@ -81,7 +74,7 @@ export const fetchApplicantsData = async () => {
     }));
 };
 
-export const ApplicantPermissionsContent: ContentProps<Applicant> = {
+export const ApplicantPermissionsContent: ContentProps<GetAllApplicantOutput> = {
     ...ApplicantContentDefinition,
     data: [],
-} as unknown as ContentProps<Applicant>;
+} as unknown as ContentProps<GetAllApplicantOutput>;

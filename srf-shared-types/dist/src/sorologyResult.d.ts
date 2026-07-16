@@ -12,23 +12,23 @@ export declare const sorologyResultSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
     cuttingPointValue: z.ZodString;
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
-    interpretationId: z.ZodNumber;
 }, z.core.$strip>;
 export declare const updateSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
     cuttingPointValue: z.ZodString;
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
-    interpretationId: z.ZodNumber;
 }, z.core.$strip>;
 export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
@@ -45,7 +45,7 @@ export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     veterinarianVisitDate: z.ZodString;
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     liveAnimalId: z.ZodNumber;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
     testName: z.ZodString;
@@ -59,7 +59,7 @@ export declare const getFormOptionsSorologyResultOutputSchema: z.ZodObject<{
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
-            name: z.ZodString;
+            code: z.ZodString;
         }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;

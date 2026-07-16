@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { type VeterinarianVisitData, getVeterinarianVisits } from "../../../services/liveanimals/veterinarianVisitService";
+import { getVeterinarianVisits } from "../../../services/liveanimals/veterinarianVisitService";
+import { type GetAllVeterinarianVisitOutput } from "srf-shared-types";
 import { SideDrawer } from "../../../components/sideDrawer";
 
 interface VeterinarianVisitSideDrawerFilters {
@@ -14,7 +15,7 @@ interface VeterinarianVisitSideDrawerProps {
 }
 
 export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVisitSideDrawerProps) {
-    const [visits, setVisits] = useState<VeterinarianVisitData[]>([]);
+    const [visits, setVisits] = useState<GetAllVeterinarianVisitOutput[]>([]);
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState<number | null>(null);
     const navigate = useNavigate();

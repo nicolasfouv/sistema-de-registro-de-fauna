@@ -1,72 +1,27 @@
 import { api } from "../api";
+import {
+    type GetAllVeterinarianVisitOutput,
+    type GetFormOptionsVeterinarianVisitOutput,
+    type CreateVeterinarianVisitInput,
+    type UpdateVeterinarianVisitInput
+} from "srf-shared-types";
 
-export interface VeterinarianVisitData {
-    id: number;
-    canEdit: boolean;
-    createdByMe: boolean;
-    hasSample: boolean;
-    hasPhysicalExam: boolean;
-    hasVaccine: boolean;
-    hasExamResult: boolean;
-    hasSorologyAnalysis: boolean;
-    hasEctoparasiteAnalysis: boolean;
-    hasStoolAnalysis: boolean;
-    hasCastration: boolean;
-    liveAnimalId: number;
-    liveAnimalCode: string;
-    veterinarianId: number;
-    veterinarianName: string;
-    date: string;
-    dateFormatted?: string;
-    animalPicture: string;
-    note: string;
-    bodyMeasurements: BodyMeasurementData[];
-}
-
-export interface BodyMeasurementData {
-    id?: number;
-    bodyMeasurementTypeId: number;
-    bodyMeasurementTypeDescription?: string;
-    bodyMeasurementTypeUnit?: string;
-    value: number;
-}
-
-export interface VeterinarianVisitFormOptions {
-    liveAnimals: { id: number; code: string }[];
-    veterinarians: { id: number; name: string }[];
-    bodyMeasurementTypes: { id: number; description: string; unit: string }[];
-}
-
-export async function getVeterinarianVisits(): Promise<VeterinarianVisitData[]> {
+export async function getVeterinarianVisits(): Promise<GetAllVeterinarianVisitOutput[]> {
     const response = await api.get('/veterinarian-visit/get-all');
     return response.data;
 }
 
-export async function getVeterinarianVisitOptions(): Promise<VeterinarianVisitFormOptions> {
+export async function getVeterinarianVisitOptions(): Promise<GetFormOptionsVeterinarianVisitOutput> {
     const response = await api.get('/veterinarian-visit/form-options');
     return response.data;
 }
 
-export async function createVeterinarianVisit(data: {
-    liveAnimalId: number,
-    veterinarianId: number,
-    date: string,
-    animalPicture: string,
-    note: string,
-    bodyMeasurements: { bodyMeasurementTypeId: number; value: number }[];
-}) {
+export async function createVeterinarianVisit(data: CreateVeterinarianVisitInput) {
     const response = await api.post('/veterinarian-visit/create', data);
     return response.data;
 }
 
-export async function updateVeterinarianVisit(visitId: number, data: {
-    liveAnimalId: number,
-    veterinarianId: number,
-    date: string,
-    animalPicture: string,
-    note: string,
-    bodyMeasurements: { bodyMeasurementTypeId: number; value: number }[],
-}) {
+export async function updateVeterinarianVisit(visitId: number, data: UpdateVeterinarianVisitInput) {
     const response = await api.put(`/veterinarian-visit/update/${visitId}`, data);
     return response.data;
 }

@@ -3,7 +3,10 @@ export declare const getAllDeadAnimalOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     createdByMe: z.ZodBoolean;
     canEdit: z.ZodBoolean;
-    code: z.ZodString;
+    sailId: z.ZodNumber;
+    sailCode: z.ZodString;
+    codeNumber: z.ZodNumber;
+    code: z.ZodOptional<z.ZodString>;
     deadAnimalGroupId: z.ZodNumber;
     deadAnimalGroupName: z.ZodString;
     specieId: z.ZodNumber;
@@ -23,6 +26,10 @@ export declare const getAllDeadAnimalOutputSchema: z.ZodObject<{
     hasNecropsy: z.ZodBoolean;
 }, z.core.$strip>;
 export declare const getFormOptionsDeadAnimalOutputSchema: z.ZodObject<{
+    codeSails: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        sail: z.ZodString;
+    }, z.core.$strip>>;
     deadAnimalGroups: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
@@ -45,7 +52,8 @@ export declare const getFormOptionsDeadAnimalOutputSchema: z.ZodObject<{
     }, z.core.$strip>>;
 }, z.core.$strip>;
 export declare const createDeadAnimalInputSchema: z.ZodObject<{
-    code: z.ZodString;
+    sailId: z.ZodNumber;
+    codeNumber: z.ZodNumber;
     deadAnimalGroupId: z.ZodNumber;
     specieId: z.ZodNumber;
     deadAnimalOriginId: z.ZodNumber;
@@ -58,7 +66,8 @@ export declare const createDeadAnimalInputSchema: z.ZodObject<{
     note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const updateDeadAnimalInputSchema: z.ZodObject<{
-    code: z.ZodString;
+    sailId: z.ZodNumber;
+    codeNumber: z.ZodNumber;
     deadAnimalGroupId: z.ZodNumber;
     specieId: z.ZodNumber;
     deadAnimalOriginId: z.ZodNumber;

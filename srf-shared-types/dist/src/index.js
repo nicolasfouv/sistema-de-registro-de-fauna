@@ -20,3 +20,5 @@ export * from "./basicRegistration";
 export * from "./necropsyEctoparasiteAnalysis";
 export * from "./helminthAnalysis";
 export * from "./pcrResult";
+export * from "./veterinarianVisit";
+export * from "./applicant";

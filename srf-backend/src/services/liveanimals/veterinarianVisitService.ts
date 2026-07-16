@@ -1,7 +1,9 @@
 import { prisma } from "../..";
-import z from "zod";
 import { AuditService } from "../auditService";
-import { veterinarianVisitCreateInput, veterinarianVisitUpdateInput } from "../../models/veterinarianVisitModel";
+import {
+    type CreateVeterinarianVisitInput,
+    type UpdateVeterinarianVisitInput
+} from "srf-shared-types";
 
 export class VeterinarianVisitService {
     private auditService = new AuditService();
@@ -202,7 +204,7 @@ export class VeterinarianVisitService {
         };
     }
 
-    async create(data: z.infer<typeof veterinarianVisitCreateInput>, userId: string) {
+    async create(data: CreateVeterinarianVisitInput, userId: string) {
 
         return prisma.$transaction(async (tx) => {
             // Check if veterinarian visit already exists
@@ -276,7 +278,7 @@ export class VeterinarianVisitService {
         });
     }
 
-    async update(visitId: number, data: z.infer<typeof veterinarianVisitUpdateInput>, userId: string) {
+    async update(visitId: number, data: UpdateVeterinarianVisitInput, userId: string) {
 
         return prisma.$transaction(async (tx) => {
             // Get old data

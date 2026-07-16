@@ -1,7 +1,7 @@
-import { type Applicant } from "../contents/admin/applicants";
+import { type GetAllApplicantOutput } from "srf-shared-types";
 import { api } from "./api";
 
-export const getApplicants = async (): Promise<Applicant[]> => {
+export const getApplicants = async (): Promise<GetAllApplicantOutput[]> => {
     const response = await api.get('/applicant/get-all');
     return response.data;
 };

@@ -53,7 +53,7 @@ export declare const getAllEctoparasiteAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisitDate: z.ZodString;
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     liveAnimalId: z.ZodNumber;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
     genusName: z.ZodString;
@@ -66,7 +66,7 @@ export declare const getFormOptionsEctoparasiteAnalysisOutputSchema: z.ZodObject
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
-            name: z.ZodString;
+            code: z.ZodString;
         }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;

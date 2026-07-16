@@ -29,7 +29,7 @@ export const getAllMolecularAnalysisOutputSchema = molecularAnalysisSchema.exten
     veterinarianVisitDateFormatted: z.string().optional(),
     veterinarianVisitId: z.number().int(),
     liveAnimalId: z.number().int(),
-    liveAnimalName: z.string().nonempty(),
+    liveAnimalCode: z.string().nonempty(),
     veterinarianId: z.number().int(),
     veterinarianName: z.string().nonempty(),
     eggCystSpecieName: z.string().nonempty(),
@@ -42,7 +42,7 @@ export const getFormOptionsMolecularAnalysisOutputSchema = z.object({
             date: z.string().nonempty(),
             liveAnimal: z.object({
                 id: z.number().int(),
-                name: z.string().nonempty(),
+                code: z.string().nonempty(),
             }),
             veterinarian: z.object({
                 id: z.number().int(),

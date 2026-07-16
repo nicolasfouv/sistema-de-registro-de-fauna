@@ -2,6 +2,7 @@ import z from 'zod';
 export declare const examResultSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
     hematocrit: z.ZodNumber;
@@ -26,9 +27,12 @@ export declare const examResultSchema: z.ZodObject<{
     alkalinePhosphatase: z.ZodNumber;
     totalProtein: z.ZodNumber;
     urea: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const createExamResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
     hematocrit: z.ZodNumber;
@@ -56,6 +60,8 @@ export declare const createExamResultInputSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const updateExamResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
     hematocrit: z.ZodNumber;
@@ -108,12 +114,15 @@ export declare const getAllExamResultOutputSchema: z.ZodObject<{
     alkalinePhosphatase: z.ZodNumber;
     totalProtein: z.ZodNumber;
     urea: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
     veterinarianVisitDate: z.ZodString;
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
+    interpretationId: z.ZodNumber;
+    interpretationName: z.ZodString;
     liveAnimalId: z.ZodNumber;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
 }, z.core.$strip>;
@@ -123,12 +132,16 @@ export declare const getFormOptionsExamResultOutputSchema: z.ZodObject<{
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
-            name: z.ZodString;
+            code: z.ZodString;
         }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
         }, z.core.$strip>;
+    }, z.core.$strip>>;
+    interpretations: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
     }, z.core.$strip>>;
 }, z.core.$strip>;
 export type ExamResult = z.infer<typeof examResultSchema>;

@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm start --workspace=srf-backend",
-    "dev:frontend": "npm run dev --workspace=srf-frontend"
+    "dev:frontend": "npm run dev --workspace=srf-frontend",
+    "build:shared": "npm run build --workspace=srf-shared-types",
+    "build": "npm run build:shared && npm run build --workspace=srf-backend && npm run build --workspace=srf-frontend"
   },
   "workspaces": [
     "srf-backend",

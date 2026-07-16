@@ -30,7 +30,7 @@ export declare const getAllEggCystAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     veterinarianVisitId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
     eggCystSpecieName: z.ZodString;
@@ -43,7 +43,7 @@ export declare const getFormOptionsEggCystAnalysisOutputSchema: z.ZodObject<{
             date: z.ZodString;
             liveAnimal: z.ZodObject<{
                 id: z.ZodNumber;
-                name: z.ZodString;
+                code: z.ZodString;
             }, z.core.$strip>;
             veterinarian: z.ZodObject<{
                 id: z.ZodNumber;

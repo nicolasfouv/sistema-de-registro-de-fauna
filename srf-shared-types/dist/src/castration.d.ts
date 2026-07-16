@@ -25,7 +25,7 @@ export declare const getAllCastrationOutputSchema: z.ZodObject<{
     note: z.ZodOptional<z.ZodString>;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     veterinarianVisitDate: z.ZodOptional<z.ZodString>;
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
@@ -36,14 +36,14 @@ export declare const getAllCastrationOutputSchema: z.ZodObject<{
 export declare const getFormOptionsCastrationOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
-        name: z.ZodString;
+        code: z.ZodString;
     }, z.core.$strip>>;
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
-            name: z.ZodString;
+            code: z.ZodString;
         }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;

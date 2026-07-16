@@ -74,7 +74,7 @@ export declare const getAllVeterinarianSampleOutputSchema: z.ZodObject<{
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     sampleTypeDescription: z.ZodString;
     liveAnimalId: z.ZodNumber;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
     storageName: z.ZodString;
@@ -99,7 +99,7 @@ export declare const getFormOptionsVeterinarianSampleOutputSchema: z.ZodObject<{
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
-            name: z.ZodString;
+            code: z.ZodString;
         }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;

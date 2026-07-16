@@ -29,7 +29,7 @@ export declare const getAllVaccineOutputSchema: z.ZodObject<{
     vaccineTypeId: z.ZodNumber;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     vaccineName: z.ZodString;
     vaccineTypeName: z.ZodString;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
@@ -41,14 +41,14 @@ export declare const getAllVaccineOutputSchema: z.ZodObject<{
 export declare const getFormOptionsVaccineOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
-        name: z.ZodString;
+        code: z.ZodString;
     }, z.core.$strip>>;
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
-            name: z.ZodString;
+            code: z.ZodString;
         }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;

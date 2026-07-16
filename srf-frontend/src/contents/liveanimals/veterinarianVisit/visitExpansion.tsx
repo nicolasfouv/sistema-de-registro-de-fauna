@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type VeterinarianVisitData } from "../../../services/liveanimals/veterinarianVisitService";
+import { type GetAllVeterinarianVisitOutput } from "srf-shared-types";
 import { VeterinarianVisitFormModal } from "./formVisitModal";
 import { DeleteVisitModal } from "./deleteVisitModal";
 import { SamplesSideDrawer } from "../veterinarianSample/samplesSideDrawer";
@@ -11,7 +11,7 @@ import { EctoparasiteAnalysisSideDrawer } from "../ectoparasiteAnalysis/ectopara
 import { StoolAnalysisSideDrawer } from "../stoolAnalysis/stoolAnalysisSideDrawer";
 import { CastrationSideDrawer } from "../castration/castrationSideDrawer";
 
-export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
+export function VisitExpansion({ item, close, refresh }: { item: GetAllVeterinarianVisitOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSamplesDrawer, setShowSamplesDrawer] = useState(false);

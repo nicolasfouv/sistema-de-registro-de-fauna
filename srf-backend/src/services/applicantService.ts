@@ -1,11 +1,11 @@
 import { prisma } from "..";
-import { createApplicantRequest } from "../models/applicantModel";
+import { createApplicantInputSchema } from "srf-shared-types";
 import { UserService } from "./userService";
 
 class ApplicantService {
 
     async createApplicant(data: any) {
-        const { name, email, password, message } = createApplicantRequest.parse(data);
+        const { name, email, password, message } = createApplicantInputSchema.parse(data);
 
         // Verificações
         const emailAlreadyExists = await prisma.user.findUnique({

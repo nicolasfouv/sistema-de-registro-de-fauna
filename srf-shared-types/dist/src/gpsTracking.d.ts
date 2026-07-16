@@ -62,7 +62,7 @@ export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     editedSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
-    liveAnimalName: z.ZodString;
+    liveAnimalCode: z.ZodString;
     trackingDeviceBrandSerialNumber: z.ZodString;
     lastUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     lastUpdateDateFormatted: z.ZodOptional<z.ZodString>;
@@ -76,7 +76,7 @@ export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
 export declare const getFormOptionsGpsTrackingOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
-        name: z.ZodString;
+        code: z.ZodString;
     }, z.core.$strip>>;
     trackingDevices: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;

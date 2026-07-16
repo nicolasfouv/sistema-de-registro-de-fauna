@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
-import { type VeterinarianVisitData } from "../../../services/liveanimals/veterinarianVisitService";
 import { deleteVeterinarianVisit } from "../../../services/liveanimals/veterinarianVisitService";
+import { type GetAllVeterinarianVisitOutput } from "srf-shared-types";
 
 interface DeleteVisitModalProps {
-    visit: VeterinarianVisitData;
+    visit: GetAllVeterinarianVisitOutput;
     close: () => void;
     refresh: () => void;
 }

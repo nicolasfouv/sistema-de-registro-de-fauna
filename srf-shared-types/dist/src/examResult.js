@@ -33,6 +33,7 @@ import z from 'zod';
 export const examResultSchema = z.object({
     id: z.number().int({ error: 'ID do resultado de exame inválido' }),
     veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }),
+    interpretationId: z.number().int({ error: 'ID da interpretação do exame inválido' }),
     erythrocytes: z.number({ error: 'Eritrócitos deve ser um número' }),
     hemoglobin: z.number({ error: 'Hemoglobina deve ser um número' }),
     hematocrit: z.number({ error: 'Hematócrito deve ser um número' }),
@@ -56,7 +57,8 @@ export const examResultSchema = z.object({
     creatinine: z.number({ error: 'Creatinina deve ser um número' }),
     alkalinePhosphatase: z.number({ error: 'Fosfatase Alcalina deve ser um número' }),
     totalProtein: z.number({ error: 'Proteína Total deve ser um número' }),
-    urea: z.number({ error: 'Ureia deve ser um número' })
+    urea: z.number({ error: 'Ureia deve ser um número' }),
+    note: z.string().optional()
 });
 export const createExamResultInputSchema = examResultSchema.omit({
     id: true
@@ -69,8 +71,10 @@ export const getAllExamResultOutputSchema = examResultSchema.extend({
     createdByMe: z.boolean(),
     veterinarianVisitDate: z.string().nonempty(),
     veterinarianVisitDateFormatted: z.string().optional(),
+    interpretationId: z.number().int(),
+    interpretationName: z.string().nonempty(),
     liveAnimalId: z.number().int(),
-    liveAnimalName: z.string().nonempty(),
+    liveAnimalCode: z.string().nonempty(),
     veterinarianId: z.number().int(),
     veterinarianName: z.string().nonempty()
 });
@@ -80,11 +84,15 @@ export const getFormOptionsExamResultOutputSchema = z.object({
         date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
-            name: z.string().nonempty()
+            code: z.string().nonempty()
         }),
         veterinarian: z.object({
             id: z.number().int(),
             name: z.string().nonempty()
         })
+    })),
+    interpretations: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     }))
 });
