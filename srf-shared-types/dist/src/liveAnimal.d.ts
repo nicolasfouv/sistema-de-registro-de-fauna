@@ -25,25 +25,25 @@ export declare const getAllLiveAnimalOutputSchema: z.ZodObject<{
     hasVeterinarianVisit: z.ZodBoolean;
     hasVaccineApplication: z.ZodBoolean;
     hasAnimalInterview: z.ZodBoolean;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const getFormOptionsAnimalOutputSchema: z.ZodObject<{
     codeSails: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         sail: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     species: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     genders: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     tutors: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
 export declare const createLiveAnimalInputSchema: z.ZodObject<{
     sailId: z.ZodNumber;
     codeNumber: z.ZodNumber;
@@ -55,7 +55,7 @@ export declare const createLiveAnimalInputSchema: z.ZodObject<{
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
     tutorId: z.ZodOptional<z.ZodNumber>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const updateLiveAnimalInputSchema: z.ZodObject<{
     sailId: z.ZodNumber;
     codeNumber: z.ZodNumber;
@@ -67,7 +67,7 @@ export declare const updateLiveAnimalInputSchema: z.ZodObject<{
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
     tutorId: z.ZodOptional<z.ZodNumber>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export type GetAllLiveAnimalOutput = z.infer<typeof getAllLiveAnimalOutputSchema>;
 export type GetFormOptionsAnimalOutput = z.infer<typeof getFormOptionsAnimalOutputSchema>;
 export type CreateLiveAnimalInput = z.infer<typeof createLiveAnimalInputSchema>;
