@@ -19,6 +19,7 @@ export function Login() {
     email: '',
     password: '',
   });
+  const [loginSuccessful, setLoginSuccessful] = useState(false);
   const [forgot, setForgot] = useState(false);
   const [errorStatus, setErrorStatus] = useState<number>();
   const [errorEmail, setErrorEmail] = useState('');
@@ -40,7 +41,10 @@ export function Login() {
     try {
       setIsLoading(true);
       await signIn(loginData.email, loginData.password);
-      navigate('/minha-conta', { replace: true });
+      setLoginSuccessful(true);
+      setTimeout(() => {
+        navigate('/minha-conta', { replace: true });
+      }, 200);
     } catch (error: any) {
       setErrorEmail(error.response.data.message.email);
       setErrorPassword(error.response.data.message.password);
@@ -68,7 +72,7 @@ export function Login() {
   }
 
   return (
-    <section className="flex flex-col w-full min-h-screen items-center justify-center">
+    <section className={`flex flex-col w-full min-h-screen items-center justify-center ${loginSuccessful ? 'login' : ''}`}>
       <div
         onMouseDown={close}
         className={`modal-overlay ${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>

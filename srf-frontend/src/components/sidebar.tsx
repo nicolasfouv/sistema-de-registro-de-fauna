@@ -66,7 +66,7 @@ export function Sidebar() {
     }, [isResizing]);
 
     return (
-        <aside className="w-sidebar-size h-screen fixed top-0 left-0 z-99 bg-white border-r border-border flex flex-col">
+        <aside className="sidebar w-sidebar-size h-screen fixed top-0 left-0 z-99 bg-white border-r border-border flex flex-col">
             {/* User info */}
             <Link to="/minha-conta" onClick={() => setSelected('minha-conta')}>
                 <div className="py-5 px-3.5 flex items-center gap-3.75 border-b border-border">
@@ -76,6 +76,15 @@ export function Sidebar() {
             {/* List of forms */}
             <nav className="grow overflow-y-auto pt-2.5 pr-3.5">
                 <p className="py-2.5 px-3.5 text-3 font-bold text-text-light-gray tracking-[1px]">MENU</p>
+                {(!options || options.length === 0) && (
+                    <div className="flex items-center justify-center h-[50vh]">
+                        <div className="flex items-center justify-center w-24 h-12 gap-4">
+                            <span className="border-3 rounded-full border-text-light-gray loading-span-0"></span>
+                            <span className="border-3 rounded-full border-text-light-gray loading-span-1"></span>
+                            <span className="border-3 rounded-full border-text-light-gray loading-span-2"></span>
+                        </div>
+                    </div>
+                )}
                 <ul>
                     {options.map((option) => (
                         <li key={option.name}>

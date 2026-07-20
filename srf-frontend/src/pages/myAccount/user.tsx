@@ -63,11 +63,11 @@ export function User() {
                         </div>
                     </div>
                 </div>
-
+{/* 
                 <div className="bg-white rounded shadow-sm border border-border px-2 py-4">
                     <h2 className="text-lg font-bold mb-4 text-standard-red text-center">Minha Atividade</h2>
                     <p>Em desenvolvimento...</p>
-                </div>
+                </div> */}
             </section>
         </>
     )

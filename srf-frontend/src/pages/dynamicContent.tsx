@@ -119,7 +119,16 @@ export function DynamicContent() {
     }, [config, loadingAuth, userAccess, accessLevels]);
 
     if (!config || contents.length === 0 || loadingAuth) {
-        return <div className="ml-sidebar-size p-8 text-text-main">Carregando...</div>;
+        return (
+            <div className="ml-sidebar-size flex h-screen flex-col items-center justify-center gap-4 -my-8">
+                <div className="flex items-center justify-center w-24 h-12 gap-4">
+                    <span className="border-5 rounded-full border-black loading-span-0"></span>
+                    <span className="border-5 rounded-full border-black loading-span-1"></span>
+                    <span className="border-5 rounded-full border-black loading-span-2"></span>
+                </div>
+                <p className="text-xl text-text-main">Carregando conteúdo...</p>
+            </div>
+        );
     }
 
     const handleFormChange = (newFormId: string) => {
@@ -131,7 +140,16 @@ export function DynamicContent() {
         if (freshConfig) {
             return <Navigate to={`/${categoryId}/${subCategoryId}/${freshConfig.contents[0].id}`} replace />;
         }
-        return <div className="ml-sidebar-size p-8 text-text-main">Carregando...</div>;
+        return (
+            <div className="ml-sidebar-size flex h-screen flex-col items-center justify-center gap-4 -my-8">
+                <div className="flex items-center justify-center w-24 h-12 gap-4">
+                    <span className="border-5 rounded-full border-black loading-span-0"></span>
+                    <span className="border-5 rounded-full border-black loading-span-1"></span>
+                    <span className="border-5 rounded-full border-black loading-span-2"></span>
+                </div>
+                <p className="text-xl text-text-main">Carregando conteúdo...</p>
+            </div>
+        );
     }
 
     const currentHasAccess = checkAccess(formId);
