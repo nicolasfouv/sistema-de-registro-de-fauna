@@ -6,14 +6,14 @@ export declare const molecularAnalysisSchema: z.ZodObject<{
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const createMolecularAnalysisInputSchema: z.ZodObject<{
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const updateMolecularAnalysisInputSchema: z.ZodObject<{
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const getAllMolecularAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;

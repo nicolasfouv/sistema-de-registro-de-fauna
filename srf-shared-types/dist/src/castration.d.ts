@@ -7,15 +7,15 @@ export declare const castrationSchema: z.ZodObject<{
     note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const createCastrationInputSchema: z.ZodObject<{
-    date: z.ZodString;
     liveAnimalId: z.ZodNumber;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
+    date: z.ZodString;
     note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const updateCastrationInputSchema: z.ZodObject<{
-    date: z.ZodString;
     liveAnimalId: z.ZodNumber;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
+    date: z.ZodString;
     note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const getAllCastrationOutputSchema: z.ZodObject<{

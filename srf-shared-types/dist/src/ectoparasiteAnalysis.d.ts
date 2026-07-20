@@ -14,7 +14,6 @@ export declare const ectoparasiteAnalysisSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createEctoparasiteAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     ectoparasiteGenusId: z.ZodNumber;
     ectoparasiteSpecieId: z.ZodNumber;
     ectoparasiteSubSpecieId: z.ZodNumber;
@@ -23,10 +22,10 @@ export declare const createEctoparasiteAnalysisInputSchema: z.ZodObject<{
     nymphQuantity: z.ZodNumber;
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const updateEctoparasiteAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     ectoparasiteGenusId: z.ZodNumber;
     ectoparasiteSpecieId: z.ZodNumber;
     ectoparasiteSubSpecieId: z.ZodNumber;
@@ -35,6 +34,7 @@ export declare const updateEctoparasiteAnalysisInputSchema: z.ZodObject<{
     nymphQuantity: z.ZodNumber;
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const getAllEctoparasiteAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;

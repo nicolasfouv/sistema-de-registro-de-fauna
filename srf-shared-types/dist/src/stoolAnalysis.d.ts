@@ -8,15 +8,15 @@ export declare const stoolAnalysisSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createStoolAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const updateStoolAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const getAllStoolAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;

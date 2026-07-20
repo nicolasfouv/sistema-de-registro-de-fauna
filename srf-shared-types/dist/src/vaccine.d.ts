@@ -9,16 +9,16 @@ export declare const vaccineSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createVaccineInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
-    veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
+    veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     vaccineTypeId: z.ZodNumber;
 }, z.core.$strip>;
 export declare const updateVaccineInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
-    veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
+    veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     vaccineTypeId: z.ZodNumber;
 }, z.core.$strip>;
 export declare const getAllVaccineOutputSchema: z.ZodObject<{
