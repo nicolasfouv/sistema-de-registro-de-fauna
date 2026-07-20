@@ -7,16 +7,16 @@ export declare const eggCystAnalysisSchema: z.ZodObject<{
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const createEggCystAnalysisInputSchema: z.ZodObject<{
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const updateEggCystAnalysisInputSchema: z.ZodObject<{
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.core.$strip>;
 export declare const getAllEggCystAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;

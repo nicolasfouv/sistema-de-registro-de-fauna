@@ -1,19 +1,9 @@
 {
   "name": "srf-shared-types",
-  "scripts": {
-    "build": "tsc -p tsconfig.json"
-  },
   "version": "1.0.0",
   "private": true,
-  "main": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
-  "exports": {
-    ".": "./dist/src/index.js"
-  },
-  "dependencies": {
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "typescript": "^7.0.2"
-  }
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "zod": "^4.3.6" }
 }

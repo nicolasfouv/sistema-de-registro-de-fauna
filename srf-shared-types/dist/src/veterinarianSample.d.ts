@@ -27,12 +27,12 @@ export declare const veterinarianSampleSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createVeterinarianSampleInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    sampleTypeId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    imageLink: z.ZodOptional<z.ZodString>;
+    quantity: z.ZodNumber;
     storageId: z.ZodNumber;
     statusId: z.ZodNumber;
-    quantity: z.ZodNumber;
-    imageLink: z.ZodOptional<z.ZodString>;
-    note: z.ZodOptional<z.ZodString>;
+    sampleTypeId: z.ZodNumber;
     sendSamples: z.ZodOptional<z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         storageId: z.ZodNumber;
@@ -44,12 +44,12 @@ export declare const createVeterinarianSampleInputSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const updateVeterinarianSampleInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    sampleTypeId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    imageLink: z.ZodOptional<z.ZodString>;
+    quantity: z.ZodNumber;
     storageId: z.ZodNumber;
     statusId: z.ZodNumber;
-    quantity: z.ZodNumber;
-    imageLink: z.ZodOptional<z.ZodString>;
-    note: z.ZodOptional<z.ZodString>;
+    sampleTypeId: z.ZodNumber;
     sendSamples: z.ZodOptional<z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         storageId: z.ZodNumber;
@@ -62,12 +62,12 @@ export declare const updateVeterinarianSampleInputSchema: z.ZodObject<{
 export declare const getAllVeterinarianSampleOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
-    sampleTypeId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
+    imageLink: z.ZodOptional<z.ZodString>;
+    quantity: z.ZodNumber;
     storageId: z.ZodNumber;
     statusId: z.ZodNumber;
-    quantity: z.ZodNumber;
-    imageLink: z.ZodOptional<z.ZodString>;
-    note: z.ZodOptional<z.ZodString>;
+    sampleTypeId: z.ZodNumber;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
     veterinarianVisitDate: z.ZodString;

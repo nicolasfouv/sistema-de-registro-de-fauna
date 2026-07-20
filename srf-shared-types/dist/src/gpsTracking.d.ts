@@ -17,10 +17,10 @@ export declare const gpsTrackingSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createGpsTrackingInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     monitoredDays: z.ZodNumber;
     locationPoints: z.ZodNumber;
     livingArea: z.ZodNumber;
@@ -32,10 +32,10 @@ export declare const createGpsTrackingInputSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const updateGpsTrackingInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     monitoredDays: z.ZodNumber;
     locationPoints: z.ZodNumber;
     livingArea: z.ZodNumber;

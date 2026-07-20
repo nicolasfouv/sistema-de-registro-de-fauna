@@ -31,6 +31,7 @@ export declare const examResultSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createExamResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
     interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
@@ -56,10 +57,10 @@ export declare const createExamResultInputSchema: z.ZodObject<{
     alkalinePhosphatase: z.ZodNumber;
     totalProtein: z.ZodNumber;
     urea: z.ZodNumber;
-    note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const updateExamResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
     interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
@@ -85,7 +86,6 @@ export declare const updateExamResultInputSchema: z.ZodObject<{
     alkalinePhosphatase: z.ZodNumber;
     totalProtein: z.ZodNumber;
     urea: z.ZodNumber;
-    note: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export declare const getAllExamResultOutputSchema: z.ZodObject<{
     id: z.ZodNumber;

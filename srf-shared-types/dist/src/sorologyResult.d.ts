@@ -12,23 +12,23 @@ export declare const sorologyResultSchema: z.ZodObject<{
 }, z.core.$strip>;
 export declare const createSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
     cuttingPointValue: z.ZodString;
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
-    interpretationId: z.ZodNumber;
 }, z.core.$strip>;
 export declare const updateSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
     cuttingPointValue: z.ZodString;
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
-    interpretationId: z.ZodNumber;
 }, z.core.$strip>;
 export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
