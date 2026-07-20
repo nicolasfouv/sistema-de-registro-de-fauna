@@ -2,7 +2,7 @@ services:
   - type: web
     name: srf-backend
     env: node
-    buildCommand: npm install && npm run build --workspace=srf-backend
+    buildCommand: npm install && npm run build --workspace=srf-shared-types && npm run build --workspace=srf-backend
     startCommand: npm run start:prod --workspace=srf-backend
     envVars:
       - key: NODE_ENV

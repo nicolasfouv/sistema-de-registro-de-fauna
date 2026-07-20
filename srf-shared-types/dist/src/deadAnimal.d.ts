@@ -24,33 +24,33 @@ export declare const getAllDeadAnimalOutputSchema: z.ZodObject<{
     imageLink: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
     hasNecropsy: z.ZodBoolean;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsDeadAnimalOutputSchema: z.ZodObject<{
     codeSails: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         sail: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     deadAnimalGroups: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     species: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     deadAnimalOrigins: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     deadAnimalStatuses: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     collectionResponsibles: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export declare const createDeadAnimalInputSchema: z.ZodObject<{
     sailId: z.ZodNumber;
     codeNumber: z.ZodNumber;
@@ -64,7 +64,7 @@ export declare const createDeadAnimalInputSchema: z.ZodObject<{
     collectionLatitude: z.ZodNumber;
     imageLink: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const updateDeadAnimalInputSchema: z.ZodObject<{
     sailId: z.ZodNumber;
     codeNumber: z.ZodNumber;
@@ -78,7 +78,7 @@ export declare const updateDeadAnimalInputSchema: z.ZodObject<{
     collectionLatitude: z.ZodNumber;
     imageLink: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export type GetAllDeadAnimalOutput = z.infer<typeof getAllDeadAnimalOutputSchema>;
 export type GetFormOptionsDeadAnimalOutput = z.infer<typeof getFormOptionsDeadAnimalOutputSchema>;
 export type CreateDeadAnimalInput = z.infer<typeof createDeadAnimalInputSchema>;
