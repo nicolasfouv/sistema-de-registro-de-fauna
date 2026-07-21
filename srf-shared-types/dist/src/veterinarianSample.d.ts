@@ -6,7 +6,7 @@ export declare const sendVeterinarianSampleSchema: z.ZodObject<{
     sendDate: z.ZodString;
     quantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const veterinarianSampleSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
@@ -23,8 +23,8 @@ export declare const veterinarianSampleSchema: z.ZodObject<{
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>>;
+}, z.z.core.$strip>;
 export declare const createVeterinarianSampleInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
@@ -40,8 +40,8 @@ export declare const createVeterinarianSampleInputSchema: z.ZodObject<{
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>>;
+}, z.z.core.$strip>;
 export declare const updateVeterinarianSampleInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
@@ -57,8 +57,8 @@ export declare const updateVeterinarianSampleInputSchema: z.ZodObject<{
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>>;
+}, z.z.core.$strip>;
 export declare const getAllVeterinarianSampleOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
@@ -89,10 +89,10 @@ export declare const getAllVeterinarianSampleOutputSchema: z.ZodObject<{
         sendDateFormatted: z.ZodOptional<z.ZodString>;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
+    }, z.z.core.$strip>>>;
     allStorageNames: z.ZodString;
     allStatusNames: z.ZodString;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsVeterinarianSampleOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -100,25 +100,25 @@ export declare const getFormOptionsVeterinarianSampleOutputSchema: z.ZodObject<{
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.core.$strip>;
+        }, z.z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
-        }, z.core.$strip>;
-    }, z.core.$strip>>;
+        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
     sampleTypes: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         description: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     status: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     storages: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export type VeterinarianSample = z.infer<typeof veterinarianSampleSchema>;
 export type SendVeterinarianSample = z.infer<typeof sendVeterinarianSampleSchema>;
 export type CreateVeterinarianSampleInput = z.infer<typeof createVeterinarianSampleInputSchema>;
