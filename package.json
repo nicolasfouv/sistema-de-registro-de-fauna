@@ -2,7 +2,8 @@
   "name": "sistema-de-rastreio-de-fauna",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "concurrently \"npm run dev:types\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:types": "tsc -b --watch --workspace=srf-backend",
     "dev:backend": "npm start --workspace=srf-backend",
     "dev:frontend": "npm run dev --workspace=srf-frontend",
     "build:shared": "npm run build --workspace=srf-shared-types",

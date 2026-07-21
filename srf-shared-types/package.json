@@ -2,8 +2,8 @@
   "name": "srf-shared-types",
   "version": "1.0.0",
   "private": true,
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "exports": { ".": "./src/index.ts" },
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": { ".": "./dist/src/index.js" },
   "dependencies": { "zod": "^4.3.6" }
 }
