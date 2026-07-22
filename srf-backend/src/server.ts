@@ -11,9 +11,7 @@ app.use(cors({
     credentials: true
 }));
 
-// Endpoint de health check — deve ser pingado por um serviço externo (ex: cron-job.org)
-// a cada ~14 min para manter o Render ativo e o banco da Aiven vivo.
-app.get('/health', async (_req, res) => {
+app.get('/ping', async (_req, res) => {
     try {
         await prisma.$queryRaw`SELECT 1`;
         res.status(200).json({ status: 'ok', db: 'connected', timestamp: new Date().toISOString() });
