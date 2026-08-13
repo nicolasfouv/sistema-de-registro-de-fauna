@@ -1,13 +1,13 @@
 <h1>REPOSITÓRIO CENTRAL</h1>
 <p>
-  O Repositório Central do Sistema de Registro e Análise Integrada, ou apenas SiRAI, é um ambiente estruturado para conter todas as camadas da aplicação, reúnindo todas as informações pertinentes do sistema.
+  O Repositório Central do Sistema de Registro e Análise Integrada, ou apenas SiRAI, é um ambiente estruturado para conter todas as camadas da aplicação, reunindo todas as informações pertinentes do sistema.
 </p>
 <h2>Objetivo do SiRAI</h2>
 <p>
-  O sistema visa estruturar e consolidar meios para que pesquisadores armazenem e visualizem dados do monitoramento de animais domésticos e selvagens. Um dos focos é análisar a movimentação de animais cadastrados via gps e observar sua relação com doenças contraídas e organizar dados veterinários feitos em visitas com proficionais da área.
+  O sistema visa estruturar e consolidar meios para que pesquisadores armazenem e visualizem dados do monitoramento de animais domésticos e selvagens. Um dos focos é analisar a movimentação de animais cadastrados via GPS e observar sua relação com doenças contraídas e organizar dados veterinários feitos em visitas com profissionais da área.
 </p>
 <p>
-  Além disso, o sistema gerencia dados de animais envolvidos em atropelamentos e registra informações detalhadas da necrópsia realizada, bem como as amostras coletadas e análises feitas sobro estas amostras.
+  Além disso, o sistema gerencia dados de animais envolvidos em atropelamentos e registra informações detalhadas da necrópsia realizada, bem como as amostras coletadas e análises feitas sobre estas amostras.
 </p>
 <p>
   Por fim, outro objetivo é implementar ferramentas de dashboard e análise integrada.
@@ -49,7 +49,7 @@
 
 <h3>Formulários</h3>
 <p>
-   Os formulários são acessados pelo menu lateral e sua visualização depende do nível de acesso do usuário para determinado formulário. A partir do registro expandido, é possível visualizar e navegar diretamente entre os sub-registros associados facilitando a navegação e composição de registros.
+   Os formulários são acessados pelo menu lateral e sua visualização depende do nível de acesso do usuário para determinado formulário. A partir do registro expandido, é possível visualizar e navegar diretamente entre os sub-registros associados, facilitando a navegação e a composição de registros.
 </p>
 
 <table>
@@ -85,7 +85,7 @@
   Acessível pelo link <strong>Gerenciar Permissões</strong> no rodapé do menu lateral, este módulo é exclusivo para administradores. Na aba <strong>Usuários</strong>, é exibida a lista de todos os usuários do sistema com nome, e-mail e nível de papel (Admin, Super Admin ou comum), além de ações de visualizar, editar e remover cada conta. A aba <strong>Solicitações</strong> centraliza os pedidos de acesso pendentes, permitindo aprová-los ou rejeitá-los.
 </p>
 <p>
-  Ao editar um usuário, o modal de <strong>Edição de Permissões</strong> apresenta um controle granular por recurso do sistema. Para cada entidade — como <em>Animal</em>, <em>Amostra</em>, <em>Necrópsia</em>, <em>Análises</em>, entre outras — é possível definir individualmente o nível de acesso: <strong>Ler</strong>, <strong>Editar</strong> ou <strong>Editar sem Restrições</strong>. O grupo de permissões do usuário também pode ser alterado diretamente nessa tela, agilizando a configuração de perfis padronizados.
+  Ao editar um usuário, o modal de <strong>Edição de Permissões</strong> apresenta um controle granular por recurso do sistema. Para cada entidade — como <em>Animal</em>, <em>Amostra</em>, <em>Necrópsia</em>, <em>Análises</em>, entre outras — é possível definir individualmente o nível de acesso: <strong>Ler</strong>, <strong>Editar</strong>, <strong>Editar sem Restrições</strong> ou simplesmente nenhuma permissão. O grupo de permissões do usuário também pode ser alterado diretamente nessa tela, agilizando a configuração de perfis padronizados.
 </p>
 
 <table>
@@ -101,7 +101,7 @@
 
 <h2>Copiando o SiRAI</h2>
 <p>
-  A estrutura do sistema pode ser utilizada, mas é necessário configurar o ambiente de desenvolimento para que o site funcione corretamente.
+  A estrutura do sistema pode ser utilizada, mas é necessário configurar o ambiente de desenvolvimento para que o site funcione corretamente.
 </p>
 <h3>.env</h3>
 <p>
