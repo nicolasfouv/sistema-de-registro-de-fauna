@@ -27,6 +27,78 @@
   </ul>
 </p>
 
+<h2>Visão Geral do Sistema</h2>
+<p>
+  As telas a seguir ilustram os principais fluxos do SiRAI, desde o acesso controlado até o registro e consulta de dados veterinários.
+</p>
+
+<h3>Controle de Acesso</h3>
+<p>
+  O sistema adota um modelo de acesso por solicitação. Novos pesquisadores preenchem o formulário de <strong>Solicitação de Acesso</strong> (nome, e-mail, senha e justificativa opcional) e aguardam a aprovação de um administrador. Após a aprovação, o acesso é liberado pela tela de <strong>Login</strong>, que também oferece a opção de recuperação de senha. Esse fluxo garante que apenas usuários autorizados possam visualizar ou manipular os dados do projeto.
+</p>
+<table>
+  <tr>
+    <td align="center"><strong>Solicitação de Acesso</strong></td>
+    <td align="center"><strong>Login</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/79081840-afc0-4be3-bf6c-fb1755c1b436" alt="Tela de Solicitação de Acesso" width="480"/></td>
+    <td><img src="https://github.com/user-attachments/assets/5992756c-be66-488c-80e2-a36330742e59" alt="Tela de Login" width="480"/></td>
+  </tr>
+</table>
+
+<h3>Formulários</h3>
+<p>
+   Os formulários são acessados pelo menu lateral e sua visualização depende do nível de acesso do usuário para determinado formulário. A partir do registro expandido, é possível visualizar e navegar diretamente entre os sub-registros associados facilitando a navegação e composição de registros.
+</p>
+
+<table>
+  <tr>
+    <td align="center"><strong>Formulário com Acesso Bloqueado</strong></td>
+    <td align="center"><strong>Visualização Padrão</strong></td>
+    <td align="center"><strong>Sidedrawer</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/d6e654f6-1fdf-45d4-8add-82a456a0d66d" alt="Formulário com Acesso Bloqueado" width="320"></td>
+    <td><img src="https://github.com/user-attachments/assets/d40f4a86-0a66-482d-95aa-0846c262b316" alt="Visualização padrão" width="320"/></td>
+    <td><img src="https://github.com/user-attachments/assets/bd1b8fa1-f1cc-4af3-bc14-482f9ba65e4e" alt="Visualização padrão" width="320"/></td>
+  </tr>
+</table>
+
+<p>
+  A tela de <strong>Filtros</strong> permite refinar a listagem de registros, combinando múltiplos critérios de busca de forma intuitiva.
+</p>
+
+<table>
+  <tr>
+    <td align="center"><strong>Filtros Avançados</strong></td>
+    <td align="center"><strong>Novo Registro</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/919645d8-553f-4e52-badf-e9d39917b2e8" alt="Filtros" width="480"/></td>
+    <td><img src="https://github.com/user-attachments/assets/f7bd5592-2ac6-41c8-b6a0-07176262f478" alt="Novo Registro" width="480"/></td>
+  </tr>
+</table>
+
+<h3>Gerenciamento de Permissões</h3>
+<p>
+  Acessível pelo link <strong>Gerenciar Permissões</strong> no rodapé do menu lateral, este módulo é exclusivo para administradores. Na aba <strong>Usuários</strong>, é exibida a lista de todos os usuários do sistema com nome, e-mail e nível de papel (Admin, Super Admin ou comum), além de ações de visualizar, editar e remover cada conta. A aba <strong>Solicitações</strong> centraliza os pedidos de acesso pendentes, permitindo aprová-los ou rejeitá-los.
+</p>
+<p>
+  Ao editar um usuário, o modal de <strong>Edição de Permissões</strong> apresenta um controle granular por recurso do sistema. Para cada entidade — como <em>Animal</em>, <em>Amostra</em>, <em>Necrópsia</em>, <em>Análises</em>, entre outras — é possível definir individualmente o nível de acesso: <strong>Ler</strong>, <strong>Editar</strong> ou <strong>Editar sem Restrições</strong>. O grupo de permissões do usuário também pode ser alterado diretamente nessa tela, agilizando a configuração de perfis padronizados.
+</p>
+
+<table>
+  <tr>
+    <td align="center"><strong>Listagem de Usuários</strong></td>
+    <td align="center"><strong>Editor de Permissões</strong></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/2884d2b1-2ffe-4aa4-b4ed-04aaf4a32254" alt="Listagem de Usuários e Permissões" width="480"/></td>
+    <td><img src="https://github.com/user-attachments/assets/a478e810-ad90-4a16-9cfb-1c176a5f75a8" alt="Modal de Edição de Permissões" width="480"/></td>
+  </tr>
+</table>
+
 <h2>Copiando o SiRAI</h2>
 <p>
   A estrutura do sistema pode ser utilizada, mas é necessário configurar o ambiente de desenvolimento para que o site funcione corretamente.
