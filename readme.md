@@ -163,12 +163,12 @@ npm run dev
     <li>
       Visão como um administrador do sistema:<br/>
         E-mail: admin@exemplo.com<br/>
-        Senha: 123123
+        Senha: ***
     </li>
     <li>
       Visão como um usuário comum do sistema:<br/>
         E-mail: comum@exemplo.com<br/>
-        Senha: 123123
+        Senha: ***
     </li>
   </ul>
 </p>
